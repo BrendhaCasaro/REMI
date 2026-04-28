@@ -25,11 +25,14 @@ public class Media {
     private UUID id;
 
     @Column
-    private String nome;
+    private String name;
+
+    @Column
+    private String urlNode;
 
     @Column
     @Enumerated(EnumType.STRING)
-    private MediaStatus status;
+    private MediaStatus status = MediaStatus.ACTIVE;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
