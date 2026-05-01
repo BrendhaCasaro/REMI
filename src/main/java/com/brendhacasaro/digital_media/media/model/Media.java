@@ -28,9 +28,6 @@ public class Media {
     private String name;
 
     @Column
-    private String urlNode;
-
-    @Column
     @Enumerated(EnumType.STRING)
     private MediaStatus status = MediaStatus.ACTIVE;
 
