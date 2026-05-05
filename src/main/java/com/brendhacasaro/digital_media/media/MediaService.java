@@ -1,13 +1,15 @@
-package com.brendhacasaro.digital_media.media.service;
+package com.brendhacasaro.digital_media.media;
 
+import com.brendhacasaro.digital_media.media.model.Media;
+import com.brendhacasaro.digital_media.node.Node;
 import com.brendhacasaro.digital_media.node_media.NodeMedia;
 import com.brendhacasaro.digital_media.node_media.NodeMediaRepository;
-import com.brendhacasaro.digital_media.media.model.Media;
-import com.brendhacasaro.digital_media.media.repository.MediaRepository;
-import com.brendhacasaro.digital_media.node.Node;
 import com.brendhacasaro.digital_media.orchestrator.Orchestrator;
 import com.brendhacasaro.digital_media.orchestrator.OrchestratorException;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -15,7 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.UUID;
 
 @Service
@@ -26,7 +30,8 @@ public class MediaService {
     private final RestClient restClient = RestClient.create();
     private final NodeMediaRepository nodeMediaRepository;
 
-    public void createMedia(MultipartFile file) {
+    @Transactional
+    public String createMedia(MultipartFile file) {
         Node node;
         try {
             node = orchestrator.chooseNode();
@@ -45,7 +50,7 @@ public class MediaService {
                 .body(body)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (req, res) -> {
-                    throw new RuntimeException("HTTP error: " + res.getStatusCode() + res.getBody());
+                    throw new RestClientException("HTTP error: " + res.getStatusCode() + res.getBody());
                 })
                 .toBodilessEntity();
 
@@ -57,11 +62,25 @@ public class MediaService {
         nodeMedia.setNode(node);
         nodeMedia.setMedia(media);
         nodeMediaRepository.save(nodeMedia);
+
+        return "/download/" + media.getId();
     }
 
     // Endpoint de download retorna MultipartFile,
     // tipo inadequado para resposta HTTP de arquivo; ideal é Resource/stream + headers corretos.
-    public Resource downloadMedia(UUID idMedia) {
+    public Resource downloadMedia(UUID mediaId) {
+        Node node = nodeMediaRepository.findNodeByMediaId(mediaId)
+                .orElseThrow(() -> new EntityNotFoundException("Id" + mediaId + "not found"));
 
+        // add header to send the key to node
+        // add to search the key in db of node
+        return restClient.get()
+                .uri(node.getUrl() + "/" + mediaId)
+                .exchange((request, response) -> {
+                    if (response.getStatusCode().isError()) {
+                        throw new RestClientException("HTTP error: " + response.getStatusCode());
+                    }
+                    return new InputStreamResource(response.getBody());
+                });
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.multipart.MultipartException;
 
 @RestControllerAdvice
@@ -22,10 +23,10 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
+    @ExceptionHandler(RestClientException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RestClientException e) {
         ErrorResponse error = new ErrorResponse(e.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
     @ExceptionHandler(OrchestratorException.class)
     public ResponseEntity<ErrorResponse> handleOrchestratorException(OrchestratorException e) {
