@@ -66,8 +66,6 @@ public class MediaService {
         return "/download/" + media.getId();
     }
 
-    // Endpoint de download retorna MultipartFile,
-    // tipo inadequado para resposta HTTP de arquivo; ideal é Resource/stream + headers corretos.
     public Resource downloadMedia(UUID mediaId) {
         Node node = nodeMediaRepository.findNodeByMediaId(mediaId)
                 .orElseThrow(() -> new EntityNotFoundException("Id" + mediaId + "not found"));
