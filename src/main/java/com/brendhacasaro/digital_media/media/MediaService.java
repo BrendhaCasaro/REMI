@@ -36,7 +36,7 @@ public class MediaService {
         try {
             node = orchestrator.chooseNode();
         } catch (Exception e) {
-            throw new OrchestratorException("Error to choose node", e);
+            throw new OrchestratorException("No Nodes available", e);
         }
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();

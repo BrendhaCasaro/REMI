@@ -28,9 +28,6 @@ public class Node {
     private double totalCapacity;
 
     @Column
-    private double usedCapacity;
-
-    @Column
     private UUID key;
 
     @Column
