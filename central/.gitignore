@@ -1,6 +1,6 @@
 HELP.md
 target/
-.mvn/wrapper/maven-wrapper.jar
+central/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -9,12 +9,12 @@ target/
 .classpath
 .factorypath
 .project
-.settings
+central/.settings
 .springBeans
 .sts4-cache
 
 ### IntelliJ IDEA ###
-.idea
+central/.idea
 *.iws
 *.iml
 *.ipr
