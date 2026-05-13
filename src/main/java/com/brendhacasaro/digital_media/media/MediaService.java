@@ -54,8 +54,7 @@ public class MediaService {
                 })
                 .toBodilessEntity();
 
-        Media media = new Media();
-        media.setName(file.getOriginalFilename());
+        Media media = new Media(file.getOriginalFilename());
         mediaRepository.save(media);
 
         NodeMedia nodeMedia = new NodeMedia();

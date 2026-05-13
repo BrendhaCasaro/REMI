@@ -1,20 +1,19 @@
 package com.brendhacasaro.digital_media.node;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.UUID;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "node")
 @Entity
+@Getter
+@Setter
+@RequiredArgsConstructor
 @DynamicUpdate
 public class Node {
     @Id
@@ -22,15 +21,19 @@ public class Node {
     private Long id;
 
     @Column
+    @NonNull
     private String url;
 
     @Column
-    private double totalCapacity;
+    @NonNull
+    private Double totalCapacity;
 
     @Column
+    @NonNull
     private UUID key;
 
     @Column
+    @NonNull
     @Enumerated(EnumType.STRING)
     private NodeStatus status;
 }

@@ -1,9 +1,9 @@
 package com.brendhacasaro.digital_media.media.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.DynamicUpdate;
@@ -14,8 +14,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "media")
 @Entity
 @DynamicUpdate
@@ -25,6 +24,7 @@ public class Media {
     private UUID id;
 
     @Column
+    @NonNull
     private String name;
 
     @Column

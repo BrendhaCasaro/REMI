@@ -78,9 +78,8 @@ public class Orchestrator {
                     betterDisk = metricsResponse.diskUsed();
                     betterNode = node;
                 }
-
             } catch (Exception e) {
-
+                throw new OrchestratorException("Error to connect to nodes", e);
             }
         }
         return betterNode;
