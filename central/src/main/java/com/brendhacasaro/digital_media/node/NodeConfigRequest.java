@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record NodeConfigRequest(
         String url,
-        double totalCapacity,
+        Double totalCapacity,
         UUID key,
         NodeStatus status
 ) {
