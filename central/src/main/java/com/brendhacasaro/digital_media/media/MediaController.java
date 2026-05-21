@@ -1,5 +1,6 @@
 package com.brendhacasaro.digital_media.media;
 
+import com.brendhacasaro.digital_media.media.dto.MediaResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -10,11 +11,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/videos")
+@RequestMapping("/api/files")
 public class MediaController {
     private final MediaService mediaService;
 
@@ -36,5 +38,17 @@ public class MediaController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment, filename=\"" + media.getFilename() + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(media);
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<List<MediaResponse>> getAllMedias() {
+        return ResponseEntity.ok()
+                .body(mediaService.getAllMedias());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMedia(@PathVariable UUID id) {
+        mediaService.deleteMedia(id);
+        return ResponseEntity.noContent().build();
     }
 }

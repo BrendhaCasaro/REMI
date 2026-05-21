@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Node {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column
     @NonNull

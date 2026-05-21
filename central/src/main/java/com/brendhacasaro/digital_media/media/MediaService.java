@@ -1,5 +1,6 @@
 package com.brendhacasaro.digital_media.media;
 
+import com.brendhacasaro.digital_media.media.dto.MediaResponse;
 import com.brendhacasaro.digital_media.media.model.Media;
 import com.brendhacasaro.digital_media.node.Node;
 import com.brendhacasaro.digital_media.node_media.NodeMedia;
@@ -20,6 +21,8 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -79,5 +82,36 @@ public class MediaService {
                     }
                     return new InputStreamResource(response.getBody());
                 });
+    }
+
+    @Transactional
+    public void deleteMedia(UUID mediaId) {
+        Media media = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new EntityNotFoundException("Id " + mediaId + " not found"));
+
+        Optional<Node> nodeOptional = nodeMediaRepository.findNodeByMediaId(mediaId);
+
+        if (nodeOptional.isPresent()) {
+            Node node = nodeOptional.get();
+
+            restClient.delete()
+                    .uri(node.getUrl() + "/" + mediaId)
+                    .retrieve()
+                    .onStatus(HttpStatusCode::isError, (req, res) -> {
+                        throw new RestClientException("HTTP error: " + res.getStatusCode());
+                    })
+                    .toBodilessEntity();
+
+            nodeMediaRepository.deleteByMediaId(mediaId);
+        }
+
+        mediaRepository.delete(media);
+    }
+
+    public List<MediaResponse> getAllMedias() {
+        return mediaRepository.findAll()
+                .stream()
+                .map(media -> new MediaResponse(media.getName()))
+                .toList();
     }
 }

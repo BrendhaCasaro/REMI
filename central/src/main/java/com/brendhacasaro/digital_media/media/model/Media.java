@@ -27,10 +27,6 @@ public class Media {
     @NonNull
     private String name;
 
-    @Column
-    @Enumerated(EnumType.STRING)
-    private MediaStatus status = MediaStatus.ACTIVE;
-
     @CreationTimestamp
     private LocalDateTime createdAt;
 }
