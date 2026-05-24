@@ -3,22 +3,22 @@
   <component name="CompilerConfiguration">
     <annotationProcessing>
       <profile default="true" name="Default" enabled="true" />
-      <profile name="Annotation profile for digital-media" enabled="true">
+      <profile name="Annotation profile for REMI" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
-        <module name="central-digital-media" />
-        <module name="node-digital-media" />
+        <module name="REMI-Central" />
+        <module name="REMI-Node" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="central-digital-media" options="-parameters" />
-      <module name="node-digital-media" options="-parameters" />
+      <module name="REMI-Central" options="-parameters" />
+      <module name="REMI-Node" options="-parameters" />
     </option>
   </component>
 </project>
