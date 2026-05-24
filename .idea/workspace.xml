@@ -4,39 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Change the structure to two aplications: central e node">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+    <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Change the name project to remi.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/central/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/DigitalMediaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/DigitalMediaApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/config/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/config/ErrorResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/config/GlobalHandlerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/config/GlobalHandlerException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/media/MediaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/media/MediaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/media/MediaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/media/dto/MediaResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/dto/MediaResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/media/model/Media.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/model/Media.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/NodeConfigRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeConfigRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/NodeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/NodePatchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodePatchRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/NodeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/NodeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node/NodeStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node_media/NodeMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node_media/NodeMedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/node_media/NodeMediaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node_media/NodeMediaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/orchestrator/MetricsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/MetricsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/orchestrator/Orchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/Orchestrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/digital_media/orchestrator/OrchestratorException.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/OrchestratorException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/test/java/com/brendhacasaro/digital_media/DigitalMediaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/test/java/com/brendhacasaro/remi/DigitalMediaApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/digital-media.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/node/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/DigitalMediaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/RemiCentralApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/config/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/config/ErrorResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/config/GlobalHandlerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/config/GlobalHandlerException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/dto/MediaResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/dto/MediaResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/model/Media.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/model/Media.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeConfigRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeConfigRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodePatchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodePatchRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node_media/NodeMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMedia.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node_media/NodeMediaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMediaRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/MetricsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/MetricsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/Orchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/Orchestrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/OrchestratorException.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/OrchestratorException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/test/java/com/brendhacasaro/remi/DigitalMediaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/test/java/com/brendhacasaro/remi_central/DigitalMediaApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/node/HELP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/node_digital_media/NodeDigitalMediaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/RemiNodeApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/test/java/com/brendhacasaro/node_digital_media/NodeDigitalMediaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/test/java/com/brendhacasaro/remi_node/NodeDigitalMediaApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,12 +108,12 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="DigitalMediaApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.brendhacasaro.remi.DigitalMediaApplication" />
+    <configuration name="RemiCentralApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.brendhacasaro.remi_central.RemiCentralApplication" />
       <module name="REMI-Central" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.brendhacasaro.remi.*" />
+          <option name="PATTERN" value="com.brendhacasaro.remi_central.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -129,7 +123,7 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.DigitalMediaApplication" />
+        <item itemvalue="Application.RemiCentralApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -165,13 +159,22 @@
       <option name="project" value="LOCAL" />
       <updated>1778632850581</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Change the name project to remi.">
+      <option name="closed" value="true" />
+      <created>1779587146291</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1779587146291</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initiated the Orchestrator." />
     <MESSAGE value="Done Node Module" />
     <MESSAGE value="Change the structure to two aplications: central e node" />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the structure to two aplications: central e node" />
+    <MESSAGE value="Change the name project to remi." />
+    <option name="LAST_COMMIT_MESSAGE" value="Change the name project to remi." />
   </component>
 </project>
