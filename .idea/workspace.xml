@@ -5,32 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Change the name project to remi.">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/DigitalMediaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/RemiCentralApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/config/ErrorResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/config/ErrorResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/config/GlobalHandlerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/config/GlobalHandlerException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/MediaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/dto/MediaResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/dto/MediaResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/media/model/Media.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/model/Media.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeConfigRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeConfigRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodePatchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodePatchRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node/NodeStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node_media/NodeMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/node_media/NodeMediaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMediaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/MetricsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/MetricsResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/Orchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/Orchestrator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi/orchestrator/OrchestratorException.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/OrchestratorException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/test/java/com/brendhacasaro/remi/DigitalMediaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/test/java/com/brendhacasaro/remi_central/DigitalMediaApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/node/HELP.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/node_digital_media/NodeDigitalMediaApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/RemiNodeApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/node/src/test/java/com/brendhacasaro/node_digital_media/NodeDigitalMediaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/test/java/com/brendhacasaro/remi_node/NodeDigitalMediaApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/central/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,6 +28,11 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="aulaPOO" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -59,17 +43,10 @@
 }</component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/BrendhaCasaro/digital_media_manager.git&quot;,
-    &quot;accountId&quot;: &quot;319f1481-e40a-4694-8fe1-164bb191f56d&quot;
+    &quot;url&quot;: &quot;https://github.com/BrendhaCasaro/REMI.git&quot;,
+    &quot;accountId&quot;: &quot;0baf43c3-cc10-4944-b4d5-3f95efcb47d1&quot;
   }
 }</component>
-  <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
-      </MavenGeneralSettings>
-    </option>
-  </component>
   <component name="OptimizeOnSaveOptions">
     <option name="myRunOnSave" value="true" />
   </component>
@@ -82,27 +59,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Application.DigitalMediaApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Admin/IdeaProjects/REMI",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "rearrange.code.on.save": "true",
-    "settings.editor.selected.configurable": "MavenSettings"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Application.DigitalMediaApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/brendhacasaro/REMI&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/com/brendhacasaro" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/central" />
     </key>
@@ -123,6 +101,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.RemiCentralApplication" />
         <item itemvalue="Application.RemiCentralApplication" />
       </list>
     </recent_temporary>

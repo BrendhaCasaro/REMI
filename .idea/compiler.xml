@@ -11,12 +11,12 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.46/lombok-1.18.46.jar" />
         </processorPath>
         <module name="REMI-Central" />
-        <module name="REMI-Node" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="REMI" options="" />
       <module name="REMI-Central" options="-parameters" />
       <module name="REMI-Node" options="-parameters" />
     </option>
