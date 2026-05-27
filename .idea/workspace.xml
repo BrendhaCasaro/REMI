@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Change the name project to remi.">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Done the User CRUD">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/central/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/node/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +144,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779587146291</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Done the User CRUD">
+      <option name="closed" value="true" />
+      <created>1779844283740</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1779844283741</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -154,6 +160,7 @@
     <MESSAGE value="Done Node Module" />
     <MESSAGE value="Change the structure to two aplications: central e node" />
     <MESSAGE value="Change the name project to remi." />
-    <option name="LAST_COMMIT_MESSAGE" value="Change the name project to remi." />
+    <MESSAGE value="Done the User CRUD" />
+    <option name="LAST_COMMIT_MESSAGE" value="Done the User CRUD" />
   </component>
 </project>
