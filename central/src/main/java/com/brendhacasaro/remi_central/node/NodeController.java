@@ -1,5 +1,9 @@
 package com.brendhacasaro.remi_central.node;
 
+import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
+import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
+import com.brendhacasaro.remi_central.node.dto.NodeResponse;
+import com.brendhacasaro.remi_central.node.model.Node;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

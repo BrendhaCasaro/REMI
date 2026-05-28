@@ -1,6 +1,6 @@
 package com.brendhacasaro.remi_central.node_media;
 
-import com.brendhacasaro.remi_central.node.Node;
+import com.brendhacasaro.remi_central.node.model.Node;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

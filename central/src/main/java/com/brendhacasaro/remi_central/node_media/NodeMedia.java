@@ -1,7 +1,7 @@
 package com.brendhacasaro.remi_central.node_media;
 
 import com.brendhacasaro.remi_central.media.model.Media;
-import com.brendhacasaro.remi_central.node.Node;
+import com.brendhacasaro.remi_central.node.model.Node;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

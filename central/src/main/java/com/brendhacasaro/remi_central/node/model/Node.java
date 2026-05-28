@@ -1,5 +1,6 @@
-package com.brendhacasaro.remi_central.node;
+package com.brendhacasaro.remi_central.node.model;
 
+import com.brendhacasaro.remi_central.node.NodeStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;

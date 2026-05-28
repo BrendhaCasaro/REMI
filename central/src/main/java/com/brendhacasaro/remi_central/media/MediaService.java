@@ -2,7 +2,7 @@ package com.brendhacasaro.remi_central.media;
 
 import com.brendhacasaro.remi_central.media.dto.MediaResponse;
 import com.brendhacasaro.remi_central.media.model.Media;
-import com.brendhacasaro.remi_central.node.Node;
+import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.node_media.NodeMedia;
 import com.brendhacasaro.remi_central.node_media.NodeMediaRepository;
 import com.brendhacasaro.remi_central.orchestrator.Orchestrator;

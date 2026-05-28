@@ -1,4 +1,6 @@
-package com.brendhacasaro.remi_central.node;
+package com.brendhacasaro.remi_central.node.dto;
+
+import com.brendhacasaro.remi_central.node.NodeStatus;
 
 import java.util.UUID;
 

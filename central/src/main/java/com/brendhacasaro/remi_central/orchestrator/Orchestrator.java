@@ -1,7 +1,8 @@
 package com.brendhacasaro.remi_central.orchestrator;
 
-import com.brendhacasaro.remi_central.node.Node;
 import com.brendhacasaro.remi_central.node.NodeRepository;
+import com.brendhacasaro.remi_central.node.model.Node;
+import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;

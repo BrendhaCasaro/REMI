@@ -1,6 +1,10 @@
 package com.brendhacasaro.remi_central.node;
 
 import com.brendhacasaro.remi_central.media.MediaRepository;
+import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
+import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
+import com.brendhacasaro.remi_central.node.dto.NodeResponse;
+import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.node_media.NodeMediaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
