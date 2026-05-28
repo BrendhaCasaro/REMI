@@ -2,10 +2,7 @@ package com.brendhacasaro.remi_central.node.model;
 
 import com.brendhacasaro.remi_central.node.NodeStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.UUID;
@@ -15,6 +12,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 @DynamicUpdate
 public class Node {
     @Id

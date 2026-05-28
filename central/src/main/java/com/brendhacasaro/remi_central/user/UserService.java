@@ -1,5 +1,8 @@
 package com.brendhacasaro.remi_central.user;
 
+import com.brendhacasaro.remi_central.user.dto.UserRequest;
+import com.brendhacasaro.remi_central.user.dto.UserResponse;
+import com.brendhacasaro.remi_central.user.model.User;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +19,10 @@ public class UserService {
 
     @Transactional
     public UserResponse createUser(UserRequest request) {
-        UserEntity user = new UserEntity(
+        User user = new User(
                 request.username(),
-                passwordEncoder.encode(request.password())
+                passwordEncoder.encode(request.password()),
+                request.role()
         );
 
         user = userRepository.save(user);
@@ -30,7 +34,7 @@ public class UserService {
     }
 
     public UserResponse getUserById(Integer id) {
-        UserEntity user = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found"));
 
         return toResponse(user);
@@ -38,7 +42,7 @@ public class UserService {
 
     @Transactional
     public UserResponse updateUser(Integer id, UserRequest request) {
-        UserEntity user = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found"));
 
         if (request.username() != null && !request.username().isBlank()) {
@@ -55,13 +59,13 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Integer id) {
-        UserEntity user = userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User id " + id + " not found"));
 
         userRepository.delete(user);
     }
 
-    private UserResponse toResponse(UserEntity user) {
+    private UserResponse toResponse(User user) {
         return new UserResponse(user.getId(), user.getUsername());
     }
 }

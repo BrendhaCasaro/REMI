@@ -1,5 +1,7 @@
 package com.brendhacasaro.remi_central.user;
 
+import com.brendhacasaro.remi_central.user.dto.UserRequest;
+import com.brendhacasaro.remi_central.user.dto.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

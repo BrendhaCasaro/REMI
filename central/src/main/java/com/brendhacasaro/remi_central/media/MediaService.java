@@ -48,7 +48,7 @@ public class MediaService {
         // add header to send the key to node
         // add to search the key in db of node
         restClient.post()
-                .uri(node.getUrl())
+                .uri(node.getUrl() + "/api/files/upload")
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
@@ -75,7 +75,7 @@ public class MediaService {
         // add header to send the key to node
         // add to search the key in db of node
         return restClient.get()
-                .uri(node.getUrl() + "/" + mediaId)
+                .uri(node.getUrl() + "/api/files/download/" + mediaId)
                 .exchange((request, response) -> {
                     if (response.getStatusCode().isError()) {
                         throw new RestClientException("HTTP error: " + response.getStatusCode());
@@ -95,7 +95,7 @@ public class MediaService {
             Node node = nodeOptional.get();
 
             restClient.delete()
-                    .uri(node.getUrl() + "/" + mediaId)
+                    .uri(node.getUrl() + "/api/files/delete/" + mediaId)
                     .retrieve()
                     .onStatus(HttpStatusCode::isError, (req, res) -> {
                         throw new RestClientException("HTTP error: " + res.getStatusCode());

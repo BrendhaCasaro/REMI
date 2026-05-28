@@ -37,7 +37,7 @@ public class MediaController {
                 .body(resource);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID mediaId) {
         mediaStorageService.delete(mediaId);
         return ResponseEntity.noContent().build();

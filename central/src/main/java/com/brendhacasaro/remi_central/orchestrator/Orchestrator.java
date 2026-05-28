@@ -38,7 +38,7 @@ public class Orchestrator {
         for (Node node : nodes) {
             try {
                 boolean healthy = Boolean.TRUE.equals(restClient.get()
-                        .uri(node.getUrl() + "/healthchecker")
+                        .uri(node.getUrl() + "/api/health")
                         .exchange((request, response) ->
                                 response.getStatusCode().is2xxSuccessful()
                         ));
@@ -68,7 +68,7 @@ public class Orchestrator {
         for (Node node : nodesOk) {
             try {
                 MetricsResponse metricsResponse = restClient.get()
-                        .uri(node.getUrl() + "/metrics")
+                        .uri(node.getUrl() + "/api/metrics")
                         .retrieve()
                         .onStatus(HttpStatusCode::isError, (req, res) -> {
                             throw new RestClientException("HTTP error: " + res.getStatusCode() + res.getBody());

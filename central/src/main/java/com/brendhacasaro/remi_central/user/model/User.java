@@ -1,10 +1,7 @@
-package com.brendhacasaro.remi_central.user;
+package com.brendhacasaro.remi_central.user.model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 @Table(name = "users")
@@ -12,8 +9,9 @@ import org.hibernate.annotations.DynamicUpdate;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 @DynamicUpdate
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -25,4 +23,9 @@ public class UserEntity {
     @Column(nullable = false)
     @NonNull
     private String password;
+
+    @Column(nullable = false)
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private Role role;
 }

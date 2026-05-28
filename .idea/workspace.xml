@@ -5,21 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Done the User CRUD">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/AuthService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/JwtService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/dto/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/dto/LoginResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/model/Role.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/MediaService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/model/Media.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/media/model/Media.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/model/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeConfigRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/dto/NodeConfigRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodePatchRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/dto/NodePatchRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/dto/NodeResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/NodeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMedia.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMedia.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMediaRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node_media/NodeMediaRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/MetricsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/dto/MetricsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/model/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/node/model/Node.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/Orchestrator.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/orchestrator/Orchestrator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/dto/UserRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/dto/UserResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/user/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/media/MediaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/media/MediaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/metrics/StorageMetricsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/metrics/StorageMetricsService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +34,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
+        <option value="Record" />
         <option value="Class" />
       </list>
     </option>
