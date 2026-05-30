@@ -3,9 +3,16 @@ import { Link, Outlet, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
 
 const languages = [
-  { code: "pt-BR", label: "PT" },
+  { code: "pt-BR", label: "pt-BR" },
   { code: "en", label: "EN" },
 ];
 
@@ -72,19 +79,21 @@ export default function AppLayout() {
                 <Moon className="size-4" />
               )}
             </Button>
-            <div className="flex gap-1">
-              {languages.map(({ code, label }) => (
-                <Button
-                  key={code}
-                  variant={i18n.language === code ? "default" : "ghost"}
-                  size="sm"
-                  className="h-8 w-8 p-0 text-xs"
-                  onClick={() => i18n.changeLanguage(code)}
-                >
-                  {label}
-                </Button>
-              ))}
-            </div>
+            <Select
+              value={i18n.language}
+              onValueChange={(code) => i18n.changeLanguage(code)}
+            >
+              <SelectTrigger className="h-8 w-22">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {languages.map(({ code, label }) => (
+                  <SelectItem key={code} value={code}>
+                    {label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </header>
