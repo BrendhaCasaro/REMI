@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import {
@@ -22,6 +23,8 @@ import { listMedia, uploadMedia, deleteMedia } from "~/lib/api";
 import type { MediaResponse } from "~/lib/types";
 
 export default function Medias() {
+  const { t } = useTranslation("medias");
+  const { t: tc } = useTranslation("common");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [medias, setMedias] = useState<MediaResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +42,7 @@ export default function Medias() {
       const data = await listMedia();
       setMedias(data);
     } catch {
-      toast.error("Erro ao carregar mídias");
+      toast.error(t("loadError"));
     } finally {
       setLoading(false);
     }
@@ -52,9 +55,9 @@ export default function Medias() {
     try {
       const media = await uploadMedia(file);
       setMedias((prev) => [media, ...prev]);
-      toast.success(`${file.name} enviado com sucesso`);
+      toast.success(`${file.name} ${t("uploadSuccess")}`);
     } catch {
-      toast.error("Erro ao enviar arquivo");
+      toast.error(t("uploadError"));
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -74,9 +77,9 @@ export default function Medias() {
     try {
       await deleteMedia(deleteTarget.id);
       setMedias((prev) => prev.filter((m) => m.id !== deleteTarget.id));
-      toast.success(`${deleteTarget.name} excluído`);
+      toast.success(`${deleteTarget.name} ${t("deleteSuccess")}`);
     } catch {
-      toast.error("Erro ao excluir");
+      toast.error(t("deleteError"));
     } finally {
       setDeleting(false);
       setDeleteTarget(null);
@@ -87,14 +90,14 @@ export default function Medias() {
     <>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Mídias</h1>
-          <p className="text-muted-foreground">Gerencie seus arquivos de mídia</p>
+          <h1 className="text-3xl font-bold">{t("title")}</h1>
+          <p className="text-muted-foreground">{t("description")}</p>
         </div>
         <Button
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
         >
-          {uploading ? "Enviando..." : "Upload"}
+          {uploading ? tc("actions.uploading") : tc("actions.upload")}
         </Button>
         <input
           ref={fileInputRef}
@@ -107,9 +110,9 @@ export default function Medias() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Nome</TableHead>
-            <TableHead>Criado em</TableHead>
-            <TableHead className="w-48 text-right">Ações</TableHead>
+            <TableHead>{t("table.name")}</TableHead>
+            <TableHead>{t("table.createdAt")}</TableHead>
+            <TableHead className="w-48 text-right">{tc("actions.download")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -124,7 +127,7 @@ export default function Medias() {
           {!loading && medias.length === 0 && (
             <TableRow>
               <TableCell colSpan={3} className="py-12 text-center text-muted-foreground">
-                Nenhuma mídia encontrada. Faça upload do primeiro arquivo.
+                {t("empty")}
               </TableCell>
             </TableRow>
           )}
@@ -133,7 +136,7 @@ export default function Medias() {
               <TableRow key={media.id}>
                 <TableCell className="font-medium">{media.name}</TableCell>
                 <TableCell>
-                  {new Date(media.createdAt).toLocaleDateString("pt-BR", {
+                  {new Date(media.createdAt).toLocaleDateString(undefined, {
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
@@ -146,14 +149,14 @@ export default function Medias() {
                       size="sm"
                       onClick={() => handleDownload(media)}
                     >
-                      Download
+                      {tc("actions.download")}
                     </Button>
                     <Button
                       variant="destructive"
                       size="sm"
                       onClick={() => setDeleteTarget(media)}
                     >
-                      Excluir
+                      {tc("actions.delete")}
                     </Button>
                   </div>
                 </TableCell>
@@ -168,22 +171,23 @@ export default function Medias() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirmar exclusão</DialogTitle>
+            <DialogTitle>{t("confirmDelete.title")}</DialogTitle>
             <DialogDescription>
-              Deseja realmente excluir <strong>{deleteTarget?.name}</strong>?
-              Esta ação não pode ser desfeita.
+              {deleteTarget
+                ? t("confirmDelete.description").replace("{{name}}", deleteTarget.name)
+                : ""}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteTarget(null)}>
-              Cancelar
+              {tc("actions.cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={handleDelete}
               disabled={deleting}
             >
-              {deleting ? "Excluindo..." : "Excluir"}
+              {deleting ? tc("actions.deleting") : tc("actions.delete")}
             </Button>
           </DialogFooter>
         </DialogContent>

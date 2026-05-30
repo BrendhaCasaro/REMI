@@ -1,0 +1,26 @@
+{
+  "nav": {
+    "medias": "Mídias",
+    "users": "Usuários",
+    "nodes": "Nodes"
+  },
+  "language": "Idioma",
+  "actions": {
+    "create": "Novo",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "download": "Download",
+    "upload": "Upload",
+    "back": "Voltar",
+    "saving": "Salvando...",
+    "uploading": "Enviando...",
+    "deleting": "Excluindo..."
+  },
+  "confirmDelete": {
+    "title": "Confirmar exclusão",
+    "description": "Deseja realmente excluir <bold>{{name}}</bold>? Esta ação não pode ser desfeita."
+  }
+}

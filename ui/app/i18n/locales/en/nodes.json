@@ -1,0 +1,37 @@
+{
+  "title": "Nodes",
+  "description": "Manage storage nodes",
+  "table": {
+    "url": "URL",
+    "capacity": "Capacity (GB)",
+    "status": "Status"
+  },
+  "empty": "No nodes registered.",
+  "create": {
+    "title": "New node",
+    "description": "Register a new storage node"
+  },
+  "edit": {
+    "title": "Edit node",
+    "description": "Editing {{url}}"
+  },
+  "form": {
+    "url": "URL",
+    "urlPlaceholder": "http://node1.local:8081",
+    "capacity": "Total capacity (GB)",
+    "key": "Authentication key",
+    "status": "Status",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "loadError": "Failed to load nodes",
+  "saveSuccess": "Node saved",
+  "saveError": "Failed to save node",
+  "deleteSuccess": "Node deleted",
+  "deleteError": "Failed to delete",
+  "validation": "Please fill in URL and capacity",
+  "confirmDelete": {
+    "title": "Confirm deletion",
+    "description": "Are you sure you want to delete node <bold>{{url}}</bold>? All media stored on this node will also be removed."
+  }
+}

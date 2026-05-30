@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -32,6 +33,8 @@ import { listNodes, createNode, patchNode, deleteNode } from "~/lib/api";
 import type { NodeResponse, NodeStatus } from "~/lib/types";
 
 export default function Nodes() {
+  const { t } = useTranslation("nodes");
+  const { t: tc } = useTranslation("common");
   const [nodes, setNodes] = useState<NodeResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -56,7 +59,7 @@ export default function Nodes() {
       const data = await listNodes();
       setNodes(data);
     } catch {
-      toast.error("Erro ao carregar nodes");
+      toast.error(t("loadError"));
     } finally {
       setLoading(false);
     }
@@ -83,7 +86,7 @@ export default function Nodes() {
 
   async function handleSave() {
     if (!formUrl || !formCapacity) {
-      toast.error("Preencha URL e capacidade");
+      toast.error(t("validation"));
       return;
     }
     setSaving(true);
@@ -95,21 +98,20 @@ export default function Nodes() {
           key: formKey || undefined,
           status: formStatus,
         });
-        toast.success("Node atualizado");
+        toast.success(t("saveSuccess"));
       } else {
-        const node = await createNode({
+        await createNode({
           url: formUrl,
           totalCapacity: Number(formCapacity),
           key: formKey || crypto.randomUUID(),
           status: formStatus,
         });
-        setNodes((prev) => [...prev, node]);
-        toast.success("Node criado");
+        toast.success(t("saveSuccess"));
       }
       setFormOpen(false);
       await loadNodes();
     } catch {
-      toast.error("Erro ao salvar node");
+      toast.error(t("saveError"));
     } finally {
       setSaving(false);
     }
@@ -121,9 +123,9 @@ export default function Nodes() {
     try {
       await deleteNode(deleteTarget + 1);
       setNodes((prev) => prev.filter((_, i) => i !== deleteTarget));
-      toast.success("Node excluído");
+      toast.success(t("deleteSuccess"));
     } catch {
-      toast.error("Erro ao excluir");
+      toast.error(t("deleteError"));
     } finally {
       setDeleting(false);
       setDeleteTarget(null);
@@ -134,19 +136,19 @@ export default function Nodes() {
     <>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Nodes</h1>
-          <p className="text-muted-foreground">Gerencie os nodes de armazenamento</p>
+          <h1 className="text-3xl font-bold">{t("title")}</h1>
+          <p className="text-muted-foreground">{t("description")}</p>
         </div>
-        <Button onClick={openCreate}>Novo node</Button>
+        <Button onClick={openCreate}>{tc("actions.create")}</Button>
       </div>
 
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>URL</TableHead>
-            <TableHead>Capacidade (GB)</TableHead>
-            <TableHead className="w-24">Status</TableHead>
-            <TableHead className="w-48 text-right">Ações</TableHead>
+            <TableHead>{t("table.url")}</TableHead>
+            <TableHead>{t("table.capacity")}</TableHead>
+            <TableHead className="w-24">{t("table.status")}</TableHead>
+            <TableHead className="w-48 text-right">{tc("actions.edit")}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -162,7 +164,7 @@ export default function Nodes() {
           {!loading && nodes.length === 0 && (
             <TableRow>
               <TableCell colSpan={4} className="py-12 text-center text-muted-foreground">
-                Nenhum node cadastrado.
+                {t("empty")}
               </TableCell>
             </TableRow>
           )}
@@ -173,7 +175,7 @@ export default function Nodes() {
                 <TableCell>{node.totalCapacity} GB</TableCell>
                 <TableCell>
                   <Badge variant={node.status === "ONLINE" ? "default" : "secondary"}>
-                    {node.status === "ONLINE" ? "Online" : "Offline"}
+                    {node.status === "ONLINE" ? t("form.online") : t("form.offline")}
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
@@ -183,14 +185,14 @@ export default function Nodes() {
                       size="sm"
                       onClick={() => openEdit(i)}
                     >
-                      Editar
+                      {tc("actions.edit")}
                     </Button>
                     <Button
                       variant="destructive"
                       size="sm"
                       onClick={() => setDeleteTarget(i)}
                     >
-                      Excluir
+                      {tc("actions.delete")}
                     </Button>
                   </div>
                 </TableCell>
@@ -203,26 +205,26 @@ export default function Nodes() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingIndex !== null ? "Editar node" : "Novo node"}
+              {editingIndex !== null ? t("edit.title") : t("create.title")}
             </DialogTitle>
             <DialogDescription>
               {editingIndex !== null
-                ? `Editando ${nodes[editingIndex]?.url}`
-                : "Cadastre um novo node de armazenamento"}
+                ? t("edit.description", { url: nodes[editingIndex]?.url })
+                : t("create.description")}
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="url">URL</Label>
+              <Label htmlFor="url">{t("form.url")}</Label>
               <Input
                 id="url"
                 value={formUrl}
                 onChange={(e) => setFormUrl(e.target.value)}
-                placeholder="http://node1.local:8081"
+                placeholder={t("form.urlPlaceholder")}
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="capacity">Capacidade total (GB)</Label>
+              <Label htmlFor="capacity">{t("form.capacity")}</Label>
               <Input
                 id="capacity"
                 type="number"
@@ -233,7 +235,7 @@ export default function Nodes() {
             </div>
             {editingIndex === null && (
               <div className="space-y-2">
-                <Label htmlFor="key">Chave de autenticação</Label>
+                <Label htmlFor="key">{t("form.key")}</Label>
                 <Input
                   id="key"
                   value={formKey}
@@ -243,7 +245,7 @@ export default function Nodes() {
               </div>
             )}
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status">{t("form.status")}</Label>
               <Select
                 value={formStatus}
                 onValueChange={(v) => setFormStatus(v as NodeStatus)}
@@ -252,18 +254,18 @@ export default function Nodes() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="ONLINE">Online</SelectItem>
-                  <SelectItem value="OFFLINE">Offline</SelectItem>
+                  <SelectItem value="ONLINE">{t("form.online")}</SelectItem>
+                  <SelectItem value="OFFLINE">{t("form.offline")}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setFormOpen(false)}>
-              Cancelar
+              {tc("actions.cancel")}
             </Button>
             <Button onClick={handleSave} disabled={saving}>
-              {saving ? "Salvando..." : "Salvar"}
+              {saving ? tc("actions.saving") : tc("actions.save")}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -275,23 +277,23 @@ export default function Nodes() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Confirmar exclusão</DialogTitle>
+            <DialogTitle>{t("confirmDelete.title")}</DialogTitle>
             <DialogDescription>
-              Deseja realmente excluir o node{" "}
-              <strong>{deleteTarget !== null ? nodes[deleteTarget]?.url : ""}</strong>?
-              Todas as mídias armazenadas neste node também serão removidas.
+              {deleteTarget !== null
+                ? t("confirmDelete.description").replace("{{url}}", nodes[deleteTarget]?.url ?? "")
+                : ""}
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteTarget(null)}>
-              Cancelar
+              {tc("actions.cancel")}
             </Button>
             <Button
               variant="destructive"
               onClick={handleDelete}
               disabled={deleting}
             >
-              {deleting ? "Excluindo..." : "Excluir"}
+              {deleting ? tc("actions.deleting") : tc("actions.delete")}
             </Button>
           </DialogFooter>
         </DialogContent>

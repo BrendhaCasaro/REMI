@@ -1,0 +1,37 @@
+{
+  "title": "Nodes",
+  "description": "Gerencie os nodes de armazenamento",
+  "table": {
+    "url": "URL",
+    "capacity": "Capacidade (GB)",
+    "status": "Status"
+  },
+  "empty": "Nenhum node cadastrado.",
+  "create": {
+    "title": "Novo node",
+    "description": "Cadastre um novo node de armazenamento"
+  },
+  "edit": {
+    "title": "Editar node",
+    "description": "Editando {{url}}"
+  },
+  "form": {
+    "url": "URL",
+    "urlPlaceholder": "http://node1.local:8081",
+    "capacity": "Capacidade total (GB)",
+    "key": "Chave de autenticação",
+    "status": "Status",
+    "online": "Online",
+    "offline": "Offline"
+  },
+  "loadError": "Erro ao carregar nodes",
+  "saveSuccess": "Node salvo",
+  "saveError": "Erro ao salvar node",
+  "deleteSuccess": "Node excluído",
+  "deleteError": "Erro ao excluir",
+  "validation": "Preencha URL e capacidade",
+  "confirmDelete": {
+    "title": "Confirmar exclusão",
+    "description": "Deseja realmente excluir o node <bold>{{url}}</bold>? Todas as mídias armazenadas neste node também serão removidas."
+  }
+}

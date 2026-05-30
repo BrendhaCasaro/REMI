@@ -1,0 +1,11 @@
+{
+  "title": "REMI",
+  "description": "Sign in to continue",
+  "username": "Username",
+  "password": "Password",
+  "usernamePlaceholder": "admin",
+  "passwordPlaceholder": "••••••",
+  "submit": "Sign in",
+  "submitting": "Signing in...",
+  "error": "Failed to sign in"
+}
