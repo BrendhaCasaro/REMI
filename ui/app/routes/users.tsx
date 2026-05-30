@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Badge } from "~/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
+import { DataTable } from "~/components/ui/data-table";
 import {
   Dialog,
   DialogContent,
@@ -22,13 +17,18 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Skeleton } from "~/components/ui/skeleton";
 import { listUsers, createUser, updateUser, deleteUser } from "~/lib/api";
 import type { UserResponse, Role } from "~/lib/types";
 
@@ -47,6 +47,66 @@ export default function Users() {
 
   const [deleteTarget, setDeleteTarget] = useState<UserResponse | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  const columns: ColumnDef<UserResponse>[] = [
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="-ml-4"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table.id")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "username",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="-ml-4"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table.username")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
+    {
+      id: "role",
+      header: t("table.role"),
+      cell: () => <Badge variant="outline">USER</Badge>,
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const user = row.original;
+        return (
+          <div className="text-right">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <span className="sr-only">{tc("actions.openMenu")}</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => openEdit(user)}>
+                  {tc("actions.edit")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDeleteTarget(user)}>
+                  {tc("actions.delete")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      },
+    },
+  ];
 
   useEffect(() => {
     loadUsers();
@@ -136,62 +196,7 @@ export default function Users() {
         <Button onClick={openCreate}>{tc("actions.create")}</Button>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-16">{t("table.id")}</TableHead>
-            <TableHead>{t("table.username")}</TableHead>
-            <TableHead className="w-24">{t("table.role")}</TableHead>
-            <TableHead className="w-48 text-right">{tc("actions.edit")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading &&
-            Array.from({ length: 3 }).map((_, i) => (
-              <TableRow key={i}>
-                <TableCell><Skeleton className="h-4 w-8" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-32" /></TableCell>
-                <TableCell><Skeleton className="h-5 w-16" /></TableCell>
-                <TableCell><Skeleton className="h-8 w-32 ml-auto" /></TableCell>
-              </TableRow>
-            ))}
-          {!loading && users.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={4} className="py-12 text-center text-muted-foreground">
-                {t("empty")}
-              </TableCell>
-            </TableRow>
-          )}
-          {!loading &&
-            users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="text-muted-foreground">{user.id}</TableCell>
-                <TableCell className="font-medium">{user.username}</TableCell>
-                <TableCell>
-                  <Badge variant="outline">USER</Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => openEdit(user)}
-                    >
-                      {tc("actions.edit")}
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => setDeleteTarget(user)}
-                    >
-                      {tc("actions.delete")}
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+      <DataTable columns={columns} data={users} loading={loading} selectable emptyMessage={t("empty")} />
 
       <Dialog open={formOpen} onOpenChange={(open) => !open && setFormOpen(false)}>
         <DialogContent>

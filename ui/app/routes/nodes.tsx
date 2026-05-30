@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import type { ColumnDef } from "@tanstack/react-table";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Badge } from "~/components/ui/badge";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "~/components/ui/table";
+import { DataTable } from "~/components/ui/data-table";
 import {
   Dialog,
   DialogContent,
@@ -22,13 +17,18 @@ import {
   DialogTitle,
 } from "~/components/ui/dialog";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "~/components/ui/dropdown-menu";
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Skeleton } from "~/components/ui/skeleton";
 import { listNodes, createNode, patchNode, deleteNode } from "~/lib/api";
 import type { NodeResponse, NodeStatus } from "~/lib/types";
 
@@ -48,6 +48,86 @@ export default function Nodes() {
 
   const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  const columns: ColumnDef<NodeResponse>[] = [
+    {
+      accessorKey: "url",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="-ml-4"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table.url")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => (
+        <span className="font-mono text-sm">{row.original.url}</span>
+      ),
+    },
+    {
+      accessorKey: "totalCapacity",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="-ml-4"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table.capacity")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ getValue }) => `${getValue<number>()} GB`,
+    },
+    {
+      accessorKey: "status",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="-ml-4"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table.status")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ getValue }) => {
+        const status = getValue<NodeStatus>();
+        return (
+          <Badge variant={status === "ONLINE" ? "default" : "secondary"}>
+            {status === "ONLINE" ? t("form.online") : t("form.offline")}
+          </Badge>
+        );
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => {
+        const idx = nodes.findIndex((n) => n.url === row.original.url);
+        return (
+          <div className="text-right">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                  <span className="sr-only">{tc("actions.openMenu")}</span>
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => openEdit(idx)}>
+                  {tc("actions.edit")}
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDeleteTarget(idx)}>
+                  {tc("actions.delete")}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      },
+    },
+  ];
 
   useEffect(() => {
     loadNodes();
@@ -142,64 +222,7 @@ export default function Nodes() {
         <Button onClick={openCreate}>{tc("actions.create")}</Button>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>{t("table.url")}</TableHead>
-            <TableHead>{t("table.capacity")}</TableHead>
-            <TableHead className="w-24">{t("table.status")}</TableHead>
-            <TableHead className="w-48 text-right">{tc("actions.edit")}</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {loading &&
-            Array.from({ length: 3 }).map((_, i) => (
-              <TableRow key={i}>
-                <TableCell><Skeleton className="h-4 w-64" /></TableCell>
-                <TableCell><Skeleton className="h-4 w-20" /></TableCell>
-                <TableCell><Skeleton className="h-5 w-16" /></TableCell>
-                <TableCell><Skeleton className="h-8 w-32 ml-auto" /></TableCell>
-              </TableRow>
-            ))}
-          {!loading && nodes.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={4} className="py-12 text-center text-muted-foreground">
-                {t("empty")}
-              </TableCell>
-            </TableRow>
-          )}
-          {!loading &&
-            nodes.map((node, i) => (
-              <TableRow key={i}>
-                <TableCell className="font-mono text-sm">{node.url}</TableCell>
-                <TableCell>{node.totalCapacity} GB</TableCell>
-                <TableCell>
-                  <Badge variant={node.status === "ONLINE" ? "default" : "secondary"}>
-                    {node.status === "ONLINE" ? t("form.online") : t("form.offline")}
-                  </Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => openEdit(i)}
-                    >
-                      {tc("actions.edit")}
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => setDeleteTarget(i)}
-                    >
-                      {tc("actions.delete")}
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-      </Table>
+      <DataTable columns={columns} data={nodes} loading={loading} selectable emptyMessage={t("empty")} />
 
       <Dialog open={formOpen} onOpenChange={(open) => !open && setFormOpen(false)}>
         <DialogContent>

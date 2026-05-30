@@ -17,7 +17,8 @@
     "back": "Back",
     "saving": "Saving...",
     "uploading": "Uploading...",
-    "deleting": "Deleting..."
+    "deleting": "Deleting...",
+    "openMenu": "Open menu"
   },
   "confirmDelete": {
     "title": "Confirm deletion",
