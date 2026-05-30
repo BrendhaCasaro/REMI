@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   isRouteErrorResponse,
   Links,
@@ -24,14 +23,6 @@ const themeScript = `
 `;
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const [ready, setReady] = useState(false);
-
-  useEffect(() => {
-    i18n.on("languageChanged", () => setReady((v) => !v));
-    i18n.on("initialized", () => setReady(true));
-    if (i18n.isInitialized) setReady(true);
-  }, []);
-
   return (
     <html lang={i18n.language} suppressHydrationWarning>
       <head>

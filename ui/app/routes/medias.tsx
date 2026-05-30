@@ -19,7 +19,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { listMedia, uploadMedia, deleteMedia } from "~/lib/api";
+import { listMedia, uploadMedia, deleteMedia, API_BASE } from "~/lib/api";
 import type { MediaResponse } from "~/lib/types";
 
 export default function Medias() {
@@ -129,7 +129,7 @@ export default function Medias() {
 
   function handleDownload(media: MediaResponse) {
     const link = document.createElement("a");
-    link.href = `http://localhost:8080/api/files/download/${media.id}`;
+    link.href = `${API_BASE}/api/files/download/${media.id}`;
     link.download = media.name;
     link.click();
   }
@@ -181,7 +181,7 @@ export default function Medias() {
             <DialogTitle>{t("confirmDelete.title")}</DialogTitle>
             <DialogDescription>
               {deleteTarget
-                ? t("confirmDelete.description").replace("{{name}}", deleteTarget.name)
+                ? t("confirmDelete.description", { name: deleteTarget.name })
                 : ""}
             </DialogDescription>
           </DialogHeader>

@@ -10,18 +10,18 @@ import type {
 } from "./types";
 
 let nextUserId = 4;
-let nextMediaId = 4;
+let nextNodeId = 4;
 
 const mockUsers: UserResponse[] = [
-  { id: 1, username: "admin" },
-  { id: 2, username: "joao" },
-  { id: 3, username: "maria" },
+  { id: 1, username: "admin", role: "ADMIN" },
+  { id: 2, username: "joao", role: "USER" },
+  { id: 3, username: "maria", role: "USER" },
 ];
 
 const mockNodes: NodeResponse[] = [
-  { url: "http://node1.local:8081", totalCapacity: 500, status: "ONLINE" },
-  { url: "http://node2.local:8081", totalCapacity: 1000, status: "ONLINE" },
-  { url: "http://node3.local:8081", totalCapacity: 250, status: "OFFLINE" },
+  { id: 1, url: "http://node1.local:8081", totalCapacity: 500, status: "ONLINE" },
+  { id: 2, url: "http://node2.local:8081", totalCapacity: 1000, status: "ONLINE" },
+  { id: 3, url: "http://node3.local:8081", totalCapacity: 250, status: "OFFLINE" },
 ];
 
 const mockMedia: MediaResponse[] = [
@@ -45,13 +45,17 @@ export function mockListUsers(): Promise<UserResponse[]> {
 }
 
 export function mockCreateUser(request: UserRequest): Promise<UserResponse> {
-  const user: UserResponse = { id: nextUserId++, username: request.username };
+  const user: UserResponse = {
+    id: nextUserId++,
+    username: request.username,
+    role: request.role,
+  };
   mockUsers.push(user);
   return delay(user);
 }
 
 export function mockUpdateUser(id: number, request: UserRequest): Promise<UserResponse> {
-  const user: UserResponse = { id, username: request.username };
+  const user: UserResponse = { id, username: request.username, role: request.role };
   const idx = mockUsers.findIndex((u) => u.id === id);
   if (idx !== -1) mockUsers[idx] = user;
   return delay(user);
@@ -69,27 +73,32 @@ export function mockListNode(): Promise<NodeResponse[]> {
 }
 
 export function mockCreateNode(request: NodeConfigRequest): Promise<NodeResponse> {
-  const node: NodeResponse = { url: request.url, totalCapacity: request.totalCapacity, status: request.status };
+  const node: NodeResponse = {
+    id: nextNodeId++,
+    url: request.url,
+    totalCapacity: request.totalCapacity,
+    status: request.status,
+  };
   mockNodes.push(node);
   return delay(node);
 }
 
 export function mockPatchNode(id: number, request: NodePatchRequest): Promise<NodeResponse> {
-  const idx = id - 1;
-  const existing = mockNodes[idx];
-  if (!existing) return delay({} as NodeResponse);
+  const existing = mockNodes.find((n) => n.id === id);
+  if (!existing) return Promise.reject(new Error("Node not found"));
   const updated = {
+    id: existing.id,
     url: request.url ?? existing.url,
     totalCapacity: request.totalCapacity ?? existing.totalCapacity,
     status: request.status ?? existing.status,
   };
-  mockNodes[idx] = updated;
+  Object.assign(existing, updated);
   return delay(updated);
 }
 
 export function mockDeleteNode(id: number): Promise<void> {
-  const idx = id - 1;
-  if (idx >= 0 && idx < mockNodes.length) mockNodes.splice(idx, 1);
+  const idx = mockNodes.findIndex((n) => n.id === id);
+  if (idx !== -1) mockNodes.splice(idx, 1);
   return delay(undefined);
 }
 

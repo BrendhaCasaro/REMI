@@ -4,7 +4,7 @@
   "table": {
     "id": "ID",
     "username": "Usuário",
-    "role": "Role"
+    "role": "Função"
   },
   "empty": "Nenhum usuário encontrado.",
   "create": {
@@ -21,7 +21,7 @@
     "password": "Senha",
     "newPassword": "Nova senha",
     "passwordPlaceholder": "••••••",
-    "role": "Role",
+    "role": "Função",
     "admin": "Admin",
     "user": "Usuário"
   },

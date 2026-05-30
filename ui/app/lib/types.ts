@@ -16,6 +16,7 @@ export type LoginResponse = {
 export type UserResponse = {
   id: number;
   username: string;
+  role: Role;
 };
 
 export type UserRequest = {
@@ -26,6 +27,7 @@ export type UserRequest = {
 
 // Nodes
 export type NodeResponse = {
+  id: number;
   url: string;
   totalCapacity: number;
   status: NodeStatus;

@@ -39,17 +39,30 @@ export default function Nodes() {
   const [loading, setLoading] = useState(true);
 
   const [formOpen, setFormOpen] = useState(false);
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [editingNode, setEditingNode] = useState<NodeResponse | null>(null);
   const [formUrl, setFormUrl] = useState("");
   const [formCapacity, setFormCapacity] = useState("");
   const [formKey, setFormKey] = useState("");
   const [formStatus, setFormStatus] = useState<NodeStatus>("ONLINE");
   const [saving, setSaving] = useState(false);
 
-  const [deleteTarget, setDeleteTarget] = useState<number | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<NodeResponse | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   const columns: ColumnDef<NodeResponse>[] = [
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="-ml-4"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ID
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+    },
     {
       accessorKey: "url",
       header: ({ column }) => (
@@ -104,7 +117,7 @@ export default function Nodes() {
     {
       id: "actions",
       cell: ({ row }) => {
-        const idx = nodes.findIndex((n) => n.url === row.original.url);
+        const node = row.original;
         return (
           <div className="text-right">
             <DropdownMenu>
@@ -115,10 +128,10 @@ export default function Nodes() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => openEdit(idx)}>
+                <DropdownMenuItem onClick={() => openEdit(node)}>
                   {tc("actions.edit")}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setDeleteTarget(idx)}>
+                <DropdownMenuItem onClick={() => setDeleteTarget(node)}>
                   {tc("actions.delete")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -146,7 +159,7 @@ export default function Nodes() {
   }
 
   function openCreate() {
-    setEditingIndex(null);
+    setEditingNode(null);
     setFormUrl("");
     setFormCapacity("");
     setFormKey(crypto.randomUUID());
@@ -154,9 +167,8 @@ export default function Nodes() {
     setFormOpen(true);
   }
 
-  function openEdit(index: number) {
-    const node = nodes[index];
-    setEditingIndex(index);
+  function openEdit(node: NodeResponse) {
+    setEditingNode(node);
     setFormUrl(node.url);
     setFormCapacity(String(node.totalCapacity));
     setFormKey("");
@@ -171,8 +183,8 @@ export default function Nodes() {
     }
     setSaving(true);
     try {
-      if (editingIndex !== null) {
-        await patchNode(editingIndex + 1, {
+      if (editingNode) {
+        await patchNode(editingNode.id, {
           url: formUrl,
           totalCapacity: Number(formCapacity),
           key: formKey || undefined,
@@ -198,11 +210,11 @@ export default function Nodes() {
   }
 
   async function handleDelete() {
-    if (deleteTarget === null) return;
+    if (!deleteTarget) return;
     setDeleting(true);
     try {
-      await deleteNode(deleteTarget + 1);
-      setNodes((prev) => prev.filter((_, i) => i !== deleteTarget));
+      await deleteNode(deleteTarget.id);
+      setNodes((prev) => prev.filter((n) => n.id !== deleteTarget.id));
       toast.success(t("deleteSuccess"));
     } catch {
       toast.error(t("deleteError"));
@@ -228,11 +240,11 @@ export default function Nodes() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {editingIndex !== null ? t("edit.title") : t("create.title")}
+              {editingNode ? t("edit.title") : t("create.title")}
             </DialogTitle>
             <DialogDescription>
-              {editingIndex !== null
-                ? t("edit.description", { url: nodes[editingIndex]?.url })
+              {editingNode
+                ? t("edit.description", { url: editingNode.url })
                 : t("create.description")}
             </DialogDescription>
           </DialogHeader>
@@ -256,7 +268,7 @@ export default function Nodes() {
                 placeholder="500"
               />
             </div>
-            {editingIndex === null && (
+            {!editingNode && (
               <div className="space-y-2">
                 <Label htmlFor="key">{t("form.key")}</Label>
                 <Input
@@ -295,15 +307,15 @@ export default function Nodes() {
       </Dialog>
 
       <Dialog
-        open={deleteTarget !== null}
+        open={!!deleteTarget}
         onOpenChange={(open) => !open && setDeleteTarget(null)}
       >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("confirmDelete.title")}</DialogTitle>
             <DialogDescription>
-              {deleteTarget !== null
-                ? t("confirmDelete.description").replace("{{url}}", nodes[deleteTarget]?.url ?? "")
+              {deleteTarget
+                ? t("confirmDelete.description", { url: deleteTarget.url })
                 : ""}
             </DialogDescription>
           </DialogHeader>

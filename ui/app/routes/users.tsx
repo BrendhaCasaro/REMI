@@ -76,9 +76,25 @@ export default function Users() {
       ),
     },
     {
-      id: "role",
-      header: t("table.role"),
-      cell: () => <Badge variant="outline">USER</Badge>,
+      accessorKey: "role",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          className="-ml-4"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          {t("table.role")}
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      ),
+      cell: ({ row }) => {
+        const role = row.original.role;
+        return (
+          <Badge variant={role === "ADMIN" ? "default" : "outline"}>
+            {role === "ADMIN" ? t("form.admin") : t("form.user")}
+          </Badge>
+        );
+      },
     },
     {
       id: "actions",
@@ -136,7 +152,7 @@ export default function Users() {
     setEditingUser(user);
     setFormUsername(user.username);
     setFormPassword("");
-    setFormRole("USER");
+    setFormRole(user.role);
     setFormOpen(true);
   }
 
@@ -266,7 +282,7 @@ export default function Users() {
             <DialogTitle>{t("confirmDelete.title")}</DialogTitle>
             <DialogDescription>
               {deleteTarget
-                ? t("confirmDelete.description").replace("{{username}}", deleteTarget.username)
+                ? t("confirmDelete.description", { username: deleteTarget.username })
                 : ""}
             </DialogDescription>
           </DialogHeader>

@@ -25,7 +25,7 @@ import {
 
 const USE_MOCK = true;
 
-const API_BASE = "http://localhost:8080";
+export const API_BASE = "http://localhost:8080";
 
 function authHeaders(): Record<string, string> {
   const token = localStorage.getItem("token");
