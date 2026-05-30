@@ -1,6 +1,5 @@
-package com.brendhacasaro.remi_central;
+package com.brendhacasaro.remi_central.auth;
 
-import com.brendhacasaro.remi_central.auth.AuthService;
 import com.brendhacasaro.remi_central.auth.dto.LoginRequest;
 import com.brendhacasaro.remi_central.auth.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/login")
 @RequiredArgsConstructor
+@RequestMapping("/api/login")
 public class AuthController {
     private final AuthService authService;
 

@@ -4,7 +4,7 @@ import com.brendhacasaro.remi_central.user.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,7 @@ public class JwtService {
     private String secret;
 
     @Value("${jwt.expiration-ms}")
-    private String expirationMs;
+    private Long expirationMs;
 
     public String generateToken(User user) {
         Date now = new Date();

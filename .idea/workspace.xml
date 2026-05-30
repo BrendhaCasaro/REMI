@@ -4,13 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Done the User CRUD">
-      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/JwtAuthenticationFilter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/UserDetailsServiceImpl.java" afterDir="false" />
+    <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Continued the auth">
+      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_05_2026_12_46_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_05_2026_12_46__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/AuthController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/SecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -156,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1779844283741</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Continued the auth">
+      <option name="closed" value="true" />
+      <created>1780018958619</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1780018958619</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -165,6 +174,7 @@
     <MESSAGE value="Change the structure to two aplications: central e node" />
     <MESSAGE value="Change the name project to remi." />
     <MESSAGE value="Done the User CRUD" />
-    <option name="LAST_COMMIT_MESSAGE" value="Done the User CRUD" />
+    <MESSAGE value="Continued the auth" />
+    <option name="LAST_COMMIT_MESSAGE" value="Continued the auth" />
   </component>
 </project>
