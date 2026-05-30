@@ -1,0 +1,39 @@
+{
+  "title": "Users",
+  "description": "Manage platform users",
+  "search": "Search by username...",
+  "table": {
+    "id": "ID",
+    "username": "Username",
+    "role": "Role"
+  },
+  "empty": "No users found.",
+  "create": {
+    "title": "New user",
+    "description": "Fill in the details to create a new user"
+  },
+  "edit": {
+    "title": "Edit user",
+    "description": "Editing {{username}}"
+  },
+  "form": {
+    "username": "Username",
+    "usernamePlaceholder": "john.doe",
+    "password": "Password",
+    "newPassword": "New password",
+    "passwordPlaceholder": "••••••",
+    "role": "Role",
+    "admin": "Admin",
+    "user": "User"
+  },
+  "loadError": "Failed to load users",
+  "saveSuccess": "User saved",
+  "saveError": "Failed to save user",
+  "deleteSuccess": "User deleted",
+  "deleteError": "Failed to delete",
+  "validation": "Please fill in all fields",
+  "confirmDelete": {
+    "title": "Confirm deletion",
+    "description": "Are you sure you want to delete user <bold>{{username}}</bold>?"
+  }
+}

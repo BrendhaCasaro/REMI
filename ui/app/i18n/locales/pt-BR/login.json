@@ -1,0 +1,11 @@
+{
+  "title": "REMI",
+  "description": "Faça login para continuar",
+  "username": "Usuário",
+  "password": "Senha",
+  "usernamePlaceholder": "admin",
+  "passwordPlaceholder": "••••••",
+  "submit": "Entrar",
+  "submitting": "Entrando...",
+  "error": "Erro ao fazer login"
+}

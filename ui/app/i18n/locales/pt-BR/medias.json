@@ -1,0 +1,19 @@
+{
+  "title": "Mídias",
+  "description": "Gerencie seus arquivos de mídia",
+  "search": "Buscar por nome...",
+  "table": {
+    "name": "Nome",
+    "createdAt": "Criado em"
+  },
+  "empty": "Nenhuma mídia encontrada. Faça upload do primeiro arquivo.",
+  "uploadSuccess": "enviado com sucesso",
+  "uploadError": "Erro ao enviar arquivo",
+  "loadError": "Erro ao carregar mídias",
+  "deleteSuccess": "excluído",
+  "deleteError": "Erro ao excluir",
+  "confirmDelete": {
+    "title": "Confirmar exclusão",
+    "description": "Deseja realmente excluir <bold>{{name}}</bold>? Esta ação não pode ser desfeita."
+  }
+}

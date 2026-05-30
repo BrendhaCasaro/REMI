@@ -1,0 +1,39 @@
+{
+  "title": "Usuários",
+  "description": "Gerencie os usuários da plataforma",
+  "search": "Buscar por usuário...",
+  "table": {
+    "id": "ID",
+    "username": "Usuário",
+    "role": "Função"
+  },
+  "empty": "Nenhum usuário encontrado.",
+  "create": {
+    "title": "Novo usuário",
+    "description": "Preencha os dados para criar um novo usuário"
+  },
+  "edit": {
+    "title": "Editar usuário",
+    "description": "Editando {{username}}"
+  },
+  "form": {
+    "username": "Usuário",
+    "usernamePlaceholder": "joao.silva",
+    "password": "Senha",
+    "newPassword": "Nova senha",
+    "passwordPlaceholder": "••••••",
+    "role": "Função",
+    "admin": "Admin",
+    "user": "Usuário"
+  },
+  "loadError": "Erro ao carregar usuários",
+  "saveSuccess": "Usuário salvo",
+  "saveError": "Erro ao salvar usuário",
+  "deleteSuccess": "Usuário excluído",
+  "deleteError": "Erro ao excluir",
+  "validation": "Preencha todos os campos",
+  "confirmDelete": {
+    "title": "Confirmar exclusão",
+    "description": "Deseja realmente excluir o usuário <bold>{{username}}</bold>?"
+  }
+}
