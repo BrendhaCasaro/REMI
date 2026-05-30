@@ -1,6 +1,7 @@
 {
   "title": "Nodes",
   "description": "Gerencie os nodes de armazenamento",
+  "search": "Buscar por URL...",
   "table": {
     "url": "URL",
     "capacity": "Capacidade (GB)",

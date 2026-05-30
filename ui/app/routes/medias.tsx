@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { DataTable } from "~/components/ui/data-table";
@@ -19,6 +19,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "~/components/ui/input-group";
 import { listMedia, uploadMedia, deleteMedia, API_BASE } from "~/lib/api";
 import type { MediaResponse } from "~/lib/types";
 
@@ -28,6 +33,7 @@ export default function Medias() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [medias, setMedias] = useState<MediaResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const [uploading, setUploading] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<MediaResponse | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -170,7 +176,26 @@ export default function Medias() {
         />
       </div>
 
-      <DataTable columns={columns} data={medias} loading={loading} selectable emptyMessage={t("empty")} />
+      <div className="mb-4">
+        <InputGroup>
+          <InputGroupInput
+            placeholder={t("search")}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <InputGroupAddon>
+            <Search className="size-4" />
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+
+      <DataTable
+        columns={columns}
+        data={medias.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()))}
+        loading={loading}
+        selectable
+        emptyMessage={t("empty")}
+      />
 
       <Dialog
         open={!!deleteTarget}

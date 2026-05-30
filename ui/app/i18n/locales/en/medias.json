@@ -1,6 +1,7 @@
 {
   "title": "Media",
   "description": "Manage your media files",
+  "search": "Search by name...",
   "table": {
     "name": "Name",
     "createdAt": "Created at"

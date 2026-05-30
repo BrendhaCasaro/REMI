@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -29,6 +29,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "~/components/ui/input-group";
 import { listNodes, createNode, patchNode, deleteNode } from "~/lib/api";
 import type { NodeResponse, NodeStatus } from "~/lib/types";
 
@@ -37,6 +42,7 @@ export default function Nodes() {
   const { t: tc } = useTranslation("common");
   const [nodes, setNodes] = useState<NodeResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingNode, setEditingNode] = useState<NodeResponse | null>(null);
@@ -234,7 +240,26 @@ export default function Nodes() {
         <Button onClick={openCreate}>{tc("actions.create")}</Button>
       </div>
 
-      <DataTable columns={columns} data={nodes} loading={loading} selectable emptyMessage={t("empty")} />
+      <div className="mb-4">
+        <InputGroup>
+          <InputGroupInput
+            placeholder={t("search")}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <InputGroupAddon>
+            <Search className="size-4" />
+          </InputGroupAddon>
+        </InputGroup>
+      </div>
+
+      <DataTable
+        columns={columns}
+        data={nodes.filter((n) => n.url.toLowerCase().includes(search.toLowerCase()))}
+        loading={loading}
+        selectable
+        emptyMessage={t("empty")}
+      />
 
       <Dialog open={formOpen} onOpenChange={(open) => !open && setFormOpen(false)}>
         <DialogContent>

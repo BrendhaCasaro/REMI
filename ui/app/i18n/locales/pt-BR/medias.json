@@ -1,6 +1,7 @@
 {
   "title": "Mídias",
   "description": "Gerencie seus arquivos de mídia",
+  "search": "Buscar por nome...",
   "table": {
     "name": "Nome",
     "createdAt": "Criado em"

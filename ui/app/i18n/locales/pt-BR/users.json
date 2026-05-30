@@ -1,6 +1,7 @@
 {
   "title": "Usuários",
   "description": "Gerencie os usuários da plataforma",
+  "search": "Buscar por usuário...",
   "table": {
     "id": "ID",
     "username": "Usuário",
