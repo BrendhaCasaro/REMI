@@ -8,6 +8,7 @@
     "status": "Status"
   },
   "empty": "No nodes registered.",
+  "connect": "Connect",
   "create": {
     "title": "New node",
     "description": "Register a new storage node"

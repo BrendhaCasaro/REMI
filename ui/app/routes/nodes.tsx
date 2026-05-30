@@ -237,7 +237,7 @@ export default function Nodes() {
           <h1 className="text-3xl font-bold">{t("title")}</h1>
           <p className="text-muted-foreground">{t("description")}</p>
         </div>
-        <Button onClick={openCreate}>{tc("actions.create")}</Button>
+        <Button onClick={openCreate}>{t("connect")}</Button>
       </div>
 
       <div className="mb-4">

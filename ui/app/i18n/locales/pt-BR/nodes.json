@@ -8,6 +8,7 @@
     "status": "Status"
   },
   "empty": "Nenhum node cadastrado.",
+  "connect": "Conectar",
   "create": {
     "title": "Novo node",
     "description": "Cadastre um novo node de armazenamento"
