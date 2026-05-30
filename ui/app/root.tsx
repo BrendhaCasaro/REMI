@@ -14,6 +14,15 @@ import i18n from "./i18n";
 import { Toaster } from "~/components/ui/sonner";
 import "./app.css";
 
+const themeScript = `
+  (function() {
+    var theme = localStorage.getItem('theme');
+    if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+`;
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
 
@@ -24,8 +33,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <html lang={i18n.language}>
+    <html lang={i18n.language} suppressHydrationWarning>
       <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />

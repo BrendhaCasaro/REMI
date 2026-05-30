@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
+import { Moon, Sun } from "lucide-react";
 import { Button } from "~/components/ui/button";
 
 const languages = [
@@ -7,9 +9,26 @@ const languages = [
   { code: "en", label: "EN" },
 ];
 
+function useTheme() {
+  const [theme, setThemeState] = useState(() => {
+    if (typeof document === "undefined") return "light";
+    return document.documentElement.classList.contains("dark") ? "dark" : "light";
+  });
+
+  function toggleTheme() {
+    const next = theme === "dark" ? "light" : "dark";
+    setThemeState(next);
+    document.documentElement.classList.toggle("dark", next === "dark");
+    localStorage.setItem("theme", next);
+  }
+
+  return { theme, toggleTheme };
+}
+
 export default function AppLayout() {
   const location = useLocation();
   const { t, i18n } = useTranslation("common");
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { to: "/medias", label: t("nav.medias") },
@@ -40,7 +59,20 @@ export default function AppLayout() {
                 </Link>
               ))}
             </nav>
-            <div className="ml-2 flex gap-1">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={toggleTheme}
+              title={theme === "dark" ? "Light mode" : "Dark mode"}
+            >
+              {theme === "dark" ? (
+                <Sun className="size-4" />
+              ) : (
+                <Moon className="size-4" />
+              )}
+            </Button>
+            <div className="flex gap-1">
               {languages.map(({ code, label }) => (
                 <Button
                   key={code}
