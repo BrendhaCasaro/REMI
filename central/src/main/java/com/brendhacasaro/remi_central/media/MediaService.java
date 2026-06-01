@@ -3,8 +3,6 @@ package com.brendhacasaro.remi_central.media;
 import com.brendhacasaro.remi_central.media.dto.MediaResponse;
 import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.model.Node;
-import com.brendhacasaro.remi_central.node_media.NodeMedia;
-import com.brendhacasaro.remi_central.node_media.NodeMediaRepository;
 import com.brendhacasaro.remi_central.orchestrator.Orchestrator;
 import com.brendhacasaro.remi_central.orchestrator.OrchestratorException;
 import jakarta.persistence.EntityNotFoundException;
@@ -22,7 +20,6 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -31,7 +28,6 @@ public class MediaService {
     private final MediaRepository mediaRepository;
     private final Orchestrator orchestrator;
     private final RestClient restClient = RestClient.create();
-    private final NodeMediaRepository nodeMediaRepository;
 
     @Transactional
     public String createMedia(MultipartFile file) {
@@ -58,19 +54,17 @@ public class MediaService {
                 .toBodilessEntity();
 
         Media media = new Media(file.getOriginalFilename());
+        media.setNode(node);
         mediaRepository.save(media);
-
-        NodeMedia nodeMedia = new NodeMedia();
-        nodeMedia.setNode(node);
-        nodeMedia.setMedia(media);
-        nodeMediaRepository.save(nodeMedia);
 
         return "/download/" + media.getId();
     }
 
     public Resource downloadMedia(UUID mediaId) {
-        Node node = nodeMediaRepository.findNodeByMediaId(mediaId)
-                .orElseThrow(() -> new EntityNotFoundException("Id" + mediaId + "not found"));
+        Media media = mediaRepository.findById(mediaId)
+                .orElseThrow(() -> new EntityNotFoundException("Id " + mediaId + " not found"));
+
+        Node node = media.getNode();
 
         // add header to send the key to node
         // add to search the key in db of node
@@ -89,11 +83,9 @@ public class MediaService {
         Media media = mediaRepository.findById(mediaId)
                 .orElseThrow(() -> new EntityNotFoundException("Id " + mediaId + " not found"));
 
-        Optional<Node> nodeOptional = nodeMediaRepository.findNodeByMediaId(mediaId);
+        Node node = media.getNode();
 
-        if (nodeOptional.isPresent()) {
-            Node node = nodeOptional.get();
-
+        if (node != null) {
             restClient.delete()
                     .uri(node.getUrl() + "/api/files/delete/" + mediaId)
                     .retrieve()
@@ -101,8 +93,6 @@ public class MediaService {
                         throw new RestClientException("HTTP error: " + res.getStatusCode());
                     })
                     .toBodilessEntity();
-
-            nodeMediaRepository.deleteByMediaId(mediaId);
         }
 
         mediaRepository.delete(media);

@@ -1,9 +1,7 @@
 package com.brendhacasaro.remi_central.media.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.brendhacasaro.remi_central.node.model.Node;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
@@ -25,6 +23,10 @@ public class Media {
     @Column
     @NonNull
     private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "node_id")
+    private Node node;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

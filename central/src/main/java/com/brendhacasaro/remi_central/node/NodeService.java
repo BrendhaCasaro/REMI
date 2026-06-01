@@ -1,24 +1,22 @@
 package com.brendhacasaro.remi_central.node;
 
 import com.brendhacasaro.remi_central.media.MediaRepository;
+import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
 import com.brendhacasaro.remi_central.node.dto.NodeResponse;
 import com.brendhacasaro.remi_central.node.model.Node;
-import com.brendhacasaro.remi_central.node_media.NodeMediaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class NodeService {
     private final NodeRepository nodeRepository;
-    private final NodeMediaRepository nodeMediaRepository;
     private final MediaRepository mediaRepository;
 
     @Transactional
@@ -73,11 +71,10 @@ public class NodeService {
         Node node = nodeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Node id " + id + " not found"));
 
-        List<UUID> mediaIds = nodeMediaRepository.findMediaIdsByNodeId(id);
-        nodeMediaRepository.deleteByNodeId(id);
+        List<Media> medias = mediaRepository.findByNodeId(id);
 
-        if (!mediaIds.isEmpty()) {
-            mediaRepository.deleteAllById(mediaIds);
+        if (!medias.isEmpty()) {
+            mediaRepository.deleteAll(medias);
         }
 
         nodeRepository.delete(node);
