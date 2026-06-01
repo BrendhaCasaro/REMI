@@ -2,7 +2,7 @@
 
 The following was discovered as part of building this project:
 
-* The original package name 'com.brendhacasaro.node-digital-media' is invalid and this project uses '
+* The original package name 'com.brendhacasaro.node-digital-storedMedia' is invalid and this project uses '
   com.brendhacasaro.remi_node' instead.
 
 # Getting Started

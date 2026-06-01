@@ -108,13 +108,13 @@ export function mockListMedia(): Promise<MediaResponse[]> {
 }
 
 export function mockUploadMedia(file: File): Promise<MediaResponse> {
-  const media: MediaResponse = {
+  const storedMedia: MediaResponse = {
     id: crypto.randomUUID(),
     name: file.name,
     createdAt: new Date().toISOString(),
   };
-  mockMedia.unshift(media);
-  return delay(media);
+  mockMedia.unshift(storedMedia);
+  return delay(storedMedia);
 }
 
 export function mockDeleteMedia(id: string): Promise<void> {

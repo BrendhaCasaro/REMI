@@ -5,13 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd18215e-de57-40c1-ab7d-5810c5a7d887" name="Changes" comment="Continued the auth">
-      <change afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_05_2026_12_46_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_23_05_2026_12_46__Changes_.xml" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/stored_media/StoredMediaRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/stored_media/model/StoredMedia.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/JwtService.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/JwtService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/java/com/brendhacasaro/remi_central/auth/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AGENTS.md" beforeDir="false" afterPath="$PROJECT_DIR$/AGENTS.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/central/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/central/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/HELP.md" beforeDir="false" afterPath="$PROJECT_DIR$/node/HELP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/media/MediaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/stored_media/StoredMediaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/media/MediaStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/stored_media/StoredMediaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/media/NodeMediaFile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/media/NodeMediaFileRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/metrics/MetricsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/metrics/MetricsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/metrics/MetricsResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/java/com/brendhacasaro/remi_node/metrics/dto/MetricsResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/src/test/java/com/brendhacasaro/remi_node/NodeDigitalMediaApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/node/src/test/java/com/brendhacasaro/remi_node/NodeDigitalStoredMediaApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/node/target/classes/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/app/lib/mock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/ui/app/lib/mock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/app/routes/medias.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ui/app/routes/medias.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

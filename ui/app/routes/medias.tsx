@@ -76,7 +76,7 @@ export default function Medias() {
     {
       id: "actions",
       cell: ({ row }) => {
-        const media = row.original;
+        const storedMedia = row.original;
         return (
           <div className="text-right">
             <DropdownMenu>
@@ -87,10 +87,10 @@ export default function Medias() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => handleDownload(media)}>
+                <DropdownMenuItem onClick={() => handleDownload(storedMedia)}>
                   {tc("actions.download")}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setDeleteTarget(media)}>
+                <DropdownMenuItem onClick={() => setDeleteTarget(storedMedia)}>
                   {tc("actions.delete")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -122,8 +122,8 @@ export default function Medias() {
     if (!file) return;
     setUploading(true);
     try {
-      const media = await uploadMedia(file);
-      setMedias((prev) => [media, ...prev]);
+      const storedMedia = await uploadMedia(file);
+      setMedias((prev) => [storedMedia, ...prev]);
       toast.success(`${file.name} ${t("uploadSuccess")}`);
     } catch {
       toast.error(t("uploadError"));
@@ -133,10 +133,10 @@ export default function Medias() {
     }
   }
 
-  function handleDownload(media: MediaResponse) {
+  function handleDownload(storedMedia: MediaResponse) {
     const link = document.createElement("a");
-    link.href = `${API_BASE}/api/files/download/${media.id}`;
-    link.download = media.name;
+    link.href = `${API_BASE}/api/files/download/${storedMedia.id}`;
+    link.download = storedMedia.name;
     link.click();
   }
 

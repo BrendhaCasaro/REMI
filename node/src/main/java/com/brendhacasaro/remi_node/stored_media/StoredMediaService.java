@@ -1,8 +1,9 @@
-package com.brendhacasaro.remi_node.media;
+package com.brendhacasaro.remi_node.stored_media;
 
+import com.brendhacasaro.remi_node.stored_media.model.StoredMedia;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,18 +19,10 @@ import java.util.Locale;
 import java.util.UUID;
 
 @Service
-public class MediaStorageService {
-    private final NodeMediaFileRepository repository;
-    private final Path storageRoot;
-
-    public MediaStorageService(
-            NodeMediaFileRepository repository,
-            @Value("${node.storage.path:storage}") String storagePath
-    ) {
-        this.repository = repository;
-        this.storageRoot = Path.of(storagePath).toAbsolutePath().normalize();
-        ensureStorageExists();
-    }
+@RequiredArgsConstructor
+public class StoredMediaService {
+    private final StoredMediaRepository storedMediarepository;
+    private final Path storageRoot = Path.of("/storage");
 
     @Transactional
     public String upload(UUID mediaId, MultipartFile file) {
@@ -37,7 +30,7 @@ public class MediaStorageService {
             throw new IllegalArgumentException("File is required");
         }
 
-        if (repository.existsById(mediaId)) {
+        if (storedMediarepository.existsById(mediaId)) {
             throw new DataIntegrityViolationException("Media id " + mediaId + " already exists");
         }
 
@@ -55,15 +48,15 @@ public class MediaStorageService {
             throw new UncheckedIOException("Failed to store file", e);
         }
 
-        repository.save(new NodeMediaFile(mediaId, destination.toString()));
+        storedMediarepository.save(new StoredMedia(mediaId, destination.toString()));
         return "/api/files/download/" + mediaId;
     }
 
     public Resource download(UUID mediaId) {
-        NodeMediaFile media = repository.findById(mediaId)
+        StoredMedia storedMedia = storedMediarepository.findById(mediaId)
                 .orElseThrow(() -> new EntityNotFoundException("Media id " + mediaId + " not found"));
 
-        Path file = Path.of(media.getFilePath()).toAbsolutePath().normalize();
+        Path file = Path.of(storedMedia.getFilePath()).toAbsolutePath().normalize();
         if (!Files.exists(file) || !Files.isRegularFile(file)) {
             throw new EntityNotFoundException("File for media id " + mediaId + " not found");
         }
@@ -73,17 +66,17 @@ public class MediaStorageService {
 
     @Transactional
     public void delete(UUID mediaId) {
-        NodeMediaFile media = repository.findById(mediaId)
+        StoredMedia storedMedia = storedMediarepository.findById(mediaId)
                 .orElseThrow(() -> new EntityNotFoundException("Media id " + mediaId + " not found"));
 
-        Path file = Path.of(media.getFilePath()).toAbsolutePath().normalize();
+        Path file = Path.of(storedMedia.getFilePath()).toAbsolutePath().normalize();
         try {
             Files.deleteIfExists(file);
         } catch (IOException e) {
             throw new UncheckedIOException("Failed to delete file", e);
         }
 
-        repository.deleteById(mediaId);
+        storedMediarepository.deleteById(mediaId);
     }
 
     private String sanitizeFileName(String originalName) {
@@ -93,13 +86,5 @@ public class MediaStorageService {
             return "file";
         }
         return sanitized.toLowerCase(Locale.ROOT);
-    }
-
-    private void ensureStorageExists() {
-        try {
-            Files.createDirectories(storageRoot);
-        } catch (IOException e) {
-            throw new UncheckedIOException("Failed to create storage directory", e);
-        }
     }
 }

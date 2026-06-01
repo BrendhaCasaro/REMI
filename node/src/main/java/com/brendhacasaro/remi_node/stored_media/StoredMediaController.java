@@ -1,4 +1,4 @@
-package com.brendhacasaro.remi_node.media;
+package com.brendhacasaro.remi_node.stored_media;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -12,11 +12,11 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/files")
-public class MediaController {
-    private final MediaStorageService mediaStorageService;
+public class StoredMediaController {
+    private final StoredMediaService storageMediaService;
 
-    public MediaController(MediaStorageService mediaStorageService) {
-        this.mediaStorageService = mediaStorageService;
+    public StoredMediaController(StoredMediaService storageMediaService) {
+        this.storageMediaService = storageMediaService;
     }
 
     @PostMapping("/upload")
@@ -24,13 +24,13 @@ public class MediaController {
             @RequestParam("file") MultipartFile file,
             @RequestParam("mediaId") UUID mediaId
     ) {
-        String url = mediaStorageService.upload(mediaId, file);
+        String url = storageMediaService.upload(mediaId, file);
         return ResponseEntity.created(URI.create(url)).build();
     }
 
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> download(@PathVariable("id") UUID mediaId) {
-        Resource resource = mediaStorageService.download(mediaId);
+        Resource resource = storageMediaService.download(mediaId);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
@@ -39,7 +39,7 @@ public class MediaController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID mediaId) {
-        mediaStorageService.delete(mediaId);
+        storageMediaService.delete(mediaId);
         return ResponseEntity.noContent().build();
     }
 }

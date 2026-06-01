@@ -1,5 +1,6 @@
 package com.brendhacasaro.remi_node.metrics;
 
+import com.brendhacasaro.remi_node.metrics.dto.MetricsResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
