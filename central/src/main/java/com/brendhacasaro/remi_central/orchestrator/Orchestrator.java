@@ -3,7 +3,7 @@ package com.brendhacasaro.remi_central.orchestrator;
 import com.brendhacasaro.remi_central.node.NodeRepository;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -13,10 +13,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class Orchestrator {
     private final NodeRepository nodeRepository;
-    private final RestClient restClient = RestClient.create();
+    private final RestClient restClient;
+
+    @Autowired
+    public Orchestrator(NodeRepository nodeRepository) {
+        this.nodeRepository = nodeRepository;
+        this.restClient = RestClient.create();
+    }
+
+    public Orchestrator(NodeRepository nodeRepository, RestClient restClient) {
+        this.nodeRepository = nodeRepository;
+        this.restClient = restClient;
+    }
 
     public Node chooseNode() {
         // carregar nodes ativos
