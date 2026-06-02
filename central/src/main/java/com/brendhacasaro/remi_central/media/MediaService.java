@@ -50,8 +50,7 @@ public class MediaService {
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (req, res) -> {
                     throw new RestClientException("HTTP error: " + res.getStatusCode() + res.getBody());
-                })
-                .toBodilessEntity();
+                });
 
         Media media = new Media(file.getOriginalFilename());
         media.setNode(node);

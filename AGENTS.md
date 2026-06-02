@@ -1,179 +1,37 @@
-# REMI — Agent Guide
+# REMI Agent Notes
 
-## Project Overview
+## Shape
+- `central/`: Spring Boot 4.0.6 / Java 25 API orchestrator for auth, users, nodes, and media metadata.
+- `node/`: Spring Boot 4.0.6 / Java 25 storage node API for file upload/download/delete, health, and metrics.
+- `ui/`: React Router 7 SSR app on React 19, Vite 8, Tailwind CSS 4, shadcn-style components.
 
-Digital storedMedia management system with three components:
+## Commands
+- Root `pom.xml` only aggregates `central` and `node`; there is no root `./mvnw`.
+- From repo root with system Maven: `mvn test -pl central`, `mvn test -pl node`, `mvn clean install`.
+- From a module with wrapper: `cd central && ./mvnw test`, `cd node && ./mvnw test`.
+- Single Java test class examples: `mvn test -pl central -Dtest=DigitalMediaApplicationTests`, `mvn test -pl node -Dtest=NodeDigitalStoredMediaApplicationTests`.
+- UI commands from `ui/`: `npm install`, `npm run dev`, `npm run build`, `npm run typecheck`, `npm run start`.
+- `npm run typecheck` runs `react-router typegen && tsc`; generated `.react-router/` is ignored.
 
-- **`central/`** — Spring Boot 4.0.6 / Java 25 (orchestrator, auth, user & storedMedia APIs)
-- **`node/`** — Spring Boot 4.0.6 / Java 25 (file storage, health, metrics APIs)
-- **`ui/`** — React Router 7 + React 19 + Vite 8 + Tailwind CSS 4 (SSR frontend)
+## Local Services
+- No `compose.yaml` is present in this checkout.
+- Java apps and `@SpringBootTest` context tests expect PostgreSQL on localhost.
+- Central DB: `jdbc:postgresql://localhost:5432/remi-centraldb`, user `myuser`, password `secret`.
+- Node DB: `jdbc:postgresql://localhost:5432/remi-nodedb`, user `myuser`, password `secret`.
 
-Infrastructure: PostgreSQL 16 (Docker Compose via `compose.yaml`).
+## Runtime Gotchas
+- Central stores media metadata, chooses a node via `/api/health` and `/api/metrics`, then calls node `/api/files/upload`.
+- Node persists file paths in Postgres and writes actual files under absolute `/storage`; local runs need that path writable.
+- UI API calls are currently mocked by `const USE_MOCK = true` in `ui/app/lib/api.ts`; changing to real API also exposes hardcoded `API_BASE = "http://localhost:8080"`.
+- Central security permits `/api/login`; most other central endpoints require JWT roles.
 
----
+## UI Notes
+- Routes are declared in `ui/app/routes.ts`; root SSR shell is `ui/app/root.tsx`.
+- TS path aliases are configured and used: `~/*` and `@/*` map to `ui/app/*`.
+- shadcn aliases are in `ui/components.json`; shared UI components live under `ui/app/components/ui`.
+- i18n resources live in `ui/app/i18n/locales/{pt-BR,en}`; fallback language is `pt-BR`.
 
-## Build & Test Commands
-
-### Java (central / node)
-
-```bash
-# Build all modules
-./mvnw clean install
-
-# Run all tests for a module
-./mvnw test -pl central
-./mvnw test -pl node
-
-# Run a single test class
-./mvnw test -pl central -Dtest=DigitalMediaApplicationTests
-./mvnw test -pl node -Dtest=NodeDigitalMediaApplicationTests
-
-# Run a single test method
-./mvnw test -pl central -Dtest=DigitalMediaApplicationTests#contextLoads
-
-# Build without tests
-./mvnw clean install -DskipTests
-
-# Run app locally (requires PostgreSQL on localhost:5432)
-./mvnw spring-boot:run -pl central
-./mvnw spring-boot:run -pl node
-```
-
-**Note:** Use `./mvnw` (Maven wrapper) from the module directory or root. Tests require a running PostgreSQL instance (
-see `compose.yaml` for credentials).
-
-### UI
-
-```bash
-cd ui
-
-# Install dependencies
-npm install
-
-# Development server with HMR
-npm run dev
-
-# Build for production
-npm run build
-
-# Type-check (typegen + tsc)
-npm run typecheck
-
-# Start production server
-npm run start
-```
-
-### Infrastructure
-
-```bash
-# Start PostgreSQL
-docker compose up -d
-```
-
----
-
-## Code Style — Java
-
-### Imports
-
-- No wildcard imports except in entities (`import jakarta.persistence.*`, `import lombok.*`) and controllers (
-  `import org.springframework.web.bind.annotation.*`).
-- Standard ordering: project → Jakarta → Lombok → Spring → Java stdlib → other.
-- No blank-line groups between imports.
-
-### Formatting
-
-- 4-space indentation, K&R braces (opening brace on same line).
-- DTOs are `record` types — single-line for few fields, multi-line (one param per line, 8-space indent) for more.
-- Stream chains: each call on a new line (8-space indent).
-- JPQL: Java text blocks (`"""..."""`).
-
-### Types & Naming
-
-- **Classes:** PascalCase, suffixed by role (`Controller`, `Service`, `Repository`, `Request`, `Response`, `Exception`,
-  `Config`). Entities are plain nouns (`User`, `Node`, `Media`).
-- **Methods:** camelCase, verb-prefixed (`createUser`, `getAllUsers`, `deleteNode`, `uploadMedia`).
-- **Fields/Variables:** camelCase, no prefixes. Injected deps are `private final`. Entity fields are `private` (often
-  via Lombok `@Getter`/`@Setter`).
-- **Enums:** PascalCase, uppercase constants (`ADMIN`, `USER`; `ONLINE`, `OFFLINE`).
-
-### Annotations
-
-- `@Service`, `@RestController`, `@Configuration`, `@Component` for stereotypes.
-- `@RequestMapping` on class + `@GetMapping`/`@PostMapping`/etc. on methods.
-- `@RequiredArgsConstructor` (Lombok) for constructor injection in **central** module.
-- `@Transactional` from `jakarta.transaction.Transactional` on mutating service methods.
-- `@Entity`, `@Table`, `@Id`, `@GeneratedValue`, `@Column`, `@Enumerated(EnumType.STRING)`, `@ManyToOne`, `@JoinColumn`
-  for persistence.
-- `@RestControllerAdvice` + `@ExceptionHandler` for global error handling.
-- `@DynamicUpdate` on entities (Hibernate).
-- `@SpringBootTest` + `@Test` for tests.
-
-### Lombok
-
-- **Central module uses it heavily:** `@Getter`, `@Setter`, `@RequiredArgsConstructor`, `@NoArgsConstructor`,
-  `@AllArgsConstructor`.
-- **Node module does NOT use Lombok** — write explicit constructors, getters, and setters.
-
-### Error Handling
-
-- Unchecked (runtime) exceptions only. No checked exceptions in signatures.
-- `orElseThrow` with `EntityNotFoundException` for missing entities.
-- Wrapping `IOException` → `UncheckedIOException`.
-- Custom exceptions extend `RuntimeException` (e.g., `OrchestratorException`).
-- Global handler per module (`GlobalHandlerException` with `@RestControllerAdvice`). Returns
-  `ResponseEntity<ErrorResponse>`.
-- Silent catch only when intentional (e.g., filtering unhealthy nodes: `catch (Exception _) { }`).
-
-### Testing
-
-- JUnit 5 + Spring Boot test slices (`@SpringBootTest`).
-- Test class naming: `XxxApplicationTests` or `XxxTest`.
-- One test class per file, test methods annotated with `@Test`.
-
----
-
-## Code Style — TypeScript / React
-
-### Imports
-
-- `import type { ... }` for type-only imports (`verbatimModuleSyntax` is on).
-- Groups separated by blank lines: (1) external packages, (2) local types / CSS side-effects, (3) local assets.
-- Relative paths only (no `~/*` alias used yet, even though configured).
-- Assets imported as default: `import logo from "./logo.svg"`.
-
-### Formatting
-
-- 2-space indentation, semicolons required, trailing commas on multi-line constructs.
-- Double quotes in JSX attributes, single quotes for TypeScript strings (Prettier default).
-
-### Components
-
-- Function declarations only — no `React.FC`, no arrow-function components.
-- Route pages: `export default function PageName()`.
-- Shared components: `export function ComponentName()` — named exports.
-- Route module exports: `export function meta()`, `export const links`.
-- Props typed inline for simple cases, or via auto-generated `Route` types from React Router (`./+types/*`).
-- No React hooks in presentational components.
-
-### Types & Naming
-
-- **Files:** kebab-case for config/root (`vite.config.ts`, `react-router.config.ts`), camelCase for components (
-  `home.tsx`, `welcome.tsx`).
-- **Components:** PascalCase.
-- **Functions/Variables:** camelCase. Use `let` for mutable variables, `const` for constants.
-- **CSS:** Tailwind utility classes in `className`. No CSS modules or styled-components.
-- Config objects use `satisfies` keyword for type-safe literals (`satisfies Config`).
-
-### Routing
-
-- Routes declared in `app/routes.ts` using `@react-router/dev/routes` helpers.
-- Route component types auto-imported from `./+types/<route_name>`.
-- SSR enabled, all v8 future flags on in `react-router.config.ts`.
-
-### Conventions
-
-- `className` not `class`.
-- Self-closing tags for components without children (`<Meta />`, `<Links />`).
-- `&apos;` for apostrophes in JSX text.
-- `import.meta.env.DEV` for dev-only code.
+## Java Notes
+- Both Java modules have Lombok configured; do not assume node is Lombok-free.
+- Controllers often use `org.springframework.web.bind.annotation.*`; keep existing style when editing nearby code.
+- Mutating service methods use `jakarta.transaction.Transactional`.
