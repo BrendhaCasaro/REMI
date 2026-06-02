@@ -177,9 +177,7 @@
                 <version>2.46.1</version>
                 <configuration>
                     <java>
-                        <intellijJavaFormat>
-                            <style>INTELLIJ</style>
-                        </intellijJavaFormat>
+                        <palantirJavaFormat/>
                     </java>
                 </configuration>
             </plugin>
