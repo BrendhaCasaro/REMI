@@ -1,3 +1,4 @@
 [tools]
+java = "openjdk-25"
 node = "latest"
 npm = "latest"
