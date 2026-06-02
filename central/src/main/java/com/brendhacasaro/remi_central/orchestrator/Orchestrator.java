@@ -57,7 +57,7 @@ public class Orchestrator {
                     nodesOk.add(node);
                 }
 
-            } catch (Exception _) {
+            } catch (Exception e) {
             }
         }
 
