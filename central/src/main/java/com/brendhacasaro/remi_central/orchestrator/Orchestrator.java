@@ -66,7 +66,7 @@ public class Orchestrator {
 
     private Node storageChecker(List<Node> nodesOk) {
         // verifica e retorna o melhor node (dentre os funcionais)
-        // que tem o maior armazenamento e o retorna
+        // que tem o maior espaço livre e o retorna
 
         if (nodesOk.isEmpty()) {
             throw new OrchestratorException("There is no Nodes available");
@@ -85,8 +85,8 @@ public class Orchestrator {
                         })
                         .body(MetricsResponse.class);
 
-                if (metricsResponse.diskUsed() < betterDisk || betterDisk == -1.0) {
-                    betterDisk = metricsResponse.diskUsed();
+                if (metricsResponse.diskFree() > betterDisk || betterDisk == -1.0) {
+                    betterDisk = metricsResponse.diskFree();
                     betterNode = node;
                 }
             } catch (Exception e) {

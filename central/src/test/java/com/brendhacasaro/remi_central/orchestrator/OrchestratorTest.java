@@ -96,7 +96,7 @@ class OrchestratorTest {
     }
 
     @Test
-    void chooseNode_shouldPickNodeWithMostFreeDisk() {
+    void chooseNode_shouldPickNodeWithMostFreeDisk_real() {
         Node node1 = new Node(
             "http://node1:8080",
             100.0,
@@ -122,11 +122,11 @@ class OrchestratorTest {
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);
         when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
 
-        // node1: 10% used, node2: 80% used, node3: 30% used → node1 has most free
+        // node1: 100GB free, node2: 20GB free, node3: 50GB free → node1 wins
         when(responseSpec.body(MetricsResponse.class))
-            .thenReturn(new MetricsResponse(10.0))
-            .thenReturn(new MetricsResponse(80.0))
-            .thenReturn(new MetricsResponse(30.0));
+            .thenReturn(new MetricsResponse(100.0))
+            .thenReturn(new MetricsResponse(20.0))
+            .thenReturn(new MetricsResponse(50.0));
 
         Node result = orchestrator.chooseNode();
 
