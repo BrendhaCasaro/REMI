@@ -41,10 +41,9 @@ public class MediaService {
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", file.getResource());
 
-        // add header to send the key to node
-        // add to search the key in db of node
         restClient.post()
                 .uri(node.getUrl() + "/api/files/upload")
+                .headers(headers -> headers.setBearerAuth(node.getKey().toString()))
                 .contentType(MediaType.MULTIPART_FORM_DATA)
                 .body(body)
                 .retrieve()
@@ -65,10 +64,9 @@ public class MediaService {
 
         Node node = media.getNode();
 
-        // add header to send the key to node
-        // add to search the key in db of node
         return restClient.get()
                 .uri(node.getUrl() + "/api/files/download/" + mediaId)
+                .headers(headers -> headers.setBearerAuth(node.getKey().toString()))
                 .exchange((request, response) -> {
                     if (response.getStatusCode().isError()) {
                         throw new RestClientException("HTTP error: " + response.getStatusCode());
@@ -87,6 +85,7 @@ public class MediaService {
         if (node != null) {
             restClient.delete()
                     .uri(node.getUrl() + "/api/files/delete/" + mediaId)
+                    .headers(headers -> headers.setBearerAuth(node.getKey().toString()))
                     .retrieve()
                     .onStatus(HttpStatusCode::isError, (req, res) -> {
                         throw new RestClientException("HTTP error: " + res.getStatusCode());
