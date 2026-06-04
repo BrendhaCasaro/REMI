@@ -17,6 +17,6 @@ public class MetricsController {
 
     @GetMapping("/metrics")
     public ResponseEntity<MetricsResponse> metrics() {
-        return ResponseEntity.ok(new MetricsResponse(storageMetricsService.diskUsedGb()));
+        return ResponseEntity.ok(new MetricsResponse(storageMetricsService.diskFreeGb()));
     }
 }
