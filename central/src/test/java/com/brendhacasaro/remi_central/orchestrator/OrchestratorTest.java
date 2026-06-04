@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import com.brendhacasaro.remi_central.node.NodeRepository;
 import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
+
+import static org.mockito.ArgumentMatchers.any;
 import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import java.util.List;
 import java.util.UUID;
@@ -43,7 +45,7 @@ class OrchestratorTest {
 
     @Test
     void chooseNode_shouldThrowWhenNoNodesAvailable() {
-        when(nodeRepository.findAll()).thenReturn(List.of());
+        when(nodeRepository.findByStatus(any())).thenReturn(List.of());
 
         assertThrows(OrchestratorException.class, () ->
             orchestrator.chooseNode()
@@ -58,7 +60,7 @@ class OrchestratorTest {
             nodeKey,
             NodeStatus.ONLINE
         );
-        when(nodeRepository.findAll()).thenReturn(List.of(node));
+        when(nodeRepository.findByStatus(any())).thenReturn(List.of(node));
         doReturn(requestHeadersUriSpec).when(restClient).get();
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestBodySpec);
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);
@@ -77,7 +79,7 @@ class OrchestratorTest {
             nodeKey,
             NodeStatus.ONLINE
         );
-        when(nodeRepository.findAll()).thenReturn(List.of(node));
+        when(nodeRepository.findByStatus(any())).thenReturn(List.of(node));
         doReturn(requestHeadersUriSpec).when(restClient).get();
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestBodySpec);
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);
@@ -111,7 +113,7 @@ class OrchestratorTest {
             nodeKey,
             NodeStatus.ONLINE
         );
-        when(nodeRepository.findAll()).thenReturn(List.of(node1, node2, node3));
+        when(nodeRepository.findByStatus(any())).thenReturn(List.of(node1, node2, node3));
         doReturn(requestHeadersUriSpec).when(restClient).get();
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestBodySpec);
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);

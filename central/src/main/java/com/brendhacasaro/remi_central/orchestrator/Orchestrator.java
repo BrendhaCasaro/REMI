@@ -1,6 +1,7 @@
 package com.brendhacasaro.remi_central.orchestrator;
 
 import com.brendhacasaro.remi_central.node.NodeRepository;
+import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -8,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -39,7 +39,7 @@ public class Orchestrator {
     }
 
     private Node storageChecker() {
-        List<Node> nodes = new ArrayList<>(nodeRepository.findAll());
+        List<Node> nodes = nodeRepository.findByStatus(NodeStatus.ONLINE);
 
         Node betterNode = null;
         Double betterDisk = null;
