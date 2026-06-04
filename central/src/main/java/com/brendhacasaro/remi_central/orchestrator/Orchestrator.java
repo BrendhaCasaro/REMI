@@ -40,7 +40,7 @@ public class Orchestrator {
         List<Node> nodes = new ArrayList<>(nodeRepository.findAll());
 
         Node betterNode = null;
-        Double betterDisk = -1.0;
+        Double betterDisk = null;
 
         for (Node node : nodes) {
             try {
@@ -49,7 +49,7 @@ public class Orchestrator {
                         .retrieve()
                         .body(MetricsResponse.class);
 
-                if (metricsResponse.diskFree() > betterDisk || betterDisk == -1.0) {
+                if (betterDisk == null || metricsResponse.diskFree() > betterDisk) {
                     betterDisk = metricsResponse.diskFree();
                     betterNode = node;
                 }
