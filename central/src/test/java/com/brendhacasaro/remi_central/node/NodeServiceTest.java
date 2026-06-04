@@ -4,7 +4,6 @@ import com.brendhacasaro.remi_central.media.MediaRepository;
 import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
-import com.brendhacasaro.remi_central.node.dto.NodeResponse;
 import com.brendhacasaro.remi_central.node.model.Node;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -39,16 +38,16 @@ class NodeServiceTest {
     void createNode_shouldPersistAndReturn() {
         NodeConfigRequest request = new NodeConfigRequest(
                 "http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE);
-        Node node = new Node("http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE);
-        when(nodeRepository.save(any())).thenReturn(node);
+        Node saved = new Node("http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE);
+        when(nodeRepository.save(any())).thenReturn(saved);
 
-        NodeResponse result = nodeService.createNode(request);
+        Node result = nodeService.createNode(request);
 
         assertNotNull(result);
-        assertEquals("http://node1:8080", result.url());
-        assertEquals(100.0, result.totalCapacity());
-        assertEquals(NodeStatus.ONLINE, result.status());
-        assertNull(result.id());
+        assertEquals("http://node1:8080", result.getUrl());
+        assertEquals(100.0, result.getTotalCapacity());
+        assertEquals(nodeKey, result.getKey());
+        assertEquals(NodeStatus.ONLINE, result.getStatus());
         verify(nodeRepository).save(any());
     }
 
@@ -61,11 +60,12 @@ class NodeServiceTest {
                 "http://new:8080", 200.0, newKey, NodeStatus.ONLINE);
         when(nodeRepository.save(any())).thenReturn(existing);
 
-        NodeResponse result = nodeService.patchNode(1, request);
+        Node result = nodeService.patchNode(1, request);
 
-        assertEquals("http://new:8080", result.url());
-        assertEquals(200.0, result.totalCapacity());
-        assertEquals(NodeStatus.ONLINE, result.status());
+        assertEquals("http://new:8080", result.getUrl());
+        assertEquals(200.0, result.getTotalCapacity());
+        assertEquals(newKey, result.getKey());
+        assertEquals(NodeStatus.ONLINE, result.getStatus());
     }
 
     @Test
@@ -74,11 +74,12 @@ class NodeServiceTest {
         when(nodeRepository.findById(1)).thenReturn(Optional.of(existing));
         when(nodeRepository.save(any())).thenReturn(existing);
 
-        NodeResponse result = nodeService.patchNode(1, new NodePatchRequest(null, null, null, null));
+        Node result = nodeService.patchNode(1, new NodePatchRequest(null, null, null, null));
 
-        assertEquals("http://keep:8080", result.url());
-        assertEquals(50.0, result.totalCapacity());
-        assertEquals(NodeStatus.ONLINE, result.status());
+        assertEquals("http://keep:8080", result.getUrl());
+        assertEquals(50.0, result.getTotalCapacity());
+        assertEquals(nodeKey, result.getKey());
+        assertEquals(NodeStatus.ONLINE, result.getStatus());
     }
 
     @Test
@@ -90,16 +91,16 @@ class NodeServiceTest {
     }
 
     @Test
-    void getAllNodes_shouldReturnNodeResponses() {
+    void getAllNodes_shouldReturnNodes() {
         Node node1 = new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE);
         Node node2 = new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE);
         when(nodeRepository.findAll()).thenReturn(List.of(node1, node2));
 
-        List<NodeResponse> nodes = nodeService.getAllNodes();
+        List<Node> nodes = nodeService.getAllNodes();
 
         assertEquals(2, nodes.size());
-        assertEquals("http://a:8080", nodes.get(0).url());
-        assertEquals("http://b:8080", nodes.get(1).url());
+        assertEquals("http://a:8080", nodes.get(0).getUrl());
+        assertEquals("http://b:8080", nodes.get(1).getUrl());
     }
 
     @Test

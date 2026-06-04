@@ -5,7 +5,7 @@ import com.brendhacasaro.remi_central.auth.SecurityConfig;
 import com.brendhacasaro.remi_central.config.TestSecurityConfig;
 import com.brendhacasaro.remi_central.media.MediaController;
 import com.brendhacasaro.remi_central.media.MediaService;
-import com.brendhacasaro.remi_central.media.dto.MediaResponse;
+import com.brendhacasaro.remi_central.media.model.Media;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
@@ -16,7 +16,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,9 +48,9 @@ class MediaControllerTest {
 
     @Test
     void getAllMedias_shouldReturn200() throws Exception {
-        when(mediaService.getAllMedias()).thenReturn(
-                List.of(new MediaResponse(UUID.randomUUID(), "a.txt", LocalDateTime.now()),
-                        new MediaResponse(UUID.randomUUID(), "b.txt", LocalDateTime.now())));
+        Media m1 = new Media("a.txt");
+        Media m2 = new Media("b.txt");
+        when(mediaService.getAllMedias()).thenReturn(List.of(m1, m2));
 
         mockMvc.perform(get("/api/files/"))
                 .andExpect(status().isOk())

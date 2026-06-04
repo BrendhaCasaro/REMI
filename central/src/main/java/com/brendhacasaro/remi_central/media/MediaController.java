@@ -1,6 +1,7 @@
 package com.brendhacasaro.remi_central.media;
 
 import com.brendhacasaro.remi_central.media.dto.MediaResponse;
+import com.brendhacasaro.remi_central.media.model.Media;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -42,8 +43,10 @@ public class MediaController {
 
     @GetMapping("/")
     public ResponseEntity<List<MediaResponse>> getAllMedias() {
-        return ResponseEntity.ok()
-                .body(mediaService.getAllMedias());
+        List<MediaResponse> medias = mediaService.getAllMedias().stream()
+                .map(m -> new MediaResponse(m.getId(), m.getName(), m.getCreatedAt()))
+                .toList();
+        return ResponseEntity.ok(medias);
     }
 
     @DeleteMapping("/{id}")

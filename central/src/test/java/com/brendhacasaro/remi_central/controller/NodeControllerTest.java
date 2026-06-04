@@ -8,8 +8,7 @@ import com.brendhacasaro.remi_central.node.NodeService;
 import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
-import com.brendhacasaro.remi_central.node.dto.NodeResponse;
-
+import com.brendhacasaro.remi_central.node.model.Node;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,7 @@ class NodeControllerTest {
     @Test
     void createNode_shouldReturn201() throws Exception {
         when(nodeService.createNode(any())).thenReturn(
-                new NodeResponse(1, "http://node:8080", 100.0, NodeStatus.ONLINE));
+                new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE));
 
         mockMvc.perform(post("/nodes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -58,8 +57,8 @@ class NodeControllerTest {
     @Test
     void getAllNodes_shouldReturn200() throws Exception {
         when(nodeService.getAllNodes()).thenReturn(List.of(
-                new NodeResponse(1, "http://a:8080", 100.0, NodeStatus.ONLINE),
-                new NodeResponse(2, "http://b:8080", 200.0, NodeStatus.OFFLINE)));
+                new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE),
+                new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE)));
 
         mockMvc.perform(get("/nodes"))
                 .andExpect(status().isOk())
@@ -70,7 +69,7 @@ class NodeControllerTest {
     @Test
     void patchNode_shouldReturn200() throws Exception {
         when(nodeService.patchNode(any(), any())).thenReturn(
-                new NodeResponse(1, "http://patched:8080", 150.0, NodeStatus.ONLINE));
+                new Node("http://patched:8080", 150.0, nodeKey, NodeStatus.ONLINE));
 
         mockMvc.perform(patch("/nodes/1")
                         .contentType(MediaType.APPLICATION_JSON)

@@ -4,7 +4,6 @@ import com.brendhacasaro.remi_central.media.MediaRepository;
 import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
-import com.brendhacasaro.remi_central.node.dto.NodeResponse;
 import com.brendhacasaro.remi_central.node.model.Node;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,7 +19,7 @@ public class NodeService {
     private final MediaRepository mediaRepository;
 
     @Transactional
-    public NodeResponse createNode(NodeConfigRequest request) {
+    public Node createNode(NodeConfigRequest request) {
         Node node = new Node(
                 request.url(),
                 request.totalCapacity(),
@@ -28,12 +27,11 @@ public class NodeService {
                 request.status()
         );
 
-        node = nodeRepository.save(node);
-        return toResponse(node);
+        return nodeRepository.save(node);
     }
 
     @Transactional
-    public NodeResponse patchNode(Integer id, NodePatchRequest request) {
+    public Node patchNode(Integer id, NodePatchRequest request) {
         Node node = nodeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Node id " + id + " not found"));
 
@@ -53,24 +51,11 @@ public class NodeService {
             node.setStatus(request.status());
         }
 
-        node = nodeRepository.save(node);
-        return toResponse(node);
+        return nodeRepository.save(node);
     }
 
-    public List<NodeResponse> getAllNodes() {
-        return nodeRepository.findAll()
-                .stream()
-                .map(this::toResponse)
-                .toList();
-    }
-
-    private NodeResponse toResponse(Node node) {
-        return new NodeResponse(
-                node.getId(),
-                node.getUrl(),
-                node.getTotalCapacity(),
-                node.getStatus()
-        );
+    public List<Node> getAllNodes() {
+        return nodeRepository.findAll();
     }
 
     @Transactional
