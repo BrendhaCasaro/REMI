@@ -1,7 +1,6 @@
 package com.brendhacasaro.remi_central.orchestrator;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
@@ -62,7 +61,8 @@ class OrchestratorTest {
         when(nodeRepository.findAll()).thenReturn(List.of(node));
         doReturn(requestHeadersUriSpec).when(restClient).get();
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestBodySpec);
-        when(requestBodySpec.exchange(any())).thenReturn(false);
+        when(requestBodySpec.retrieve()).thenReturn(responseSpec);
+        when(responseSpec.body(MetricsResponse.class)).thenThrow(new RuntimeException("node down"));
 
         assertThrows(OrchestratorException.class, () ->
             orchestrator.chooseNode()
@@ -80,11 +80,7 @@ class OrchestratorTest {
         when(nodeRepository.findAll()).thenReturn(List.of(node));
         doReturn(requestHeadersUriSpec).when(restClient).get();
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestBodySpec);
-
-        // First call is health check (exchange), second is metrics (retrieve)
-        when(requestBodySpec.exchange(any())).thenReturn(true);
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
         when(responseSpec.body(MetricsResponse.class)).thenReturn(
             new MetricsResponse(50.0)
         );
@@ -118,9 +114,7 @@ class OrchestratorTest {
         when(nodeRepository.findAll()).thenReturn(List.of(node1, node2, node3));
         doReturn(requestHeadersUriSpec).when(restClient).get();
         when(requestHeadersUriSpec.uri(anyString())).thenReturn(requestBodySpec);
-        when(requestBodySpec.exchange(any())).thenReturn(true);
         when(requestBodySpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
 
         // node1: 100GB free, node2: 20GB free, node3: 50GB free → node1 wins
         when(responseSpec.body(MetricsResponse.class))
