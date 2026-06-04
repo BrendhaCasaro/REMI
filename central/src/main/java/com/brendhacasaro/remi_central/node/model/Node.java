@@ -35,4 +35,7 @@ public class Node {
     @NonNull
     @Enumerated(EnumType.STRING)
     private NodeStatus status;
+
+    @Column
+    private Double diskFree;
 }

@@ -51,7 +51,7 @@ class NodeControllerTest {
         mockMvc.perform(post("/nodes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
-                                new NodeConfigRequest("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE))))
+                                 new NodeConfigRequest("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE, null))))
                 .andExpect(status().isCreated());
     }
 
@@ -75,7 +75,7 @@ class NodeControllerTest {
         mockMvc.perform(patch("/nodes/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(
-                                new NodePatchRequest("http://patched:8080", 150.0, nodeKey, NodeStatus.ONLINE))))
+                                 new NodePatchRequest("http://patched:8080", 150.0, nodeKey, NodeStatus.ONLINE, null))))
                 .andExpect(status().isOk());
     }
 
