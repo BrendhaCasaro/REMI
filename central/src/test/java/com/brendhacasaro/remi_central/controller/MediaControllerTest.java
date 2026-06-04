@@ -16,6 +16,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -49,7 +50,8 @@ class MediaControllerTest {
     @Test
     void getAllMedias_shouldReturn200() throws Exception {
         when(mediaService.getAllMedias()).thenReturn(
-                List.of(new MediaResponse("a.txt"), new MediaResponse("b.txt")));
+                List.of(new MediaResponse(UUID.randomUUID(), "a.txt", LocalDateTime.now()),
+                        new MediaResponse(UUID.randomUUID(), "b.txt", LocalDateTime.now())));
 
         mockMvc.perform(get("/api/files/"))
                 .andExpect(status().isOk())

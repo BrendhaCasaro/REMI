@@ -100,7 +100,11 @@ public class MediaService {
     public List<MediaResponse> getAllMedias() {
         return mediaRepository.findAll()
                 .stream()
-                .map(media -> new MediaResponse(media.getName()))
+                .map(media -> new MediaResponse(
+                        media.getId(),
+                        media.getName(),
+                        media.getCreatedAt()
+                ))
                 .toList();
     }
 }

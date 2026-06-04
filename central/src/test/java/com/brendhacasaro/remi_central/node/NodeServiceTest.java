@@ -39,15 +39,16 @@ class NodeServiceTest {
     void createNode_shouldPersistAndReturn() {
         NodeConfigRequest request = new NodeConfigRequest(
                 "http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE);
-        when(nodeRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        Node node = new Node("http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE);
+        when(nodeRepository.save(any())).thenReturn(node);
 
-        Node result = nodeService.createNode(request);
+        NodeResponse result = nodeService.createNode(request);
 
         assertNotNull(result);
-        assertEquals("http://node1:8080", result.getUrl());
-        assertEquals(100.0, result.getTotalCapacity());
-        assertEquals(nodeKey, result.getKey());
-        assertEquals(NodeStatus.ONLINE, result.getStatus());
+        assertEquals("http://node1:8080", result.url());
+        assertEquals(100.0, result.totalCapacity());
+        assertEquals(NodeStatus.ONLINE, result.status());
+        assertNull(result.id());
         verify(nodeRepository).save(any());
     }
 
@@ -60,12 +61,11 @@ class NodeServiceTest {
                 "http://new:8080", 200.0, newKey, NodeStatus.ONLINE);
         when(nodeRepository.save(any())).thenReturn(existing);
 
-        Node result = nodeService.patchNode(1, request);
+        NodeResponse result = nodeService.patchNode(1, request);
 
-        assertEquals("http://new:8080", result.getUrl());
-        assertEquals(200.0, result.getTotalCapacity());
-        assertEquals(newKey, result.getKey());
-        assertEquals(NodeStatus.ONLINE, result.getStatus());
+        assertEquals("http://new:8080", result.url());
+        assertEquals(200.0, result.totalCapacity());
+        assertEquals(NodeStatus.ONLINE, result.status());
     }
 
     @Test
@@ -74,12 +74,11 @@ class NodeServiceTest {
         when(nodeRepository.findById(1)).thenReturn(Optional.of(existing));
         when(nodeRepository.save(any())).thenReturn(existing);
 
-        Node result = nodeService.patchNode(1, new NodePatchRequest(null, null, null, null));
+        NodeResponse result = nodeService.patchNode(1, new NodePatchRequest(null, null, null, null));
 
-        assertEquals("http://keep:8080", result.getUrl());
-        assertEquals(50.0, result.getTotalCapacity());
-        assertEquals(nodeKey, result.getKey());
-        assertEquals(NodeStatus.ONLINE, result.getStatus());
+        assertEquals("http://keep:8080", result.url());
+        assertEquals(50.0, result.totalCapacity());
+        assertEquals(NodeStatus.ONLINE, result.status());
     }
 
     @Test

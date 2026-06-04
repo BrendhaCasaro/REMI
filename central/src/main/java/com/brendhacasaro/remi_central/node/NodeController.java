@@ -3,7 +3,6 @@ package com.brendhacasaro.remi_central.node;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
 import com.brendhacasaro.remi_central.node.dto.NodeResponse;
-import com.brendhacasaro.remi_central.node.model.Node;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,15 +17,15 @@ public class NodeController {
     private final NodeService nodeService;
 
     @PostMapping
-    public ResponseEntity<Node> createNode(@RequestBody NodeConfigRequest request) {
-        Node node = nodeService.createNode(request);
+    public ResponseEntity<NodeResponse> createNode(@RequestBody NodeConfigRequest request) {
+        NodeResponse node = nodeService.createNode(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(node);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Node> patchNode(@PathVariable Integer id, @RequestBody NodePatchRequest request) {
-        Node node = nodeService.patchNode(id, request);
+    public ResponseEntity<NodeResponse> patchNode(@PathVariable Integer id, @RequestBody NodePatchRequest request) {
+        NodeResponse node = nodeService.patchNode(id, request);
 
         return ResponseEntity.ok(node);
     }

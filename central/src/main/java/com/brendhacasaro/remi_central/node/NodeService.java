@@ -20,7 +20,7 @@ public class NodeService {
     private final MediaRepository mediaRepository;
 
     @Transactional
-    public Node createNode(NodeConfigRequest request) {
+    public NodeResponse createNode(NodeConfigRequest request) {
         Node node = new Node(
                 request.url(),
                 request.totalCapacity(),
@@ -28,11 +28,12 @@ public class NodeService {
                 request.status()
         );
 
-        return nodeRepository.save(node);
+        node = nodeRepository.save(node);
+        return toResponse(node);
     }
 
     @Transactional
-    public Node patchNode(Integer id, NodePatchRequest request) {
+    public NodeResponse patchNode(Integer id, NodePatchRequest request) {
         Node node = nodeRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Node id " + id + " not found"));
 
@@ -52,18 +53,24 @@ public class NodeService {
             node.setStatus(request.status());
         }
 
-        return nodeRepository.save(node);
+        node = nodeRepository.save(node);
+        return toResponse(node);
     }
 
     public List<NodeResponse> getAllNodes() {
         return nodeRepository.findAll()
                 .stream()
-                .map(node -> new NodeResponse(
-                        node.getUrl(),
-                        node.getTotalCapacity(),
-                        node.getStatus()
-                ))
+                .map(this::toResponse)
                 .toList();
+    }
+
+    private NodeResponse toResponse(Node node) {
+        return new NodeResponse(
+                node.getId(),
+                node.getUrl(),
+                node.getTotalCapacity(),
+                node.getStatus()
+        );
     }
 
     @Transactional
