@@ -31,6 +31,7 @@ public class NodeMetricsScheduler {
             try {
                 MetricsResponse metrics = restClient.get()
                         .uri(node.getUrl() + "/api/metrics")
+                        .headers(headers -> headers.setBearerAuth(node.getKey()))
                         .retrieve()
                         .onStatus(HttpStatusCode::isError, (req, res) -> {
                             throw new RuntimeException("Metrics request failed: " + res.getStatusCode());

@@ -30,6 +30,7 @@ public class NodeHealthScheduler {
             try {
                 restClient.get()
                         .uri(node.getUrl() + "/api/health")
+                        .headers(headers -> headers.setBearerAuth(node.getKey()))
                         .retrieve()
                         .onStatus(HttpStatusCode::isError, (req, res) -> {
                             throw new RuntimeException("Health check failed: " + res.getStatusCode());
