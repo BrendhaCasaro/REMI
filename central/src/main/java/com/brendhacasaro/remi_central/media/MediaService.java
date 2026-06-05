@@ -1,6 +1,5 @@
 package com.brendhacasaro.remi_central.media;
 
-import com.brendhacasaro.remi_central.media.dto.MediaResponse;
 import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.Orchestrator;
@@ -96,10 +95,7 @@ public class MediaService {
         mediaRepository.delete(media);
     }
 
-    public List<MediaResponse> getAllMedias() {
-        return mediaRepository.findAll()
-                .stream()
-                .map(media -> new MediaResponse(media.getName()))
-                .toList();
+    public List<Media> getAllMedias() {
+        return mediaRepository.findAll();
     }
 }

@@ -4,7 +4,6 @@ import com.brendhacasaro.remi_central.media.MediaRepository;
 import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
-import com.brendhacasaro.remi_central.node.dto.NodeResponse;
 import com.brendhacasaro.remi_central.node.model.Node;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -63,15 +62,8 @@ public class NodeService {
         return nodeRepository.save(node);
     }
 
-    public List<NodeResponse> getAllNodes() {
-        return nodeRepository.findAll()
-                .stream()
-                .map(node -> new NodeResponse(
-                        node.getUrl(),
-                        node.getTotalCapacity(),
-                        node.getStatus()
-                ))
-                .toList();
+    public List<Node> getAllNodes() {
+        return nodeRepository.findAll();
     }
 
     @Transactional

@@ -4,7 +4,6 @@ import com.brendhacasaro.remi_central.media.MediaRepository;
 import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
-import com.brendhacasaro.remi_central.node.dto.NodeResponse;
 import com.brendhacasaro.remi_central.node.model.Node;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
@@ -91,16 +90,16 @@ class NodeServiceTest {
     }
 
     @Test
-    void getAllNodes_shouldReturnNodeResponses() {
+    void getAllNodes_shouldReturnNodes() {
         Node node1 = new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE);
         Node node2 = new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE);
         when(nodeRepository.findAll()).thenReturn(List.of(node1, node2));
 
-        List<NodeResponse> nodes = nodeService.getAllNodes();
+        List<Node> nodes = nodeService.getAllNodes();
 
         assertEquals(2, nodes.size());
-        assertEquals("http://a:8080", nodes.get(0).url());
-        assertEquals("http://b:8080", nodes.get(1).url());
+        assertEquals("http://a:8080", nodes.get(0).getUrl());
+        assertEquals("http://b:8080", nodes.get(1).getUrl());
     }
 
     @Test

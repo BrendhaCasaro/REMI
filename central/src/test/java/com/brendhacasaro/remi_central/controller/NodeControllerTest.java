@@ -8,7 +8,6 @@ import com.brendhacasaro.remi_central.node.NodeService;
 import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
-import com.brendhacasaro.remi_central.node.dto.NodeResponse;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -58,8 +57,8 @@ class NodeControllerTest {
     @Test
     void getAllNodes_shouldReturn200() throws Exception {
         when(nodeService.getAllNodes()).thenReturn(List.of(
-                new NodeResponse("http://a:8080", 100.0, NodeStatus.ONLINE),
-                new NodeResponse("http://b:8080", 200.0, NodeStatus.OFFLINE)));
+                new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE),
+                new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE)));
 
         mockMvc.perform(get("/nodes"))
                 .andExpect(status().isOk())

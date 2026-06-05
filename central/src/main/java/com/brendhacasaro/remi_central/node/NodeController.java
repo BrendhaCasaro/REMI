@@ -18,27 +18,39 @@ public class NodeController {
     private final NodeService nodeService;
 
     @PostMapping
-    public ResponseEntity<Node> createNode(@RequestBody NodeConfigRequest request) {
+    public ResponseEntity<NodeResponse> createNode(@RequestBody NodeConfigRequest request) {
         Node node = nodeService.createNode(request);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(node);
+        NodeResponse response = toResponse(node);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Node> patchNode(@PathVariable Integer id, @RequestBody NodePatchRequest request) {
+    public ResponseEntity<NodeResponse> patchNode(@PathVariable Integer id, @RequestBody NodePatchRequest request) {
         Node node = nodeService.patchNode(id, request);
-
-        return ResponseEntity.ok(node);
+        NodeResponse response = toResponse(node);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping
     public ResponseEntity<List<NodeResponse>> getAllNodes() {
-        return ResponseEntity.ok(nodeService.getAllNodes());
+        List<NodeResponse> nodes = nodeService.getAllNodes().stream()
+                .map(this::toResponse)
+                .toList();
+        return ResponseEntity.ok(nodes);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNode(@PathVariable Integer id) {
         nodeService.deleteNode(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private NodeResponse toResponse(Node node) {
+        return new NodeResponse(
+                node.getId(),
+                node.getUrl(),
+                node.getTotalCapacity(),
+                node.getStatus()
+        );
     }
 }
