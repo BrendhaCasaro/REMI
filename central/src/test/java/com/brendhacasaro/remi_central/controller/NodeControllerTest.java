@@ -21,7 +21,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.UUID;
+
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -40,12 +40,12 @@ class NodeControllerTest {
     @MockitoBean
     private NodeService nodeService;
 
-    private final UUID nodeKey = UUID.randomUUID();
+    private final String nodeKey = "test-key";
 
     @Test
     void createNode_shouldReturn201() throws Exception {
         when(nodeService.createNode(any())).thenReturn(
-                new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE));
+                new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE, 50.0));
 
         mockMvc.perform(post("/nodes")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -57,8 +57,8 @@ class NodeControllerTest {
     @Test
     void getAllNodes_shouldReturn200() throws Exception {
         when(nodeService.getAllNodes()).thenReturn(List.of(
-                new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE),
-                new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE)));
+                new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE, 50.0),
+                new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE, 50.0)));
 
         mockMvc.perform(get("/nodes"))
                 .andExpect(status().isOk())
@@ -69,7 +69,7 @@ class NodeControllerTest {
     @Test
     void patchNode_shouldReturn200() throws Exception {
         when(nodeService.patchNode(any(), any())).thenReturn(
-                new Node("http://patched:8080", 150.0, nodeKey, NodeStatus.ONLINE));
+                new Node("http://patched:8080", 150.0, nodeKey, NodeStatus.ONLINE, 50.0));
 
         mockMvc.perform(patch("/nodes/1")
                         .contentType(MediaType.APPLICATION_JSON)

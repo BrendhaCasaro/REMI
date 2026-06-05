@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,11 +19,11 @@ class NodeRepositoryTest {
     @Autowired
     private NodeRepository nodeRepository;
 
-    private final UUID nodeKey = UUID.randomUUID();
+    private final String nodeKey = "test-key";
 
     @Test
     void saveAndFindById() {
-        Node node = new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE);
+        Node node = new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE, 50.0);
         node = nodeRepository.save(node);
 
         Optional<Node> found = nodeRepository.findById(node.getId());
@@ -37,8 +36,8 @@ class NodeRepositoryTest {
 
     @Test
     void findAll_shouldReturnAllNodes() {
-        nodeRepository.save(new Node("http://n1:8080", 50.0, nodeKey, NodeStatus.ONLINE));
-        nodeRepository.save(new Node("http://n2:8080", 100.0, nodeKey, NodeStatus.OFFLINE));
+        nodeRepository.save(new Node("http://n1:8080", 50.0, nodeKey, NodeStatus.ONLINE, 50.0));
+        nodeRepository.save(new Node("http://n2:8080", 100.0, nodeKey, NodeStatus.OFFLINE, 50.0));
 
         List<Node> nodes = nodeRepository.findAll();
 
@@ -48,7 +47,7 @@ class NodeRepositoryTest {
     @Test
     void deleteNode() {
         Node node = nodeRepository.save(
-                new Node("http://delete:8080", 50.0, nodeKey, NodeStatus.ONLINE));
+                new Node("http://delete:8080", 50.0, nodeKey, NodeStatus.ONLINE, 50.0));
 
         nodeRepository.delete(node);
 

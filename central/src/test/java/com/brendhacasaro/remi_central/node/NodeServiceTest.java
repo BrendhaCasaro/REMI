@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,7 +32,7 @@ class NodeServiceTest {
     @InjectMocks
     private NodeService nodeService;
 
-    private final UUID nodeKey = UUID.randomUUID();
+    private final String nodeKey = "test-key";
 
     @Test
     void createNode_shouldPersistAndReturn() {
@@ -54,7 +54,7 @@ class NodeServiceTest {
     void patchNode_shouldUpdateAllFields() {
         Node existing = new Node("http://old:8080", 50.0, nodeKey, NodeStatus.OFFLINE, 0.0);
         when(nodeRepository.findById(1)).thenReturn(Optional.of(existing));
-        UUID newKey = UUID.randomUUID();
+        String newKey = "new-key";
         NodePatchRequest request = new NodePatchRequest(
                 "http://new:8080", 200.0, newKey, NodeStatus.ONLINE, null);
         when(nodeRepository.save(any())).thenReturn(existing);

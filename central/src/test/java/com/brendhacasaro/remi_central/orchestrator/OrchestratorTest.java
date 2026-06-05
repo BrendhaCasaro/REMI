@@ -8,7 +8,6 @@ import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +24,7 @@ class OrchestratorTest {
     @InjectMocks
     private Orchestrator orchestrator;
 
-    private final UUID nodeKey = UUID.randomUUID();
+    private final String nodeKey = "test-key";
 
     @Test
     void chooseNode_shouldThrowWhenNoNodesOnline() {
@@ -39,8 +38,7 @@ class OrchestratorTest {
 
     @Test
     void chooseNode_shouldReturnTheOnlyOnlineNode() {
-        Node node = new Node("http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE);
-        node.setDiskFree(50.0);
+        Node node = new Node("http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE, 50.0);
         when(nodeRepository.findTopByStatusOrderByDiskFreeDesc(NodeStatus.ONLINE))
                 .thenReturn(Optional.of(node));
 
@@ -52,8 +50,7 @@ class OrchestratorTest {
 
     @Test
     void chooseNode_shouldPickNodeWithMostFreeDisk() {
-        Node node = new Node("http://best:8080", 200.0, nodeKey, NodeStatus.ONLINE);
-        node.setDiskFree(100.0);
+        Node node = new Node("http://best:8080", 200.0, nodeKey, NodeStatus.ONLINE, 100.0);
         when(nodeRepository.findTopByStatusOrderByDiskFreeDesc(NodeStatus.ONLINE))
                 .thenReturn(Optional.of(node));
 

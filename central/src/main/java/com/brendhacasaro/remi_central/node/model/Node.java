@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.UUID;
-
 @Table(name = "node")
 @Entity
 @Getter
@@ -29,7 +27,7 @@ public class Node {
 
     @Column
     @NonNull
-    private UUID key;
+    private String key;
 
     @Column
     @NonNull

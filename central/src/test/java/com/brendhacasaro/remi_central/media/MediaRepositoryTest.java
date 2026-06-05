@@ -11,7 +11,7 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.List;
-import java.util.UUID;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,7 +39,7 @@ class MediaRepositoryTest {
     @Test
     void findByNodeId_shouldReturnAssociatedMedia() {
         Node node = nodeRepository.save(
-                new Node("http://node:8080", 100.0, UUID.randomUUID(), NodeStatus.ONLINE));
+                new Node("http://node:8080", 100.0, "test-key", NodeStatus.ONLINE, 50.0));
         Media media1 = new Media("file1.txt");
         media1.setNode(node);
         Media media2 = new Media("file2.txt");
