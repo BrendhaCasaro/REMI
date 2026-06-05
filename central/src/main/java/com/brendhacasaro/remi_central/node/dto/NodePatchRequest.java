@@ -8,6 +8,7 @@ public record NodePatchRequest(
         String url,
         Double totalCapacity,
         UUID key,
-        NodeStatus status
+        NodeStatus status,
+        Double diskFree
 ) {
 }

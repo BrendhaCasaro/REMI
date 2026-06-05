@@ -38,7 +38,7 @@ class NodeServiceTest {
     @Test
     void createNode_shouldPersistAndReturn() {
         NodeConfigRequest request = new NodeConfigRequest(
-                "http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE);
+                "http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE, null);
         when(nodeRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         Node result = nodeService.createNode(request);
@@ -57,7 +57,7 @@ class NodeServiceTest {
         when(nodeRepository.findById(1)).thenReturn(Optional.of(existing));
         UUID newKey = UUID.randomUUID();
         NodePatchRequest request = new NodePatchRequest(
-                "http://new:8080", 200.0, newKey, NodeStatus.ONLINE);
+                "http://new:8080", 200.0, newKey, NodeStatus.ONLINE, null);
         when(nodeRepository.save(any())).thenReturn(existing);
 
         Node result = nodeService.patchNode(1, request);
@@ -74,7 +74,7 @@ class NodeServiceTest {
         when(nodeRepository.findById(1)).thenReturn(Optional.of(existing));
         when(nodeRepository.save(any())).thenReturn(existing);
 
-        Node result = nodeService.patchNode(1, new NodePatchRequest(null, null, null, null));
+        Node result = nodeService.patchNode(1, new NodePatchRequest(null, null, null, null, null));
 
         assertEquals("http://keep:8080", result.getUrl());
         assertEquals(50.0, result.getTotalCapacity());
@@ -87,7 +87,7 @@ class NodeServiceTest {
         when(nodeRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class,
-                () -> nodeService.patchNode(99, new NodePatchRequest(null, null, null, null)));
+                () -> nodeService.patchNode(99, new NodePatchRequest(null, null, null, null, null)));
     }
 
     @Test

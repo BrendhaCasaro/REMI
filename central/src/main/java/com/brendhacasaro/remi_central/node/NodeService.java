@@ -28,6 +28,10 @@ public class NodeService {
                 request.status()
         );
 
+        if (request.diskFree() != null) {
+            node.setDiskFree(request.diskFree());
+        }
+
         return nodeRepository.save(node);
     }
 
@@ -50,6 +54,10 @@ public class NodeService {
 
         if (request.status() != null && request.status() != node.getStatus()) {
             node.setStatus(request.status());
+        }
+
+        if (request.diskFree() != null && !request.diskFree().equals(node.getDiskFree())) {
+            node.setDiskFree(request.diskFree());
         }
 
         return nodeRepository.save(node);
