@@ -37,5 +37,6 @@ public class Node {
     private NodeStatus status;
 
     @Column
+    @NonNull
     private Double diskFree;
 }

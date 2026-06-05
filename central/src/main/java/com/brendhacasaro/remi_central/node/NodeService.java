@@ -24,12 +24,9 @@ public class NodeService {
                 request.url(),
                 request.totalCapacity(),
                 request.key(),
-                request.status()
+                request.status(),
+                request.diskFree()
         );
-
-        if (request.diskFree() != null) {
-            node.setDiskFree(request.diskFree());
-        }
 
         return nodeRepository.save(node);
     }

@@ -37,7 +37,7 @@ class NodeServiceTest {
     @Test
     void createNode_shouldPersistAndReturn() {
         NodeConfigRequest request = new NodeConfigRequest(
-                "http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE, null);
+                "http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE, 0.0);
         when(nodeRepository.save(any())).thenAnswer(i -> i.getArgument(0));
 
         Node result = nodeService.createNode(request);
@@ -52,7 +52,7 @@ class NodeServiceTest {
 
     @Test
     void patchNode_shouldUpdateAllFields() {
-        Node existing = new Node("http://old:8080", 50.0, nodeKey, NodeStatus.OFFLINE);
+        Node existing = new Node("http://old:8080", 50.0, nodeKey, NodeStatus.OFFLINE, 0.0);
         when(nodeRepository.findById(1)).thenReturn(Optional.of(existing));
         UUID newKey = UUID.randomUUID();
         NodePatchRequest request = new NodePatchRequest(
@@ -69,7 +69,7 @@ class NodeServiceTest {
 
     @Test
     void patchNode_shouldIgnoreNullFields() {
-        Node existing = new Node("http://keep:8080", 50.0, nodeKey, NodeStatus.ONLINE);
+        Node existing = new Node("http://keep:8080", 50.0, nodeKey, NodeStatus.ONLINE, 100.0);
         when(nodeRepository.findById(1)).thenReturn(Optional.of(existing));
         when(nodeRepository.save(any())).thenReturn(existing);
 
@@ -91,8 +91,8 @@ class NodeServiceTest {
 
     @Test
     void getAllNodes_shouldReturnNodes() {
-        Node node1 = new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE);
-        Node node2 = new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE);
+        Node node1 = new Node("http://a:8080", 100.0, nodeKey, NodeStatus.ONLINE, 50.0);
+        Node node2 = new Node("http://b:8080", 200.0, nodeKey, NodeStatus.OFFLINE, 200.0);
         when(nodeRepository.findAll()).thenReturn(List.of(node1, node2));
 
         List<Node> nodes = nodeService.getAllNodes();
@@ -104,7 +104,7 @@ class NodeServiceTest {
 
     @Test
     void deleteNode_shouldDeleteMediaThenNode() {
-        Node node = new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE);
+        Node node = new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE, 0.0);
         when(nodeRepository.findById(1)).thenReturn(Optional.of(node));
         when(mediaRepository.findByNodeId(1)).thenReturn(List.of(new Media("test.txt")));
 
@@ -116,7 +116,7 @@ class NodeServiceTest {
 
     @Test
     void deleteNode_shouldDeleteNodeEvenWithoutMedia() {
-        Node node = new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE);
+        Node node = new Node("http://node:8080", 100.0, nodeKey, NodeStatus.ONLINE, 0.0);
         when(nodeRepository.findById(1)).thenReturn(Optional.of(node));
         when(mediaRepository.findByNodeId(1)).thenReturn(List.of());
 
