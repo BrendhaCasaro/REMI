@@ -8,6 +8,7 @@ public record NodeConfigRequest(
         String url,
         Double totalCapacity,
         UUID key,
-        NodeStatus status
+        NodeStatus status,
+        Double diskFree
 ) {
 }
