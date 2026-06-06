@@ -50,8 +50,8 @@ class StoredMediaServiceTest {
 
         String url = service.upload(mediaId, file);
 
-        assertTrue(Files.exists(tempDir.resolve("test_txt_" + mediaId)));
-        assertEquals("hello", Files.readString(tempDir.resolve("test_txt_" + mediaId)));
+        assertTrue(Files.exists(tempDir.resolve("test.txt_" + mediaId)));
+        assertEquals("hello", Files.readString(tempDir.resolve("test.txt_" + mediaId)));
         assertEquals("/api/files/download/" + mediaId, url);
         verify(repository).save(any(StoredMedia.class));
     }
@@ -99,7 +99,7 @@ class StoredMediaServiceTest {
 
         service.upload(mediaId, file);
 
-        assertTrue(Files.exists(tempDir.resolve("__bad_name_.txt_" + mediaId)));
+        assertTrue(Files.exists(tempDir.resolve(".._bad_name_.txt_" + mediaId)));
     }
 
     @Test

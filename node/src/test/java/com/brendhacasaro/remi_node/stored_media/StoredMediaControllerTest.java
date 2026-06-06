@@ -36,7 +36,8 @@ class StoredMediaControllerTest {
 
         mockMvc.perform(multipart("/api/files/upload")
                         .file(file)
-                        .param("mediaId", mediaId.toString()))
+                        .param("mediaId", mediaId.toString())
+                        .header("Authorization", "Bearer dev-key-123"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/files/download/" + mediaId));
     }
@@ -48,7 +49,8 @@ class StoredMediaControllerTest {
                 "file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "content".getBytes());
         when(storedMediaService.download(mediaId)).thenReturn(file.getResource());
 
-        mockMvc.perform(get("/api/files/download/{id}", mediaId))
+        mockMvc.perform(get("/api/files/download/{id}", mediaId)
+                .header("Authorization", "Bearer dev-key-123"))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Disposition", "attachment; filename=\"test.txt\""))
                 .andExpect(content().contentType(MediaType.APPLICATION_OCTET_STREAM));
@@ -59,7 +61,8 @@ class StoredMediaControllerTest {
         UUID mediaId = UUID.randomUUID();
         doNothing().when(storedMediaService).delete(mediaId);
 
-        mockMvc.perform(delete("/api/files/delete/{id}", mediaId))
+        mockMvc.perform(delete("/api/files/delete/{id}", mediaId)
+                .header("Authorization", "Bearer dev-key-123"))
                 .andExpect(status().isNoContent());
     }
 }

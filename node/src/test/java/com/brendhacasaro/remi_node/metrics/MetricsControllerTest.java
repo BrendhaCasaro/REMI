@@ -24,7 +24,8 @@ class MetricsControllerTest {
     void metrics_shouldReturnDiskFree() throws Exception {
         when(storageMetricsService.diskFreeGb()).thenReturn(42.5);
 
-        mockMvc.perform(get("/api/metrics"))
+        mockMvc.perform(get("/api/metrics")
+                .header("Authorization", "Bearer dev-key-123"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.disk_free").value(42.5));
     }

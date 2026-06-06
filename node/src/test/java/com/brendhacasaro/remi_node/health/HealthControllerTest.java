@@ -16,7 +16,8 @@ class HealthControllerTest {
 
     @Test
     void health_shouldReturn200() throws Exception {
-        mockMvc.perform(get("/api/health"))
+        mockMvc.perform(get("/api/health")
+                .header("Authorization", "Bearer dev-key-123"))
                 .andExpect(status().isOk());
     }
 }

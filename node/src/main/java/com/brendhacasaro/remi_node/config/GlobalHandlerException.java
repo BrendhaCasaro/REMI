@@ -36,7 +36,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(UncheckedIOException.class)
     public ResponseEntity<ErrorResponse> handleIo(UncheckedIOException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse(e.getCause().getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
