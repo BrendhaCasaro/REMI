@@ -122,3 +122,7 @@ export function mockDeleteMedia(id: string): Promise<void> {
   if (idx !== -1) mockMedia.splice(idx, 1);
   return delay(undefined);
 }
+
+export function mockDownloadMedia(): Promise<Blob> {
+  return delay(new Blob(["mock content"], { type: "text/plain" }));
+}

@@ -33,12 +33,13 @@ public class MediaController {
 
     @GetMapping("/download/{id}")
     public ResponseEntity<Resource> downloadMedia(@PathVariable UUID id) {
-        Resource media = mediaService.downloadMedia(id);
+        Resource mediaResource = mediaService.downloadMedia(id);
+        Media media = mediaService.getMediaById(id);
 
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment, filename=\"" + media.getFilename() + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + media.getName() + "\"")
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(media);
+                .body(mediaResource);
     }
 
     @GetMapping("/")

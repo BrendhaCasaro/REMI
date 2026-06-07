@@ -10,6 +10,7 @@
   "uploadSuccess": "uploaded successfully",
   "uploadError": "Failed to upload file",
   "loadError": "Failed to load media",
+  "downloadError": "Failed to download file",
   "deleteSuccess": "deleted",
   "deleteError": "Failed to delete",
   "confirmDelete": {

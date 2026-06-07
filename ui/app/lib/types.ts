@@ -38,6 +38,7 @@ export type NodeConfigRequest = {
   totalCapacity: number;
   key: string;
   status: NodeStatus;
+  diskFree: number;
 };
 
 export type NodePatchRequest = {

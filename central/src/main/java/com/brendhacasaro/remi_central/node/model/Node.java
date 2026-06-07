@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
-@Table(name = "node")
+@Table(name = "nodes")
 @Entity
 @Getter
 @Setter

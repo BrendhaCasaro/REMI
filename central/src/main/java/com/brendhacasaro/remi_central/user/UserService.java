@@ -53,6 +53,10 @@ public class UserService {
             user.setPassword(passwordEncoder.encode(request.password()));
         }
 
+        if (request.role() != null && request.role() != user.getRole()) {
+            user.setRole(request.role());
+        }
+
         user = userRepository.save(user);
         return toResponse(user);
     }
@@ -66,6 +70,6 @@ public class UserService {
     }
 
     private UserResponse toResponse(User user) {
-        return new UserResponse(user.getId(), user.getUsername());
+        return new UserResponse(user.getId(), user.getUsername(), user.getRole());
     }
 }

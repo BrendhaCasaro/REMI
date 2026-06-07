@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, Outlet, useLocation } from "react-router";
+import { Link, Outlet, redirect, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { Moon, Sun } from "lucide-react";
 import { Button } from "~/components/ui/button";
@@ -30,6 +30,17 @@ function useTheme() {
   }
 
   return { theme, toggleTheme };
+}
+
+export async function clientLoader() {
+  if (typeof window !== "undefined" && !localStorage.getItem("token")) {
+    throw redirect("/login");
+  }
+  return null;
+}
+
+export function HydrateFallback() {
+  return null;
 }
 
 export default function AppLayout() {

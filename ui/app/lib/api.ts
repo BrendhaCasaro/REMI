@@ -21,11 +21,12 @@ import {
   mockListMedia,
   mockUploadMedia,
   mockDeleteMedia,
+  mockDownloadMedia,
 } from "./mock";
 
-const USE_MOCK = true;
+const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 
-export const API_BASE = "http://localhost:8080";
+export const API_BASE = import.meta.env.CENTRAL_API_URL ?? "http://localhost:8080";
 
 function authHeaders(): Record<string, string> {
   const token = localStorage.getItem("token");
@@ -33,13 +34,17 @@ function authHeaders(): Record<string, string> {
 }
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
+  const headers: Record<string, string> = {
+    ...authHeaders(),
+    ...(options?.headers as Record<string, string>),
+  };
+  const body = options?.body;
+  if (!(body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
-    headers: {
-      "Content-Type": "application/json",
-      ...authHeaders(),
-      ...(options?.headers as Record<string, string>),
-    },
+    headers,
   });
   if (res.status === 401) {
     localStorage.removeItem("token");
@@ -51,7 +56,8 @@ async function api<T>(path: string, options?: RequestInit): Promise<T> {
     throw new Error(body.message ?? res.statusText);
   }
   if (res.status === 204) return undefined as T;
-  return res.json();
+  const text = await res.text();
+  return (text ? JSON.parse(text) : undefined) as T;
 }
 
 // Auth
@@ -108,14 +114,28 @@ export function listMedia(): Promise<MediaResponse[]> {
   return api("/api/files/");
 }
 
-export function uploadMedia(file: File): Promise<MediaResponse> {
-  if (USE_MOCK) return mockUploadMedia(file);
+export function uploadMedia(file: File): Promise<void> {
+  if (USE_MOCK) return mockUploadMedia(file).then(() => undefined);
   const formData = new FormData();
   formData.append("file", file);
-  return api("/api/files/upload", { method: "POST", body: formData });
+  return api<void>("/api/files/upload", { method: "POST", body: formData });
 }
 
 export function deleteMedia(id: string): Promise<void> {
   if (USE_MOCK) return mockDeleteMedia(id);
   return api(`/api/files/${id}`, { method: "DELETE" });
+}
+
+export async function downloadMedia(id: string): Promise<Blob> {
+  if (USE_MOCK) return mockDownloadMedia();
+  const res = await fetch(`${API_BASE}/api/files/download/${id}`, {
+    headers: { ...authHeaders() },
+  });
+  if (res.status === 401) {
+    localStorage.removeItem("token");
+    if (typeof window !== "undefined") window.location.href = "/login";
+    throw new Error("Unauthorized");
+  }
+  if (!res.ok) throw new Error("Download failed");
+  return res.blob();
 }

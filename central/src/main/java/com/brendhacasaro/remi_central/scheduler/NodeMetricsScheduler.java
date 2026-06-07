@@ -6,6 +6,7 @@ import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,9 +20,10 @@ public class NodeMetricsScheduler {
     private final NodeRepository nodeRepository;
     private final RestClient restClient;
 
-    public NodeMetricsScheduler(NodeRepository nodeRepository, RestClient.Builder restClientBuilder) {
+    @Autowired
+    public NodeMetricsScheduler(NodeRepository nodeRepository) {
         this.nodeRepository = nodeRepository;
-        this.restClient = restClientBuilder.build();
+        this.restClient = RestClient.create();
     }
 
     // Apenas para injeção de mock RestClient nos testes

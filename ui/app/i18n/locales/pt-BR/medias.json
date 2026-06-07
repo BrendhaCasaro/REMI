@@ -10,6 +10,7 @@
   "uploadSuccess": "enviado com sucesso",
   "uploadError": "Erro ao enviar arquivo",
   "loadError": "Erro ao carregar mídias",
+  "downloadError": "Erro ao baixar arquivo",
   "deleteSuccess": "excluído",
   "deleteError": "Erro ao excluir",
   "confirmDelete": {

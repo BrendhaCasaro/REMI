@@ -5,6 +5,7 @@ import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -18,9 +19,10 @@ public class NodeHealthScheduler {
     private final NodeRepository nodeRepository;
     private final RestClient restClient;
 
-    public NodeHealthScheduler(NodeRepository nodeRepository, RestClient.Builder restClientBuilder) {
+    @Autowired
+    public NodeHealthScheduler(NodeRepository nodeRepository) {
         this.nodeRepository = nodeRepository;
-        this.restClient = restClientBuilder.build();
+        this.restClient = RestClient.create();
     }
 
     // Apenas para injeção de mock RestClient nos testes

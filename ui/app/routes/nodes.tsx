@@ -203,6 +203,7 @@ export default function Nodes() {
           totalCapacity: Number(formCapacity),
           key: formKey || crypto.randomUUID(),
           status: formStatus,
+          diskFree: 0,
         });
         toast.success(t("saveSuccess"));
       }

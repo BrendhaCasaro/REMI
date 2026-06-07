@@ -6,6 +6,7 @@ import com.brendhacasaro.remi_central.orchestrator.Orchestrator;
 import com.brendhacasaro.remi_central.orchestrator.OrchestratorException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatusCode;
@@ -26,10 +27,11 @@ public class MediaService {
     private final Orchestrator orchestrator;
     private final RestClient restClient;
 
-    public MediaService(MediaRepository mediaRepository, Orchestrator orchestrator, RestClient.Builder restClientBuilder) {
+    @Autowired
+    public MediaService(MediaRepository mediaRepository, Orchestrator orchestrator) {
         this.mediaRepository = mediaRepository;
         this.orchestrator = orchestrator;
-        this.restClient = restClientBuilder.build();
+        this.restClient = RestClient.create();
     }
 
     // Apenas para injeção de mock RestClient nos testes
@@ -48,8 +50,13 @@ public class MediaService {
             throw new OrchestratorException("No Nodes available", e);
         }
 
+        Media media = new Media(file.getOriginalFilename());
+        media.setNode(node);
+        mediaRepository.save(media);
+
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", file.getResource());
+        body.add("mediaId", media.getId().toString());
 
         restClient.post()
                 .uri(node.getUrl() + "/api/files/upload")
@@ -61,10 +68,6 @@ public class MediaService {
                     throw new RestClientException("HTTP error: " + res.getStatusCode() + res.getBody());
                 })
                 .toBodilessEntity();
-
-        Media media = new Media(file.getOriginalFilename());
-        media.setNode(node);
-        mediaRepository.save(media);
 
         return "/download/" + media.getId();
     }
@@ -80,7 +83,7 @@ public class MediaService {
                 .headers(headers -> headers.setBearerAuth(node.getKey().toString()))
                 .exchange((request, response) -> {
                     if (response.getStatusCode().isError()) {
-                        throw new RestClientException("HTTP error: " + response.getStatusCode());
+                        throw new RestClientException("Error to download media: " + response.getStatusCode());
                     }
                     return new InputStreamResource(response.getBody());
                 });
@@ -109,5 +112,10 @@ public class MediaService {
 
     public List<Media> getAllMedias() {
         return mediaRepository.findAll();
+    }
+
+    public Media getMediaById(UUID id) {
+        return mediaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Id " + id + " not found"));
     }
 }

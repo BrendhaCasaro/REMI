@@ -1,0 +1,117 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: remi-postgres
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U myuser" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - remi-network
+
+  central:
+    build: ./central
+    container_name: remi-central
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/remi-centraldb
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_DOCKER_COMPOSE_ENABLED: "false"
+      APP_ADMIN_PASSWORD: root123
+    ports:
+      - "8080:8080"
+    networks:
+      - remi-network
+
+  node1:
+    build: ./node
+    container_name: remi-node1
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/remi-nodedb1
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: secret
+      NODE_AUTH_KEY: node1-key-123
+    ports:
+      - "8081:8080"
+    volumes:
+      - node1_storage:/storage
+    networks:
+      - remi-network
+
+  node2:
+    build: ./node
+    container_name: remi-node2
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/remi-nodedb2
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: secret
+      NODE_AUTH_KEY: node2-key-456
+    ports:
+      - "8082:8080"
+    volumes:
+      - node2_storage:/storage
+    networks:
+      - remi-network
+
+  node3:
+    build: ./node
+    container_name: remi-node3
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/remi-nodedb3
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: secret
+      NODE_AUTH_KEY: node3-key-789
+    ports:
+      - "8083:8080"
+    volumes:
+      - node3_storage:/storage
+    networks:
+      - remi-network
+
+  frontend:
+    build: ./ui
+    container_name: remi-frontend
+    depends_on:
+      - central
+    ports:
+      - "3000:3000"
+    networks:
+      - remi-network
+
+  adminer:
+    image: adminer:4
+    container_name: remi-adminer
+    ports:
+      - "8090:8080"
+    networks:
+      - remi-network
+
+networks:
+  remi-network:
+    driver: bridge
+
+volumes:
+  pg_data:
+  node1_storage:
+  node2_storage:
+  node3_storage:

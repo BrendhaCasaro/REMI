@@ -24,12 +24,14 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "~/components/ui/input-group";
-import { listMedia, uploadMedia, deleteMedia, API_BASE } from "~/lib/api";
+import { listMedia, uploadMedia, deleteMedia, downloadMedia } from "~/lib/api";
 import type { MediaResponse } from "~/lib/types";
+import { useNavigate } from "react-router";
 
 export default function Medias() {
   const { t } = useTranslation("medias");
   const { t: tc } = useTranslation("common");
+  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [medias, setMedias] = useState<MediaResponse[]>([]);
   const [loading, setLoading] = useState(true);
@@ -122,9 +124,9 @@ export default function Medias() {
     if (!file) return;
     setUploading(true);
     try {
-      const storedMedia = await uploadMedia(file);
-      setMedias((prev) => [storedMedia, ...prev]);
+      await uploadMedia(file);
       toast.success(`${file.name} ${t("uploadSuccess")}`);
+      navigate("/");
     } catch {
       toast.error(t("uploadError"));
     } finally {
@@ -133,11 +135,18 @@ export default function Medias() {
     }
   }
 
-  function handleDownload(storedMedia: MediaResponse) {
-    const link = document.createElement("a");
-    link.href = `${API_BASE}/api/files/download/${storedMedia.id}`;
-    link.download = storedMedia.name;
-    link.click();
+  async function handleDownload(storedMedia: MediaResponse) {
+    try {
+      const blob = await downloadMedia(storedMedia.id);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = storedMedia.name;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast.error(t("downloadError"));
+    }
   }
 
   async function handleDelete() {

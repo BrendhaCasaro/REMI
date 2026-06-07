@@ -40,7 +40,7 @@ class UserControllerTest {
 
     @Test
     void createUser_shouldReturn201() throws Exception {
-        when(userService.createUser(any())).thenReturn(new UserResponse(1, "newuser"));
+        when(userService.createUser(any())).thenReturn(new UserResponse(1, "newuser", Role.ADMIN));
 
         mockMvc.perform(post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -54,8 +54,8 @@ class UserControllerTest {
     @Test
     void getAllUsers_shouldReturn200() throws Exception {
         when(userService.getAllUsers()).thenReturn(List.of(
-                new UserResponse(1, "user1"),
-                new UserResponse(2, "user2")));
+                new UserResponse(1, "user1", Role.ADMIN),
+                new UserResponse(2, "user2", Role.ADMIN)));
 
         mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
@@ -65,7 +65,7 @@ class UserControllerTest {
 
     @Test
     void getUserById_shouldReturn200() throws Exception {
-        when(userService.getUserById(1)).thenReturn(new UserResponse(1, "found"));
+        when(userService.getUserById(1)).thenReturn(new UserResponse(1, "found", Role.ADMIN));
 
         mockMvc.perform(get("/api/users/1"))
                 .andExpect(status().isOk())
@@ -75,7 +75,7 @@ class UserControllerTest {
 
     @Test
     void updateUser_shouldReturn200() throws Exception {
-        when(userService.updateUser(any(), any())).thenReturn(new UserResponse(1, "updated"));
+        when(userService.updateUser(any(), any())).thenReturn(new UserResponse(1, "updated", Role.ADMIN));
 
         mockMvc.perform(put("/api/users/1")
                         .contentType(MediaType.APPLICATION_JSON)
