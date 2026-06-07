@@ -5,7 +5,6 @@ import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -16,10 +15,20 @@ import java.util.List;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class NodeMetricsScheduler {
     private final NodeRepository nodeRepository;
-    private final RestClient restClient = RestClient.create();
+    private final RestClient restClient;
+
+    public NodeMetricsScheduler(NodeRepository nodeRepository, RestClient.Builder restClientBuilder) {
+        this.nodeRepository = nodeRepository;
+        this.restClient = restClientBuilder.build();
+    }
+
+    // Apenas para injeção de mock RestClient nos testes
+    NodeMetricsScheduler(NodeRepository nodeRepository, RestClient restClient) {
+        this.nodeRepository = nodeRepository;
+        this.restClient = restClient;
+    }
 
     private static final long FIFTEEN_MINUTES_MS = 15 * 60_000;
 

@@ -6,7 +6,6 @@ import com.brendhacasaro.remi_central.orchestrator.Orchestrator;
 import com.brendhacasaro.remi_central.orchestrator.OrchestratorException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatusCode;
@@ -22,11 +21,23 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class MediaService {
     private final MediaRepository mediaRepository;
     private final Orchestrator orchestrator;
-    private final RestClient restClient = RestClient.create();
+    private final RestClient restClient;
+
+    public MediaService(MediaRepository mediaRepository, Orchestrator orchestrator, RestClient.Builder restClientBuilder) {
+        this.mediaRepository = mediaRepository;
+        this.orchestrator = orchestrator;
+        this.restClient = restClientBuilder.build();
+    }
+
+    // Apenas para injeção de mock RestClient nos testes
+    MediaService(MediaRepository mediaRepository, Orchestrator orchestrator, RestClient restClient) {
+        this.mediaRepository = mediaRepository;
+        this.orchestrator = orchestrator;
+        this.restClient = restClient;
+    }
 
     @Transactional
     public String createMedia(MultipartFile file) {
@@ -48,7 +59,8 @@ public class MediaService {
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (req, res) -> {
                     throw new RestClientException("HTTP error: " + res.getStatusCode() + res.getBody());
-                });
+                })
+                .toBodilessEntity();
 
         Media media = new Media(file.getOriginalFilename());
         media.setNode(node);
