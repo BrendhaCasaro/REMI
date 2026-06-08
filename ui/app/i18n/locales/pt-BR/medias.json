@@ -9,6 +9,7 @@
   "empty": "Nenhuma mídia encontrada. Faça upload do primeiro arquivo.",
   "uploadSuccess": "enviado com sucesso",
   "uploadError": "Erro ao enviar arquivo",
+  "uploadTooLarge": "Arquivo excede o limite de 100 MB",
   "loadError": "Erro ao carregar mídias",
   "downloadError": "Erro ao baixar arquivo",
   "deleteSuccess": "excluído",

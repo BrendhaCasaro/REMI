@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link, Outlet, redirect, useLocation } from "react-router";
+import { Link, Outlet, redirect, useLocation, useNavigate } from "react-router";
 import { useTranslation } from "react-i18next";
-import { Moon, Sun } from "lucide-react";
+import { LogOut, Moon, Sun } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import {
   Select,
@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { getRole, clearAuth, isTokenExpired, ADMIN_ROUTES } from "~/lib/auth";
 
 const languages = [
   { code: "pt-BR", label: "pt-BR" },
@@ -33,8 +34,18 @@ function useTheme() {
 }
 
 export async function clientLoader() {
-  if (typeof window !== "undefined" && !localStorage.getItem("token")) {
-    throw redirect("/login");
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (!token) throw redirect("/login");
+    if (isTokenExpired(token)) {
+      clearAuth();
+      throw redirect("/login");
+    }
+    const role = localStorage.getItem("role");
+    const path = window.location.pathname;
+    if (role === "USER" && (ADMIN_ROUTES as readonly string[]).includes(path)) {
+      throw redirect("/medias");
+    }
   }
   return null;
 }
@@ -45,14 +56,25 @@ export function HydrateFallback() {
 
 export default function AppLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { t, i18n } = useTranslation("common");
   const { theme, toggleTheme } = useTheme();
+  const role = getRole();
 
   const navItems = [
     { to: "/medias", label: t("nav.medias") },
-    { to: "/users", label: t("nav.users") },
-    { to: "/nodes", label: t("nav.nodes") },
+    ...(role === "ADMIN"
+      ? [
+          { to: "/users" as const, label: t("nav.users") },
+          { to: "/nodes" as const, label: t("nav.nodes") },
+        ]
+      : []),
   ];
+
+  function handleLogout() {
+    clearAuth();
+    navigate("/login", { replace: true });
+  }
 
   return (
     <div className="min-h-screen">
@@ -105,6 +127,15 @@ export default function AppLayout() {
                 ))}
               </SelectContent>
             </Select>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0"
+              onClick={handleLogout}
+              title={t("actions.logout")}
+            >
+              <LogOut className="size-4" />
+            </Button>
           </div>
         </div>
       </header>

@@ -4,7 +4,6 @@
   "search": "Buscar por URL...",
   "table": {
     "url": "URL",
-    "capacity": "Capacidade (GB)",
     "status": "Status"
   },
   "empty": "Nenhum node cadastrado.",
@@ -20,7 +19,6 @@
   "form": {
     "url": "URL",
     "urlPlaceholder": "http://node1.local:8081",
-    "capacity": "Capacidade total (GB)",
     "key": "Chave de autenticação",
     "status": "Status",
     "online": "Online",
@@ -31,7 +29,7 @@
   "saveError": "Erro ao salvar node",
   "deleteSuccess": "Node excluído",
   "deleteError": "Erro ao excluir",
-  "validation": "Preencha URL e capacidade",
+  "validation": "Preencha a URL",
   "confirmDelete": {
     "title": "Confirmar exclusão",
     "description": "Deseja realmente excluir o node <bold>{{url}}</bold>? Todas as mídias armazenadas neste node também serão removidas."

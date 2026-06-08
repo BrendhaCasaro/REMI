@@ -8,6 +8,7 @@ import type {
   NodePatchRequest,
   MediaResponse,
 } from "./types";
+import { buildMockJwt } from "./auth";
 
 let nextUserId = 4;
 let nextNodeId = 4;
@@ -19,9 +20,9 @@ const mockUsers: UserResponse[] = [
 ];
 
 const mockNodes: NodeResponse[] = [
-  { id: 1, url: "http://node1.local:8081", totalCapacity: 500, status: "ONLINE" },
-  { id: 2, url: "http://node2.local:8081", totalCapacity: 1000, status: "ONLINE" },
-  { id: 3, url: "http://node3.local:8081", totalCapacity: 250, status: "OFFLINE" },
+  { id: 1, url: "http://node1.local:8081", status: "ONLINE" },
+  { id: 2, url: "http://node2.local:8081", status: "ONLINE" },
+  { id: 3, url: "http://node3.local:8081", status: "OFFLINE" },
 ];
 
 const mockMedia: MediaResponse[] = [
@@ -35,8 +36,10 @@ function delay<T>(data: T, ms = 400): Promise<T> {
 }
 
 // Auth
-export function mockLogin(_request: LoginRequest): Promise<LoginResponse> {
-  return delay({ token: "mock-jwt-token-abc123" });
+export function mockLogin(request: LoginRequest): Promise<LoginResponse> {
+  const user = mockUsers.find((u) => u.username === request.username);
+  const role = user?.role ?? "USER";
+  return delay({ token: buildMockJwt(request.username, role) });
 }
 
 // Users
@@ -76,7 +79,6 @@ export function mockCreateNode(request: NodeConfigRequest): Promise<NodeResponse
   const node: NodeResponse = {
     id: nextNodeId++,
     url: request.url,
-    totalCapacity: request.totalCapacity,
     status: request.status,
   };
   mockNodes.push(node);
@@ -89,7 +91,6 @@ export function mockPatchNode(id: number, request: NodePatchRequest): Promise<No
   const updated = {
     id: existing.id,
     url: request.url ?? existing.url,
-    totalCapacity: request.totalCapacity ?? existing.totalCapacity,
     status: request.status ?? existing.status,
   };
   Object.assign(existing, updated);

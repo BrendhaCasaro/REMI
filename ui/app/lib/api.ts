@@ -8,6 +8,7 @@ import type {
   NodePatchRequest,
   MediaResponse,
 } from "./types";
+import { clearAuth } from "./auth";
 import {
   mockLogin,
   mockListUsers,
@@ -47,7 +48,7 @@ async function api<T>(path: string, options?: RequestInit): Promise<T> {
     headers,
   });
   if (res.status === 401) {
-    localStorage.removeItem("token");
+    clearAuth();
     if (typeof window !== "undefined") window.location.href = "/login";
     throw new Error("Unauthorized");
   }
@@ -132,7 +133,7 @@ export async function downloadMedia(id: string): Promise<Blob> {
     headers: { ...authHeaders() },
   });
   if (res.status === 401) {
-    localStorage.removeItem("token");
+    clearAuth();
     if (typeof window !== "undefined") window.location.href = "/login";
     throw new Error("Unauthorized");
   }

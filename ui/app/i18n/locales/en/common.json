@@ -18,7 +18,8 @@
     "saving": "Saving...",
     "uploading": "Uploading...",
     "deleting": "Deleting...",
-    "openMenu": "Open menu"
+    "openMenu": "Open menu",
+    "logout": "Logout"
   },
   "confirmDelete": {
     "title": "Confirm deletion",
