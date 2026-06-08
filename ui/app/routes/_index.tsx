@@ -1,10 +1,9 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router";
+import { redirect } from "react-router";
+
+export async function clientLoader() {
+  throw redirect("/medias");
+}
 
 export default function Index() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    navigate("/medias", { replace: true });
-  }, []);
   return null;
 }

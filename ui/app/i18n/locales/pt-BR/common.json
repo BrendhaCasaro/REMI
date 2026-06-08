@@ -18,7 +18,8 @@
     "saving": "Salvando...",
     "uploading": "Enviando...",
     "deleting": "Excluindo...",
-    "openMenu": "Abrir menu"
+    "openMenu": "Abrir menu",
+    "logout": "Sair"
   },
   "confirmDelete": {
     "title": "Confirmar exclusão",

@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useLoaderData, useRevalidator } from "react-router";
 import { useTranslation } from "react-i18next";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, Search } from "lucide-react";
@@ -26,15 +27,18 @@ import {
 } from "~/components/ui/input-group";
 import { listMedia, uploadMedia, deleteMedia, downloadMedia } from "~/lib/api";
 import type { MediaResponse } from "~/lib/types";
-import { useNavigate } from "react-router";
+
+export async function clientLoader() {
+  return { medias: await listMedia() };
+}
 
 export default function Medias() {
+  const loaderData = useLoaderData() as { medias?: MediaResponse[] } | undefined;
+  const { medias = [] } = loaderData ?? {};
+  const revalidator = useRevalidator();
   const { t } = useTranslation("medias");
   const { t: tc } = useTranslation("common");
-  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [medias, setMedias] = useState<MediaResponse[]>([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [uploading, setUploading] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<MediaResponse | null>(null);
@@ -103,30 +107,21 @@ export default function Medias() {
     },
   ];
 
-  useEffect(() => {
-    loadMedias();
-  }, []);
-
-  async function loadMedias() {
-    setLoading(true);
-    try {
-      const data = await listMedia();
-      setMedias(data);
-    } catch {
-      toast.error(t("loadError"));
-    } finally {
-      setLoading(false);
-    }
-  }
+  const MAX_FILE_SIZE = 100 * 1024 * 1024;
 
   async function handleUpload(files: FileList | null) {
     const file = files?.[0];
     if (!file) return;
+    if (file.size > MAX_FILE_SIZE) {
+      toast.error(t("uploadTooLarge"));
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
     setUploading(true);
     try {
       await uploadMedia(file);
       toast.success(`${file.name} ${t("uploadSuccess")}`);
-      navigate("/");
+      revalidator.revalidate();
     } catch {
       toast.error(t("uploadError"));
     } finally {
@@ -154,7 +149,7 @@ export default function Medias() {
     setDeleting(true);
     try {
       await deleteMedia(deleteTarget.id);
-      setMedias((prev) => prev.filter((m) => m.id !== deleteTarget.id));
+      revalidator.revalidate();
       toast.success(`${deleteTarget.name} ${t("deleteSuccess")}`);
     } catch {
       toast.error(t("deleteError"));
@@ -163,6 +158,8 @@ export default function Medias() {
       setDeleteTarget(null);
     }
   }
+
+  const isLoading = !loaderData || revalidator.state === "loading";
 
   return (
     <>
@@ -201,7 +198,7 @@ export default function Medias() {
       <DataTable
         columns={columns}
         data={medias.filter((m) => m.name.toLowerCase().includes(search.toLowerCase()))}
-        loading={loading}
+        loading={isLoading}
         selectable
         emptyMessage={t("empty")}
       />

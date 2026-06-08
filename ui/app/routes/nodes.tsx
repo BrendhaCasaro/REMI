@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLoaderData, useRevalidator } from "react-router";
 import { useTranslation } from "react-i18next";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, Search } from "lucide-react";
@@ -37,17 +38,21 @@ import {
 import { listNodes, createNode, patchNode, deleteNode } from "~/lib/api";
 import type { NodeResponse, NodeStatus } from "~/lib/types";
 
+export async function clientLoader() {
+  return { nodes: await listNodes() };
+}
+
 export default function Nodes() {
+  const loaderData = useLoaderData() as { nodes?: NodeResponse[] } | undefined;
+  const { nodes = [] } = loaderData ?? {};
+  const revalidator = useRevalidator();
   const { t } = useTranslation("nodes");
   const { t: tc } = useTranslation("common");
-  const [nodes, setNodes] = useState<NodeResponse[]>([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   const [formOpen, setFormOpen] = useState(false);
   const [editingNode, setEditingNode] = useState<NodeResponse | null>(null);
   const [formUrl, setFormUrl] = useState("");
-  const [formCapacity, setFormCapacity] = useState("");
   const [formKey, setFormKey] = useState("");
   const [formStatus, setFormStatus] = useState<NodeStatus>("ONLINE");
   const [saving, setSaving] = useState(false);
@@ -84,20 +89,6 @@ export default function Nodes() {
       cell: ({ row }) => (
         <span className="font-mono text-sm">{row.original.url}</span>
       ),
-    },
-    {
-      accessorKey: "totalCapacity",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          className="-ml-4"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          {t("table.capacity")}
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      ),
-      cell: ({ getValue }) => `${getValue<number>()} GB`,
     },
     {
       accessorKey: "status",
@@ -148,26 +139,9 @@ export default function Nodes() {
     },
   ];
 
-  useEffect(() => {
-    loadNodes();
-  }, []);
-
-  async function loadNodes() {
-    setLoading(true);
-    try {
-      const data = await listNodes();
-      setNodes(data);
-    } catch {
-      toast.error(t("loadError"));
-    } finally {
-      setLoading(false);
-    }
-  }
-
   function openCreate() {
     setEditingNode(null);
     setFormUrl("");
-    setFormCapacity("");
     setFormKey(crypto.randomUUID());
     setFormStatus("ONLINE");
     setFormOpen(true);
@@ -176,14 +150,13 @@ export default function Nodes() {
   function openEdit(node: NodeResponse) {
     setEditingNode(node);
     setFormUrl(node.url);
-    setFormCapacity(String(node.totalCapacity));
     setFormKey("");
     setFormStatus(node.status);
     setFormOpen(true);
   }
 
   async function handleSave() {
-    if (!formUrl || !formCapacity) {
+    if (!formUrl) {
       toast.error(t("validation"));
       return;
     }
@@ -192,7 +165,6 @@ export default function Nodes() {
       if (editingNode) {
         await patchNode(editingNode.id, {
           url: formUrl,
-          totalCapacity: Number(formCapacity),
           key: formKey || undefined,
           status: formStatus,
         });
@@ -200,7 +172,7 @@ export default function Nodes() {
       } else {
         await createNode({
           url: formUrl,
-          totalCapacity: Number(formCapacity),
+          totalCapacity: 0,
           key: formKey || crypto.randomUUID(),
           status: formStatus,
           diskFree: 0,
@@ -208,7 +180,7 @@ export default function Nodes() {
         toast.success(t("saveSuccess"));
       }
       setFormOpen(false);
-      await loadNodes();
+      revalidator.revalidate();
     } catch {
       toast.error(t("saveError"));
     } finally {
@@ -221,7 +193,7 @@ export default function Nodes() {
     setDeleting(true);
     try {
       await deleteNode(deleteTarget.id);
-      setNodes((prev) => prev.filter((n) => n.id !== deleteTarget.id));
+      revalidator.revalidate();
       toast.success(t("deleteSuccess"));
     } catch {
       toast.error(t("deleteError"));
@@ -230,6 +202,8 @@ export default function Nodes() {
       setDeleteTarget(null);
     }
   }
+
+  const isLoading = !loaderData || revalidator.state === "loading";
 
   return (
     <>
@@ -257,7 +231,7 @@ export default function Nodes() {
       <DataTable
         columns={columns}
         data={nodes.filter((n) => n.url.toLowerCase().includes(search.toLowerCase()))}
-        loading={loading}
+        loading={isLoading}
         selectable
         emptyMessage={t("empty")}
       />
@@ -282,16 +256,6 @@ export default function Nodes() {
                 value={formUrl}
                 onChange={(e) => setFormUrl(e.target.value)}
                 placeholder={t("form.urlPlaceholder")}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="capacity">{t("form.capacity")}</Label>
-              <Input
-                id="capacity"
-                type="number"
-                value={formCapacity}
-                onChange={(e) => setFormCapacity(e.target.value)}
-                placeholder="500"
               />
             </div>
             {!editingNode && (

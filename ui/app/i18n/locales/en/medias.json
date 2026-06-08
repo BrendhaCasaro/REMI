@@ -9,6 +9,7 @@
   "empty": "No media found. Upload your first file.",
   "uploadSuccess": "uploaded successfully",
   "uploadError": "Failed to upload file",
+  "uploadTooLarge": "File exceeds the 100 MB limit",
   "loadError": "Failed to load media",
   "downloadError": "Failed to download file",
   "deleteSuccess": "deleted",

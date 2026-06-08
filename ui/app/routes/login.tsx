@@ -6,6 +6,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { login } from "~/lib/api";
+import { storeAuth } from "~/lib/auth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export default function Login() {
     setLoading(true);
     try {
       const res = await login({ username, password });
-      localStorage.setItem("token", res.token);
+      storeAuth(res.token);
       navigate("/medias");
     } catch {
       setError(t("error"));

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useLoaderData, useRevalidator } from "react-router";
 import { useTranslation } from "react-i18next";
 import type { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown, MoreHorizontal, Search } from "lucide-react";
@@ -37,11 +38,16 @@ import {
 import { listUsers, createUser, updateUser, deleteUser } from "~/lib/api";
 import type { UserResponse, Role } from "~/lib/types";
 
+export async function clientLoader() {
+  return { users: await listUsers() };
+}
+
 export default function Users() {
+  const loaderData = useLoaderData() as { users?: UserResponse[] } | undefined;
+  const { users = [] } = loaderData ?? {};
+  const revalidator = useRevalidator();
   const { t } = useTranslation("users");
   const { t: tc } = useTranslation("common");
-  const [users, setUsers] = useState<UserResponse[]>([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
   const [formOpen, setFormOpen] = useState(false);
@@ -130,22 +136,6 @@ export default function Users() {
     },
   ];
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  async function loadUsers() {
-    setLoading(true);
-    try {
-      const data = await listUsers();
-      setUsers(data);
-    } catch {
-      toast.error(t("loadError"));
-    } finally {
-      setLoading(false);
-    }
-  }
-
   function openCreate() {
     setEditingUser(null);
     setFormUsername("");
@@ -163,7 +153,11 @@ export default function Users() {
   }
 
   async function handleSave() {
-    if (!formUsername || !formPassword) {
+    if (!formUsername) {
+      toast.error(t("validation"));
+      return;
+    }
+    if (!editingUser && !formPassword) {
       toast.error(t("validation"));
       return;
     }
@@ -185,7 +179,7 @@ export default function Users() {
         toast.success(t("saveSuccess"));
       }
       setFormOpen(false);
-      await loadUsers();
+      revalidator.revalidate();
     } catch {
       toast.error(t("saveError"));
     } finally {
@@ -198,7 +192,7 @@ export default function Users() {
     setDeleting(true);
     try {
       await deleteUser(deleteTarget.id);
-      setUsers((prev) => prev.filter((u) => u.id !== deleteTarget.id));
+      revalidator.revalidate();
       toast.success(t("deleteSuccess"));
     } catch {
       toast.error(t("deleteError"));
@@ -207,6 +201,8 @@ export default function Users() {
       setDeleteTarget(null);
     }
   }
+
+  const isLoading = !loaderData || revalidator.state === "loading";
 
   return (
     <>
@@ -234,7 +230,7 @@ export default function Users() {
       <DataTable
         columns={columns}
         data={users.filter((u) => u.username.toLowerCase().includes(search.toLowerCase()))}
-        loading={loading}
+        loading={isLoading}
         selectable
         emptyMessage={t("empty")}
       />

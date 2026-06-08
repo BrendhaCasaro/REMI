@@ -29,7 +29,6 @@ export type UserRequest = {
 export type NodeResponse = {
   id: number;
   url: string;
-  totalCapacity: number;
   status: NodeStatus;
 };
 
@@ -43,7 +42,6 @@ export type NodeConfigRequest = {
 
 export type NodePatchRequest = {
   url?: string;
-  totalCapacity?: number;
   key?: string;
   status?: NodeStatus;
 };
