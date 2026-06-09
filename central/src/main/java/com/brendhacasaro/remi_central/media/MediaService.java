@@ -7,6 +7,9 @@ import com.brendhacasaro.remi_central.orchestrator.OrchestratorException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.IOException;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatusCode;
@@ -54,8 +57,20 @@ public class MediaService {
         media.setNode(node);
         mediaRepository.save(media);
 
+        ByteArrayResource fileResource;
+        try {
+            fileResource = new ByteArrayResource(file.getBytes()) {
+                @Override
+                public String getFilename() {
+                    return file.getOriginalFilename();
+                }
+            };
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read uploaded file", e);
+        }
+
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", file.getResource());
+        body.add("file", fileResource);
         body.add("mediaId", media.getId().toString());
 
         restClient.post()
@@ -65,7 +80,12 @@ public class MediaService {
                 .body(body)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (req, res) -> {
-                    throw new RestClientException("HTTP error: " + res.getStatusCode() + res.getBody());
+                    try (var bodyStream = res.getBody()) {
+                        String errorBody = new String(bodyStream.readAllBytes());
+                        throw new RestClientException("HTTP error: " + res.getStatusCode() + " " + errorBody);
+                    } catch (IOException e) {
+                        throw new RestClientException("HTTP error: " + res.getStatusCode());
+                    }
                 })
                 .toBodilessEntity();
 
