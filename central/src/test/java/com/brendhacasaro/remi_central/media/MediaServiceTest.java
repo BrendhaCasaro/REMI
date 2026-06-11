@@ -104,16 +104,7 @@ class MediaServiceTest {
         RestClient.ResponseSpec responseSpec = mock();
         when(restClient.post()).thenReturn(postSpec);
         when(postSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.onStatus(any(), any())).thenAnswer(inv -> {
-            throw new RestClientException("HTTP error: 500");
-        });
-        when(mediaRepository.save(any())).thenAnswer(i -> {
-            Media m = i.getArgument(0);
-            var idField = Media.class.getDeclaredField("id");
-            idField.setAccessible(true);
-            idField.set(m, UUID.randomUUID());
-            return m;
-        });
+        when(responseSpec.onStatus(any(), any())).thenThrow(new RestClientException("HTTP error: 500"));
 
         MockMultipartFile file = new MockMultipartFile("file", "test.txt", "text/plain", "content".getBytes());
 
