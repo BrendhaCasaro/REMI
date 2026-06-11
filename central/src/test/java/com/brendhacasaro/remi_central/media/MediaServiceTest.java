@@ -92,6 +92,13 @@ class MediaServiceTest {
     @Test
     void createMedia_shouldThrowWhenNodeReturnsError() {
         when(orchestrator.chooseNode()).thenReturn(testNode);
+        when(mediaRepository.save(any())).thenAnswer(i -> {
+            Media m = i.getArgument(0);
+            var idField = Media.class.getDeclaredField("id");
+            idField.setAccessible(true);
+            idField.set(m, UUID.randomUUID());
+            return m;
+        });
 
         RestClient.RequestBodyUriSpec postSpec = mock(RestClient.RequestBodyUriSpec.class, RETURNS_SELF);
         RestClient.ResponseSpec responseSpec = mock();
