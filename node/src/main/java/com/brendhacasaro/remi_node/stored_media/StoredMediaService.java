@@ -3,7 +3,7 @@ package com.brendhacasaro.remi_node.stored_media;
 import com.brendhacasaro.remi_node.stored_media.model.StoredMedia;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -19,10 +19,15 @@ import java.util.Locale;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class StoredMediaService {
     private final StoredMediaRepository storedMediarepository;
-    private final Path storageRoot = Path.of("/storage");
+    private final Path storageRoot;
+
+    public StoredMediaService(StoredMediaRepository storedMediarepository,
+                              @Value("${node.storage.path:/storage}") String storagePath) {
+        this.storedMediarepository = storedMediarepository;
+        this.storageRoot = Path.of(storagePath).toAbsolutePath().normalize();
+    }
 
     @Transactional
     public String upload(UUID mediaId, MultipartFile file) {

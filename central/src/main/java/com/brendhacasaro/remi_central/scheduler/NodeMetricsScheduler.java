@@ -1,16 +1,13 @@
 package com.brendhacasaro.remi_central.scheduler;
 
+import com.brendhacasaro.remi_central.node.NodeMetricsClient;
 import com.brendhacasaro.remi_central.node.NodeRepository;
-import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
@@ -18,18 +15,11 @@ import java.util.List;
 @Service
 public class NodeMetricsScheduler {
     private final NodeRepository nodeRepository;
-    private final RestClient restClient;
+    private final NodeMetricsClient metricsClient;
 
-    @Autowired
-    public NodeMetricsScheduler(NodeRepository nodeRepository) {
+    public NodeMetricsScheduler(NodeRepository nodeRepository, NodeMetricsClient metricsClient) {
         this.nodeRepository = nodeRepository;
-        this.restClient = RestClient.create();
-    }
-
-    // Apenas para injeção de mock RestClient nos testes
-    NodeMetricsScheduler(NodeRepository nodeRepository, RestClient restClient) {
-        this.nodeRepository = nodeRepository;
-        this.restClient = restClient;
+        this.metricsClient = metricsClient;
     }
 
     private static final long FIFTEEN_MINUTES_MS = 15 * 60_000;
@@ -40,14 +30,7 @@ public class NodeMetricsScheduler {
         List<Node> nodes = nodeRepository.findAll();
         for (Node node : nodes) {
             try {
-                MetricsResponse metrics = restClient.get()
-                        .uri(node.getUrl() + "/api/metrics")
-                        .headers(headers -> headers.setBearerAuth(node.getKey()))
-                        .retrieve()
-                        .onStatus(HttpStatusCode::isError, (req, res) -> {
-                            throw new RuntimeException("Metrics request failed: " + res.getStatusCode());
-                        })
-                        .body(MetricsResponse.class);
+                MetricsResponse metrics = metricsClient.fetchMetrics(node);
                 node.setDiskFree(metrics.diskFree());
                 log.debug("Updated disk free for node {}: {} GB", node.getUrl(), metrics.diskFree());
             } catch (Exception e) {

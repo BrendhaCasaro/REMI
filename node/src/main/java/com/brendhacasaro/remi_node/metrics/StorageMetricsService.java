@@ -13,7 +13,7 @@ import java.nio.file.Path;
 public class StorageMetricsService {
     private final Path storageRoot;
 
-    public StorageMetricsService(@Value("${node.storage.path:storage}") String storagePath) {
+    public StorageMetricsService(@Value("${node.storage.path:/storage}") String storagePath) {
         this.storageRoot = Path.of(storagePath).toAbsolutePath().normalize();
     }
 

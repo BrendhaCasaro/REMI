@@ -5,6 +5,7 @@ import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
 import com.brendhacasaro.remi_central.node.model.Node;
+import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,16 +30,20 @@ class NodeServiceTest {
     @Mock
     private MediaRepository mediaRepository;
 
+    @Mock
+    private NodeMetricsClient metricsClient;
+
     @InjectMocks
     private NodeService nodeService;
 
     private final String nodeKey = "test-key";
 
     @Test
-    void createNode_shouldPersistAndReturn() {
+    void createNode_shouldPersistAndFetchMetrics() {
         NodeConfigRequest request = new NodeConfigRequest(
                 "http://node1:8080", 100.0, nodeKey, NodeStatus.ONLINE, 0.0);
         when(nodeRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+        when(metricsClient.fetchMetrics(any())).thenReturn(new MetricsResponse(42.5));
 
         Node result = nodeService.createNode(request);
 
@@ -47,7 +52,9 @@ class NodeServiceTest {
         assertEquals(100.0, result.getTotalCapacity());
         assertEquals(nodeKey, result.getKey());
         assertEquals(NodeStatus.ONLINE, result.getStatus());
+        assertEquals(42.5, result.getDiskFree(), 0.001);
         verify(nodeRepository).save(any());
+        verify(metricsClient).fetchMetrics(any());
     }
 
     @Test

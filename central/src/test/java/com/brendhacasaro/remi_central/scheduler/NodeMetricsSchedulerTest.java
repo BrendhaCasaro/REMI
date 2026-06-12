@@ -1,20 +1,19 @@
 package com.brendhacasaro.remi_central.scheduler;
 
+import com.brendhacasaro.remi_central.node.NodeMetricsClient;
 import com.brendhacasaro.remi_central.node.NodeRepository;
 import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
+import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,30 +23,20 @@ class NodeMetricsSchedulerTest {
     private NodeRepository nodeRepository;
 
     @Mock
-    private RestClient restClient;
+    private NodeMetricsClient metricsClient;
 
     private NodeMetricsScheduler scheduler;
 
     @BeforeEach
     void setUp() {
-        scheduler = new NodeMetricsScheduler(nodeRepository, restClient);
+        scheduler = new NodeMetricsScheduler(nodeRepository, metricsClient);
     }
 
     @Test
     void updateMetrics_shouldUpdateDiskFree() {
         Node node = new Node("http://node:8080", 100.0, "key", NodeStatus.ONLINE, 50.0);
         when(nodeRepository.findAll()).thenReturn(List.of(node));
-
-        RestClient.RequestHeadersUriSpec getSpec = mock();
-        RestClient.RequestHeadersSpec headersSpec = mock();
-        RestClient.ResponseSpec responseSpec = mock();
-        when(restClient.get()).thenReturn(getSpec);
-        when(getSpec.uri(anyString())).thenReturn(headersSpec);
-        when(headersSpec.headers(any())).thenReturn(headersSpec);
-        when(headersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
-        when(responseSpec.body(eq(com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse.class)))
-                .thenReturn(new com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse(42.5));
+        when(metricsClient.fetchMetrics(node)).thenReturn(new MetricsResponse(42.5));
 
         scheduler.updateMetrics();
 
@@ -59,38 +48,20 @@ class NodeMetricsSchedulerTest {
         Node node1 = new Node("http://node1:8080", 100.0, "key", NodeStatus.ONLINE, 50.0);
         Node node2 = new Node("http://node2:8080", 200.0, "key", NodeStatus.ONLINE, 100.0);
         when(nodeRepository.findAll()).thenReturn(List.of(node1, node2));
-
-        RestClient.RequestHeadersUriSpec getSpec = mock();
-        RestClient.RequestHeadersSpec headersSpec = mock();
-        RestClient.ResponseSpec responseSpec = mock();
-        when(restClient.get()).thenReturn(getSpec);
-        when(getSpec.uri(anyString())).thenReturn(headersSpec);
-        when(headersSpec.headers(any())).thenReturn(headersSpec);
-        when(headersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.onStatus(any(), any())).thenReturn(responseSpec);
-        when(responseSpec.body(any(Class.class))).thenReturn(
-                new com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse(10.0));
+        when(metricsClient.fetchMetrics(any())).thenReturn(new MetricsResponse(10.0));
 
         scheduler.updateMetrics();
 
         assertEquals(10.0, node1.getDiskFree(), 0.001);
         assertEquals(10.0, node2.getDiskFree(), 0.001);
-        verify(restClient, times(2)).get();
+        verify(metricsClient, times(2)).fetchMetrics(any());
     }
 
     @Test
     void updateMetrics_shouldKeepOldValueWhenRequestFails() {
         Node node = new Node("http://node:8080", 100.0, "key", NodeStatus.ONLINE, 50.0);
         when(nodeRepository.findAll()).thenReturn(List.of(node));
-
-        RestClient.RequestHeadersUriSpec getSpec = mock();
-        RestClient.RequestHeadersSpec headersSpec = mock();
-        RestClient.ResponseSpec responseSpec = mock();
-        when(restClient.get()).thenReturn(getSpec);
-        when(getSpec.uri(anyString())).thenReturn(headersSpec);
-        when(headersSpec.headers(any())).thenReturn(headersSpec);
-        when(headersSpec.retrieve()).thenReturn(responseSpec);
-        when(responseSpec.onStatus(any(), any())).thenThrow(new RuntimeException("Metrics request failed: 500"));
+        when(metricsClient.fetchMetrics(node)).thenThrow(new RuntimeException("Metrics request failed: 500"));
 
         scheduler.updateMetrics();
 
@@ -101,13 +72,7 @@ class NodeMetricsSchedulerTest {
     void updateMetrics_shouldKeepOldValueWhenConnectionRefused() {
         Node node = new Node("http://node:8080", 100.0, "key", NodeStatus.ONLINE, 50.0);
         when(nodeRepository.findAll()).thenReturn(List.of(node));
-
-        RestClient.RequestHeadersUriSpec getSpec = mock();
-        RestClient.RequestHeadersSpec headersSpec = mock();
-        when(restClient.get()).thenReturn(getSpec);
-        when(getSpec.uri(anyString())).thenReturn(headersSpec);
-        when(headersSpec.headers(any())).thenReturn(headersSpec);
-        when(headersSpec.retrieve()).thenThrow(new RuntimeException("Connection refused"));
+        when(metricsClient.fetchMetrics(node)).thenThrow(new RuntimeException("Connection refused"));
 
         scheduler.updateMetrics();
 
@@ -120,6 +85,6 @@ class NodeMetricsSchedulerTest {
 
         scheduler.updateMetrics();
 
-        verifyNoInteractions(restClient);
+        verifyNoInteractions(metricsClient);
     }
 }

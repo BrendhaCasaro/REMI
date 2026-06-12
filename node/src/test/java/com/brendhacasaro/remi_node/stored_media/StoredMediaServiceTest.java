@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,8 +35,7 @@ class StoredMediaServiceTest {
 
     @BeforeEach
     void setUp() {
-        service = new StoredMediaService(repository);
-        ReflectionTestUtils.setField(service, "storageRoot", tempDir);
+        service = new StoredMediaService(repository, tempDir.toString());
     }
 
     @Test

@@ -5,18 +5,27 @@ import com.brendhacasaro.remi_central.media.model.Media;
 import com.brendhacasaro.remi_central.node.dto.NodeConfigRequest;
 import com.brendhacasaro.remi_central.node.dto.NodePatchRequest;
 import com.brendhacasaro.remi_central.node.model.Node;
+import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
-@RequiredArgsConstructor
 public class NodeService {
     private final NodeRepository nodeRepository;
     private final MediaRepository mediaRepository;
+    private final NodeMetricsClient metricsClient;
+
+    public NodeService(NodeRepository nodeRepository, MediaRepository mediaRepository,
+                       NodeMetricsClient metricsClient) {
+        this.nodeRepository = nodeRepository;
+        this.mediaRepository = mediaRepository;
+        this.metricsClient = metricsClient;
+    }
 
     @Transactional
     public Node createNode(NodeConfigRequest request) {
@@ -28,7 +37,17 @@ public class NodeService {
                 request.diskFree()
         );
 
-        return nodeRepository.save(node);
+        node = nodeRepository.save(node);
+
+        try {
+            MetricsResponse metrics = metricsClient.fetchMetrics(node);
+            node.setDiskFree(metrics.diskFree());
+            log.debug("Fetched initial disk free for node {}: {} GB", node.getUrl(), metrics.diskFree());
+        } catch (Exception e) {
+            log.warn("Failed to fetch initial metrics for node {}: {}", node.getUrl(), e.getMessage());
+        }
+
+        return node;
     }
 
     @Transactional
