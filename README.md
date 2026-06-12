@@ -1,6 +1,6 @@
 > **Português?** 🇧🇷 Leia o [README em Português](README.pt-BR.md).
 
-# REMI — Intelligent Media Office Repository
+# REMI — Distributed digital media manager
 
 Distributed digital media management system. Composed of a **central orchestrator** that manages metadata, authentication, and selection of the best storage node, **multiple storage nodes** that persist files to disk, and a **web interface** with server-side rendering (SSR).
 
