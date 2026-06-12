@@ -1,4 +1,4 @@
-# REMI — Repositório de Escritório de Mídias Inteligente
+# REMI — Gerenciador de mídias digitais distribuído
 
 Sistema distribuído de gerenciamento de mídias digitais. Composto por um **orquestrador central** que gerencia metadados, autenticação e a escolha do melhor nó de armazenamento, **múltiplos nós de armazenamento** que persistem os arquivos em disco, e uma **interface web** com renderização server-side (SSR).
 
