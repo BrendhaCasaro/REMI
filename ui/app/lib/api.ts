@@ -27,7 +27,7 @@ import {
 
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 
-export const API_BASE = import.meta.env.CENTRAL_API_URL;
+export const API_BASE = import.meta.env.VITE_CENTRAL_API_URL;
 
 function authHeaders(): Record<string, string> {
   const token = localStorage.getItem("token");
