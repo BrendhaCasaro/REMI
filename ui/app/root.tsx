@@ -5,6 +5,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 import { I18nextProvider } from "react-i18next";
 
@@ -22,7 +23,17 @@ const themeScript = `
   })();
 `;
 
+export async function loader() {
+  return {
+    API_BASE: process.env.VITE_CENTRAL_API_URL || "",
+  };
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const data = useLoaderData() as { API_BASE?: string } | undefined;
+
+  const envScript = `window.__ENV__ = ${JSON.stringify({ API_BASE: data?.API_BASE || "" })}`;
+
   return (
     <html lang={i18n.language} suppressHydrationWarning>
       <head>
@@ -37,6 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </I18nextProvider>
         <ScrollRestoration />
+        <script dangerouslySetInnerHTML={{ __html: envScript }} />
         <Scripts />
         <Toaster />
       </body>

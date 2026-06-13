@@ -27,7 +27,10 @@ import {
 
 const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true";
 
-export const API_BASE = import.meta.env.VITE_CENTRAL_API_URL;
+export const API_BASE =
+  (typeof window !== "undefined"
+    ? (window as any).__ENV__?.API_BASE
+    : process.env.VITE_CENTRAL_API_URL) || "";
 
 function authHeaders(): Record<string, string> {
   const token = localStorage.getItem("token");
@@ -35,6 +38,7 @@ function authHeaders(): Record<string, string> {
 }
 
 async function api<T>(path: string, options?: RequestInit): Promise<T> {
+    console.log(API_BASE);
   const headers: Record<string, string> = {
     ...authHeaders(),
     ...(options?.headers as Record<string, string>),
