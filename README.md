@@ -1,6 +1,6 @@
 > **Português?** 🇧🇷 Leia o [README em Português](README.pt-BR.md).
 
-# REMI — Intelligent Media Office Repository
+# REMI — Distributed digital media manager
 
 Distributed digital media management system. Composed of a **central orchestrator** that manages metadata, authentication, and selection of the best storage node, **multiple storage nodes** that persist files to disk, and a **web interface** with server-side rendering (SSR).
 
@@ -65,6 +65,10 @@ Each module has its own multi-stage build Dockerfile:
 | `SPRING_DATASOURCE_USERNAME` | Yes | Database username |
 | `SPRING_DATASOURCE_PASSWORD` | Yes | Database password |
 | `APP_ADMIN_PASSWORD` | Yes | Password for the default admin account created automatically for initial use |
+| `JWT_SECRET` | No (default `your-jwt-hash` in properties) | Secret key used to sign JWT tokens. Can be set as environment variable or via `jwt.secret` in `application.properties`. **Must be changed** to a strong value in production |
+| `JWT_EXPIRATION-MS` | No (default `864000000` in properties) | JWT token expiration in milliseconds. Can be set as environment variable or via `jwt.expiration-ms` in `application.properties` |
+| `SPRING_SERVLET_MULTIPART_MAXFILESIZE` | No (default `100MB` in properties) | Maximum file size per upload. Can be set as environment variable or via `spring.servlet.multipart.max-file-size` in `application.properties` |
+| `SPRING_SERVLET_MULTIPART_MAXREQUESTSIZE` | No (default `150MB` in properties) | Maximum total multipart request size. Can be set as environment variable or via `spring.servlet.multipart.max-request-size` in `application.properties` |
 
 ### Node (`brendhacasaro/remi-node` image)
 
@@ -74,6 +78,8 @@ Each module has its own multi-stage build Dockerfile:
 | `SPRING_DATASOURCE_USERNAME` | Yes | Database username |
 | `SPRING_DATASOURCE_PASSWORD` | Yes | Database password |
 | `NODE_AUTH_KEY` | Yes | Secret key used to authenticate requests coming from central. Central sends this key as a Bearer token in the `Authorization` header. Without it the node rejects the call |
+| `SPRING_SERVLET_MULTIPART_MAXFILESIZE` | No (default `100MB` in properties) | Maximum file size per upload. Can be set as environment variable or via `spring.servlet.multipart.max-file-size` in `application.properties` |
+| `SPRING_SERVLET_MULTIPART_MAXREQUESTSIZE` | No (default `150MB` in properties) | Maximum total multipart request size. Can be set as environment variable or via `spring.servlet.multipart.max-request-size` in `application.properties` |
 
 ## Local development (without Docker)
 

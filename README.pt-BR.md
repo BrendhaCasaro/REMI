@@ -1,6 +1,6 @@
 > **English?** 🇺🇸 Read the [English README](README.md).
 
-# REMI — Repositório de Escritório de Mídias Inteligente
+# REMI — Gerenciador de mídias digitais distribuído
 
 Sistema distribuído de gerenciamento de mídias digitais. Composto por um **orquestrador central** que gerencia metadados, autenticação e a escolha do melhor nó de armazenamento, **múltiplos nós de armazenamento** que persistem os arquivos em disco, e uma **interface web** com renderização server-side (SSR).
 
@@ -65,6 +65,10 @@ Cada módulo possui seu próprio Dockerfile com multi-stage build:
 | `SPRING_DATASOURCE_USERNAME` | Sim | Usuário do banco de dados |
 | `SPRING_DATASOURCE_PASSWORD` | Sim | Senha do banco de dados |
 | `APP_ADMIN_PASSWORD` | Sim | Senha da conta admin padrão criada automaticamente para uso inicial |
+| `JWT_SECRET` | Não (default `your-jwt-hash` no properties) | Chave secreta para assinar tokens JWT. Pode ser definida como variável de ambiente ou via `jwt.secret` no `application.properties`. **Deve ser alterada** para um valor forte em produção |
+| `JWT_EXPIRATION-MS` | Não (default `864000000` no properties) | Tempo de expiração do token JWT em milissegundos. Pode ser definida como variável de ambiente ou via `jwt.expiration-ms` no `application.properties` |
+| `SPRING_SERVLET_MULTIPART_MAXFILESIZE` | Não (default `100MB` no properties) | Tamanho máximo por arquivo no upload. Pode ser definida como variável de ambiente ou via `spring.servlet.multipart.max-file-size` no `application.properties` |
+| `SPRING_SERVLET_MULTIPART_MAXREQUESTSIZE` | Não (default `150MB` no properties) | Tamanho máximo total da requisição multipart. Pode ser definida como variável de ambiente ou via `spring.servlet.multipart.max-request-size` no `application.properties` |
 
 ### Node (imagem `brendhacasaro/remi-node`)
 
@@ -74,6 +78,8 @@ Cada módulo possui seu próprio Dockerfile com multi-stage build:
 | `SPRING_DATASOURCE_USERNAME` | Sim | Usuário do banco de dados |
 | `SPRING_DATASOURCE_PASSWORD` | Sim | Senha do banco de dados |
 | `NODE_AUTH_KEY` | Sim | Chave secreta usada para autenticar requisições vindas da central. A central envia esta chave como Bearer token no header `Authorization`. Sem ela o nó rejeita a chamada |
+| `SPRING_SERVLET_MULTIPART_MAXFILESIZE` | Não (default `100MB` no properties) | Tamanho máximo por arquivo no upload. Pode ser definida como variável de ambiente ou via `spring.servlet.multipart.max-file-size` no `application.properties` |
+| `SPRING_SERVLET_MULTIPART_MAXREQUESTSIZE` | Não (default `150MB` no properties) | Tamanho máximo total da requisição multipart. Pode ser definida como variável de ambiente ou via `spring.servlet.multipart.max-request-size` no `application.properties` |
 
 ## Desenvolvimento local (sem Docker)
 
