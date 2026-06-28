@@ -24,7 +24,7 @@ Cada nó de armazenamento exige uma chave secreta definida via variável de ambi
         │
         │ Arquivos salvos em disco (/storage)
         ▼
-  PostgreSQL (single database ou um por app)
+   PostgreSQL (central) / SQLite (nodes)
 ```
 
 ## Módulos
@@ -74,9 +74,9 @@ Cada módulo possui seu próprio Dockerfile com multi-stage build:
 
 | Variável | Obrigatória | Descrição |
 |---|---|---|
-| `SPRING_DATASOURCE_URL` | Sim | JDBC URL do banco PostgreSQL |
-| `SPRING_DATASOURCE_USERNAME` | Sim | Usuário do banco de dados |
-| `SPRING_DATASOURCE_PASSWORD` | Sim | Senha do banco de dados |
+| `SPRING_DATASOURCE_URL` | Sim | JDBC URL do banco SQLite (ex: `jdbc:sqlite:remi_node.db`) |
+| `SPRING_DATASOURCE_USERNAME` | Não | Não obrigatório — SQLite não exige autenticação |
+| `SPRING_DATASOURCE_PASSWORD` | Não | Não obrigatório — SQLite não exige autenticação |
 | `NODE_AUTH_KEY` | Sim | Chave secreta usada para autenticar requisições vindas da central. A central envia esta chave como Bearer token no header `Authorization`. Sem ela o nó rejeita a chamada |
 | `SPRING_SERVLET_MULTIPART_MAXFILESIZE` | Não (default `100MB` no properties) | Tamanho máximo por arquivo no upload. Pode ser definida como variável de ambiente ou via `spring.servlet.multipart.max-file-size` no `application.properties` |
 | `SPRING_SERVLET_MULTIPART_MAXREQUESTSIZE` | Não (default `150MB` no properties) | Tamanho máximo total da requisição multipart. Pode ser definida como variável de ambiente ou via `spring.servlet.multipart.max-request-size` no `application.properties` |
@@ -87,11 +87,14 @@ Cada módulo possui seu próprio Dockerfile com multi-stage build:
 
 - Java 25 (definido via `mise.toml` ou instalado manualmente)
 - Node.js 20+
-- PostgreSQL rodando localmente
+- PostgreSQL rodando localmente (necessário apenas para a central)
+- SQLite (cliente, para que o node crie o arquivo de banco e as tabelas automaticamente)
 
 ### Banco de dados
 
-Crie os databases necessários no PostgreSQL local. Você pode usar um único banco compartilhado entre central e todos os nós, ou um banco separado para cada aplicação — as variáveis `SPRING_DATASOURCE_URL` em cada `application.properties` definem essa configuração.
+**Central** requer um banco PostgreSQL. Crie-o manualmente (ex: `CREATE DATABASE remi-centraldb;`) e configure a URL em `central/src/main/resources/application.properties`.
+
+**Nodes** usam SQLite — o arquivo de banco (ex: `remi_node.db`) e as tabelas são criados automaticamente em tempo de execução. Não é necessário criar o banco manualmente.
 
 ### Backend (central e node)
 
