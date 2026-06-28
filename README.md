@@ -24,7 +24,7 @@ Each storage node requires a secret key defined via environment variable (`NODE_
         │
         │ Files saved to disk (/storage)
         ▼
-  PostgreSQL (single database or one per app)
+   PostgreSQL (central) / SQLite (nodes)
 ```
 
 ## Modules
@@ -74,9 +74,9 @@ Each module has its own multi-stage build Dockerfile:
 
 | Variable | Required | Description |
 |---|---|---|
-| `SPRING_DATASOURCE_URL` | Yes | PostgreSQL JDBC URL |
-| `SPRING_DATASOURCE_USERNAME` | Yes | Database username |
-| `SPRING_DATASOURCE_PASSWORD` | Yes | Database password |
+| `SPRING_DATASOURCE_URL` | Yes | SQLite JDBC URL (e.g., `jdbc:sqlite:remi_node.db`) |
+| `SPRING_DATASOURCE_USERNAME` | No | Not required — SQLite does not use authentication |
+| `SPRING_DATASOURCE_PASSWORD` | No | Not required — SQLite does not use authentication |
 | `NODE_AUTH_KEY` | Yes | Secret key used to authenticate requests coming from central. Central sends this key as a Bearer token in the `Authorization` header. Without it the node rejects the call |
 | `SPRING_SERVLET_MULTIPART_MAXFILESIZE` | No (default `100MB` in properties) | Maximum file size per upload. Can be set as environment variable or via `spring.servlet.multipart.max-file-size` in `application.properties` |
 | `SPRING_SERVLET_MULTIPART_MAXREQUESTSIZE` | No (default `150MB` in properties) | Maximum total multipart request size. Can be set as environment variable or via `spring.servlet.multipart.max-request-size` in `application.properties` |
@@ -87,11 +87,14 @@ Each module has its own multi-stage build Dockerfile:
 
 - Java 25 (set via `mise.toml` or installed manually)
 - Node.js 20+
-- PostgreSQL running locally
+- PostgreSQL running locally (required for central only)
+- SQLite (client, so the node can create the database file and tables automatically)
 
 ### Database
 
-Create the required databases in local PostgreSQL. You can use a single shared database between central and all nodes, or a separate database for each application — the `SPRING_DATASOURCE_URL` variables in each `application.properties` define this configuration.
+**Central** requires a PostgreSQL database. Create it manually (e.g., `CREATE DATABASE remi-centraldb;`) and configure the URL in `central/src/main/resources/application.properties`.
+
+**Nodes** use SQLite — the database file (e.g., `remi_node.db`) and tables are created automatically at runtime. No manual database creation is needed.
 
 ### Backend (central and node)
 

@@ -1,11 +1,9 @@
 package com.brendhacasaro.remi_node.stored_media.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
-
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import java.util.UUID;
 
 @Entity
@@ -16,6 +14,7 @@ import java.util.UUID;
 @Table(name = "stored_media")
 public class StoredMedia {
     @Id
+    @JdbcTypeCode(SqlTypes.CHAR)
     @NonNull
     private UUID id;
 
