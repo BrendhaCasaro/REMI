@@ -6,6 +6,8 @@ import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.dto.MetricsResponse;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,17 @@ public class NodeMetricsScheduler {
             } catch (Exception e) {
                 log.warn("Failed to get metrics for node {}: {}", node.getUrl(), e.getMessage());
             }
+        }
+    }
+
+    @Async
+    public void updateMetrics(Node node) {
+        try {
+            MetricsResponse metrics = metricsClient.fetchMetrics(node);
+            node.setDiskFree(metrics.diskFree());
+            log.debug("Updated disk free for node {}: {} GB", node.getUrl(), metrics.diskFree());
+        } catch (Exception e) {
+            log.warn("Failed to get metrics for node {}: {}", node.getUrl(), e.getMessage());
         }
     }
 }

@@ -1,9 +1,11 @@
 package com.brendhacasaro.remi_central.media;
 
 import com.brendhacasaro.remi_central.media.model.Media;
+import com.brendhacasaro.remi_central.node.NodeMetricsClient;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.Orchestrator;
 import com.brendhacasaro.remi_central.orchestrator.OrchestratorException;
+import com.brendhacasaro.remi_central.scheduler.NodeMetricsScheduler;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +31,22 @@ public class MediaService {
     private final MediaRepository mediaRepository;
     private final Orchestrator orchestrator;
     private final RestClient restClient;
+    private final NodeMetricsScheduler nodeMetricsScheduler;
 
     @Autowired
-    public MediaService(MediaRepository mediaRepository, Orchestrator orchestrator) {
+    public MediaService(MediaRepository mediaRepository, Orchestrator orchestrator, NodeMetricsScheduler nodeMetricsScheduler) {
         this.mediaRepository = mediaRepository;
         this.orchestrator = orchestrator;
         this.restClient = RestClient.create();
+        this.nodeMetricsScheduler = nodeMetricsScheduler;
     }
 
     // Apenas para injeção de mock RestClient nos testes
-    MediaService(MediaRepository mediaRepository, Orchestrator orchestrator, RestClient restClient) {
+    MediaService(MediaRepository mediaRepository, Orchestrator orchestrator, RestClient restClient, NodeMetricsScheduler nodeMetricsScheduler) {
         this.mediaRepository = mediaRepository;
         this.orchestrator = orchestrator;
         this.restClient = restClient;
+        this.nodeMetricsScheduler = nodeMetricsScheduler;
     }
 
     @Transactional
@@ -89,6 +94,7 @@ public class MediaService {
                 })
                 .toBodilessEntity();
 
+        nodeMetricsScheduler.updateMetrics(node);
         return "/download/" + media.getId();
     }
 
@@ -127,6 +133,8 @@ public class MediaService {
                     .toBodilessEntity();
         }
 
+
+        nodeMetricsScheduler.updateMetrics(node);
         mediaRepository.delete(media);
     }
 
