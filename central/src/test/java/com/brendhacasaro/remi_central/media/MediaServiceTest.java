@@ -5,6 +5,7 @@ import com.brendhacasaro.remi_central.node.NodeStatus;
 import com.brendhacasaro.remi_central.node.model.Node;
 import com.brendhacasaro.remi_central.orchestrator.Orchestrator;
 import com.brendhacasaro.remi_central.orchestrator.OrchestratorException;
+import com.brendhacasaro.remi_central.scheduler.NodeMetricsScheduler;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,12 +42,15 @@ class MediaServiceTest {
     @Mock
     private RestClient restClient;
 
+    @Mock
+    NodeMetricsScheduler nodeMetricsScheduler;
+
     private MediaService mediaService;
     private Node testNode;
 
     @BeforeEach
     void setUp() {
-        mediaService = new MediaService(mediaRepository, orchestrator, restClient);
+        mediaService = new MediaService(mediaRepository, orchestrator, restClient, nodeMetricsScheduler);
         testNode = new Node("http://node:8080", 100.0, "key", NodeStatus.ONLINE, 50.0);
     }
 
